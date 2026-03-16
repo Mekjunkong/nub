@@ -1,0 +1,46 @@
+"use client";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calculator, Save, MessageCircle } from "lucide-react";
+
+interface ActivityItem {
+  id: string;
+  type: "calculation" | "save" | "chat";
+  description: string;
+  timestamp: string;
+}
+
+interface RecentActivityProps {
+  activities: ActivityItem[];
+}
+
+const icons = {
+  calculation: <Calculator className="h-4 w-4 text-primary" />,
+  save: <Save className="h-4 w-4 text-success" />,
+  chat: <MessageCircle className="h-4 w-4 text-secondary" />,
+};
+
+export function RecentActivity({ activities }: RecentActivityProps) {
+  return (
+    <Card>
+      <CardHeader><CardTitle className="text-sm">Recent Activity</CardTitle></CardHeader>
+      <CardContent>
+        {activities.length === 0 ? (
+          <p className="text-xs text-text-muted">No recent activity</p>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {activities.slice(0, 5).map((a) => (
+              <div key={a.id} className="flex items-start gap-3">
+                <div className="mt-0.5">{icons[a.type]}</div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-text truncate">{a.description}</p>
+                  <p className="text-xs text-text-muted">{new Date(a.timestamp).toLocaleString()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
