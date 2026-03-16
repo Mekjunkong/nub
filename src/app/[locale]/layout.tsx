@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NextIntlClientProvider, useMessages } from "next-intl";
+import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { Inter, IBM_Plex_Sans_Thai, IBM_Plex_Mono } from "next/font/google";
 import { routing } from "@/i18n/routing";

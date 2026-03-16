@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         "Content-Disposition": `inline; filename="nub-${body.planType}-report.html"`,
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 }

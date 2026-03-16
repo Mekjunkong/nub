@@ -132,7 +132,7 @@ export async function POST(request: Request) {
       used: currentCount + 1,
       limit: isFree ? FREE_DAILY_LIMIT : null,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
