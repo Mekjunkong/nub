@@ -227,7 +227,8 @@ export interface Database {
       profiles: {
         Row: Profile;
         Insert: Partial<Profile> & { id: string };
-        Update: Partial<Profile>;
+        Update: Partial<Omit<Profile, "id">>;
+        Relationships: [];
       };
       saved_plans: {
         Row: SavedPlan;
