@@ -1,0 +1,241 @@
+{
+  "common": {
+    "appName": "Nub",
+    "tagline": "Plan Your Retirement with Confidence",
+    "login": "Log In",
+    "register": "Sign Up",
+    "logout": "Log Out",
+    "calculate": "Calculate",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "viewAll": "View All",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "upgrade": "Upgrade",
+    "premium": "Premium",
+    "free": "Free",
+    "nav": {
+      "dashboard": "Dashboard",
+      "calculators": "Calculators",
+      "funds": "Funds",
+      "blog": "Blog",
+      "glossary": "Glossary",
+      "calendar": "Calendar",
+      "community": "Community",
+      "chat": "AI Chat",
+      "profile": "Profile",
+      "settings": "Settings",
+      "contact": "Contact"
+    }
+  },
+  "landing": {
+    "heroTitle": "Plan Your Retirement\nwith Confidence",
+    "heroSubtitle": "Comprehensive retirement planning tools powered by Monte Carlo Simulation technology",
+    "cta": "Start Planning for Free",
+    "features": {
+      "retirement": {
+        "title": "Retirement Calculator",
+        "description": "Analyze retirement gaps for government, private sector, and freelance workers"
+      },
+      "monteCarlo": {
+        "title": "Monte Carlo Simulation",
+        "description": "Simulate 60,000 scenarios to estimate the probability your money will last"
+      },
+      "portfolio": {
+        "title": "Smart Portfolio",
+        "description": "Optimize asset allocation with Modern Portfolio Theory"
+      },
+      "tax": {
+        "title": "Tax Planning",
+        "description": "Calculate tax deductions from SSF, RMF, insurance, and more"
+      },
+      "ai": {
+        "title": "AI Advisor",
+        "description": "Ask financial questions 24/7"
+      },
+      "community": {
+        "title": "Finance Community",
+        "description": "Share knowledge with other users"
+      }
+    },
+    "stats": {
+      "users": "Users",
+      "calculations": "Calculations",
+      "funds": "Funds"
+    }
+  },
+  "auth": {
+    "loginTitle": "Log In",
+    "registerTitle": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot password?",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "line": "LINE",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signUpHere": "Sign up here",
+    "loginHere": "Log in here"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "healthScore": "Financial Health Score",
+    "healthScoreDescription": "Your retirement readiness index",
+    "savedPlans": "Saved Plans",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "noPlans": "No saved plans yet",
+    "createFirst": "Create your first plan"
+  },
+  "calculator": {
+    "currentAge": "Current Age",
+    "retirementAge": "Retirement Age",
+    "lifeExpectancy": "Life Expectancy",
+    "monthlySalary": "Monthly Salary",
+    "monthlyExpenses": "Monthly Expenses",
+    "currentSavings": "Current Savings",
+    "monthlyContribution": "Monthly Contribution",
+    "inflationRate": "Inflation Rate",
+    "expectedReturn": "Expected Return",
+    "riskFreeRate": "Risk-Free Rate",
+    "results": "Results",
+    "savePlan": "Save Plan",
+    "comparePlans": "Compare Plans",
+    "exportPDF": "Export PDF",
+    "step": "Step"
+  },
+  "retirement": {
+    "title": "Retirement Calculator",
+    "description": "Analyze your retirement gap and plan for a secure future",
+    "employmentType": "Employment Type",
+    "government": "Government Officer",
+    "private": "Private Sector Employee",
+    "freelance": "Freelancer / Self-employed",
+    "gpfRate": "GPF Contribution Rate",
+    "pvdRate": "Provident Fund Rate",
+    "employerMatch": "Employer Match",
+    "sssContribution": "Social Security Contribution",
+    "retirementGap": "Retirement Gap",
+    "requiredCorpus": "Required Retirement Corpus",
+    "projectedCorpus": "Projected Corpus",
+    "monthlyShortfall": "Monthly Shortfall",
+    "healthScore": "Financial Health Score"
+  },
+  "withdrawal": {
+    "title": "Withdrawal Planner",
+    "description": "Simulate retirement withdrawals with Monte Carlo Simulation",
+    "initialPortfolio": "Initial Portfolio Value",
+    "monthlyWithdrawal": "Monthly Withdrawal",
+    "survivalRate": "Survival Rate",
+    "simulations": "Simulation Rounds",
+    "refining": "Refining results..."
+  },
+  "stress_test": {
+    "title": "Portfolio Stress Test",
+    "description": "Test your portfolio under 4 crisis scenarios",
+    "normal": "Normal",
+    "var99": "VaR (99%)",
+    "blackSwan": "Black Swan",
+    "combined": "Combined",
+    "maxDrawdown": "Max Drawdown",
+    "doublingProbability": "Doubling Probability",
+    "recoveryTime": "Recovery Time"
+  },
+  "mpt": {
+    "title": "MPT Portfolio Optimizer",
+    "description": "Optimize your portfolio allocation with Modern Portfolio Theory",
+    "efficientFrontier": "Efficient Frontier",
+    "maxSharpe": "Max Sharpe",
+    "minVolatility": "Min Volatility",
+    "customRisk": "Custom Risk",
+    "portfolioWeights": "Portfolio Weights",
+    "expectedReturn": "Expected Return",
+    "portfolioRisk": "Portfolio Risk"
+  },
+  "dca": {
+    "title": "DCA Calculator",
+    "description": "Calculate returns from Dollar-Cost Averaging investment strategy",
+    "monthlyAmount": "Monthly Investment",
+    "investmentPeriod": "Investment Period (years)",
+    "totalInvested": "Total Invested",
+    "totalValue": "Total Value",
+    "totalReturn": "Total Return"
+  },
+  "tax": {
+    "title": "Tax Planner",
+    "description": "Calculate tax deductions from savings and investment instruments",
+    "annualIncome": "Annual Income",
+    "ssfAmount": "SSF (Super Savings Fund)",
+    "rmfAmount": "RMF (Retirement Mutual Fund)",
+    "lifeInsurance": "Life Insurance Premium",
+    "healthInsurance": "Health Insurance Premium",
+    "pensionInsurance": "Pension Insurance Premium",
+    "taxSaved": "Tax Saved",
+    "effectiveTaxRate": "Effective Tax Rate",
+    "maxDeduction": "Maximum Deduction"
+  },
+  "chat": {
+    "title": "AI Advisor",
+    "description": "Ask about finance and retirement planning",
+    "placeholder": "Type your question...",
+    "disclaimer": "AI may provide inaccurate information. Please verify with experts before making decisions.",
+    "dailyLimit": "You have used {count}/{max} messages today",
+    "upgradeForMore": "Upgrade to Premium for unlimited chat"
+  },
+  "funds": {
+    "title": "Funds",
+    "description": "Search and compare mutual funds",
+    "ticker": "Ticker",
+    "category": "Category",
+    "return": "Return",
+    "risk": "Risk",
+    "roic": "ROIC",
+    "equity": "Equity",
+    "bond": "Bond",
+    "gold": "Gold",
+    "mixed": "Mixed",
+    "moneyMarket": "Money Market"
+  },
+  "community": {
+    "title": "Community",
+    "description": "Share knowledge with other users",
+    "newPost": "New Post",
+    "reply": "Reply",
+    "upvote": "Upvote",
+    "report": "Report",
+    "pinned": "Pinned"
+  },
+  "profile": {
+    "title": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "darkMode": "Dark Mode",
+    "notifications": "Notifications",
+    "exportData": "Export Data",
+    "deleteAccount": "Delete Account"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Nub!",
+    "step1Title": "What type of work do you do?",
+    "step2Title": "What is your primary goal?",
+    "step3Title": "Choose your preferred language",
+    "goalRetirement": "Retirement Planning",
+    "goalInvesting": "Investment Optimization",
+    "goalTax": "Tax Savings",
+    "finish": "Get Started"
+  }
+}

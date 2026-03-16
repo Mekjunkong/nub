@@ -1,0 +1,241 @@
+{
+  "common": {
+    "appName": "Nub",
+    "tagline": "วางแผนเกษียณอย่างมั่นใจ",
+    "login": "เข้าสู่ระบบ",
+    "register": "สมัครสมาชิก",
+    "logout": "ออกจากระบบ",
+    "calculate": "คำนวณ",
+    "save": "บันทึก",
+    "cancel": "ยกเลิก",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "back": "กลับ",
+    "next": "ถัดไป",
+    "previous": "ก่อนหน้า",
+    "submit": "ส่ง",
+    "loading": "กำลังโหลด...",
+    "error": "เกิดข้อผิดพลาด",
+    "success": "สำเร็จ",
+    "search": "ค้นหา",
+    "filter": "กรอง",
+    "sort": "เรียง",
+    "viewAll": "ดูทั้งหมด",
+    "learnMore": "เรียนรู้เพิ่มเติม",
+    "getStarted": "เริ่มต้น",
+    "upgrade": "อัปเกรด",
+    "premium": "พรีเมียม",
+    "free": "ฟรี",
+    "nav": {
+      "dashboard": "แดชบอร์ด",
+      "calculators": "เครื่องคำนวณ",
+      "funds": "กองทุน",
+      "blog": "บทความ",
+      "glossary": "คำศัพท์",
+      "calendar": "ปฏิทิน",
+      "community": "ชุมชน",
+      "chat": "แชท AI",
+      "profile": "โปรไฟล์",
+      "settings": "ตั้งค่า",
+      "contact": "ติดต่อ"
+    }
+  },
+  "landing": {
+    "heroTitle": "วางแผนเกษียณ\nอย่างมั่นใจ",
+    "heroSubtitle": "เครื่องมือวางแผนการเงินเพื่อการเกษียณที่ครบครัน ด้วยเทคโนโลยี Monte Carlo Simulation",
+    "cta": "เริ่มวางแผนฟรี",
+    "features": {
+      "retirement": {
+        "title": "คำนวณเงินเกษียณ",
+        "description": "วิเคราะห์ช่องว่างการเงินเกษียณสำหรับข้าราชการ พนักงานเอกชน และฟรีแลนซ์"
+      },
+      "monteCarlo": {
+        "title": "Monte Carlo Simulation",
+        "description": "จำลอง 60,000 สถานการณ์เพื่อประเมินโอกาสที่เงินจะเพียงพอ"
+      },
+      "portfolio": {
+        "title": "จัดพอร์ตอัจฉริยะ",
+        "description": "ปรับสัดส่วนการลงทุนด้วย Modern Portfolio Theory"
+      },
+      "tax": {
+        "title": "วางแผนภาษี",
+        "description": "คำนวณการลดหย่อนภาษีจาก SSF, RMF, ประกัน และอื่นๆ"
+      },
+      "ai": {
+        "title": "ที่ปรึกษา AI",
+        "description": "สอบถามเรื่องการเงินได้ตลอด 24 ชั่วโมง"
+      },
+      "community": {
+        "title": "ชุมชนการเงิน",
+        "description": "แลกเปลี่ยนความรู้กับผู้ใช้งานคนอื่น"
+      }
+    },
+    "stats": {
+      "users": "ผู้ใช้งาน",
+      "calculations": "การคำนวณ",
+      "funds": "กองทุน"
+    }
+  },
+  "auth": {
+    "loginTitle": "เข้าสู่ระบบ",
+    "registerTitle": "สมัครสมาชิก",
+    "email": "อีเมล",
+    "password": "รหัสผ่าน",
+    "confirmPassword": "ยืนยันรหัสผ่าน",
+    "forgotPassword": "ลืมรหัสผ่าน?",
+    "orContinueWith": "หรือเข้าสู่ระบบด้วย",
+    "google": "Google",
+    "line": "LINE",
+    "noAccount": "ยังไม่มีบัญชี?",
+    "hasAccount": "มีบัญชีแล้ว?",
+    "signUpHere": "สมัครที่นี่",
+    "loginHere": "เข้าสู่ระบบที่นี่"
+  },
+  "dashboard": {
+    "title": "แดชบอร์ด",
+    "healthScore": "คะแนนสุขภาพการเงิน",
+    "healthScoreDescription": "ดัชนีประเมินความพร้อมเกษียณของคุณ",
+    "savedPlans": "แผนที่บันทึก",
+    "recentActivity": "กิจกรรมล่าสุด",
+    "quickActions": "ทางลัด",
+    "noPlans": "ยังไม่มีแผนที่บันทึก",
+    "createFirst": "สร้างแผนแรกของคุณ"
+  },
+  "calculator": {
+    "currentAge": "อายุปัจจุบัน",
+    "retirementAge": "อายุเกษียณ",
+    "lifeExpectancy": "อายุขัยที่คาดหวัง",
+    "monthlySalary": "เงินเดือน",
+    "monthlyExpenses": "ค่าใช้จ่ายต่อเดือน",
+    "currentSavings": "เงินออมปัจจุบัน",
+    "monthlyContribution": "เงินออมต่อเดือน",
+    "inflationRate": "อัตราเงินเฟ้อ",
+    "expectedReturn": "ผลตอบแทนที่คาดหวัง",
+    "riskFreeRate": "อัตราปลอดความเสี่ยง",
+    "results": "ผลการคำนวณ",
+    "savePlan": "บันทึกแผน",
+    "comparePlans": "เปรียบเทียบแผน",
+    "exportPDF": "ส่งออก PDF",
+    "step": "ขั้นตอน"
+  },
+  "retirement": {
+    "title": "คำนวณเงินเกษียณ",
+    "description": "วิเคราะห์ช่องว่างทางการเงินและวางแผนเกษียณที่มั่นคง",
+    "employmentType": "ประเภทการจ้างงาน",
+    "government": "ข้าราชการ",
+    "private": "พนักงานเอกชน",
+    "freelance": "ฟรีแลนซ์ / อาชีพอิสระ",
+    "gpfRate": "อัตราสมทบ กบข.",
+    "pvdRate": "อัตราสมทบกองทุนสำรองเลี้ยงชีพ",
+    "employerMatch": "นายจ้างสมทบ",
+    "sssContribution": "เงินสมทบประกันสังคม",
+    "retirementGap": "ช่องว่างเงินเกษียณ",
+    "requiredCorpus": "เงินที่ต้องมีเมื่อเกษียณ",
+    "projectedCorpus": "เงินที่คาดว่าจะมี",
+    "monthlyShortfall": "ขาดต่อเดือน",
+    "healthScore": "คะแนนสุขภาพการเงิน"
+  },
+  "withdrawal": {
+    "title": "วางแผนถอนเงินเกษียณ",
+    "description": "จำลองการถอนเงินด้วย Monte Carlo Simulation",
+    "initialPortfolio": "เงินลงทุนเริ่มต้น",
+    "monthlyWithdrawal": "ถอนต่อเดือน",
+    "survivalRate": "อัตราการอยู่รอด",
+    "simulations": "จำนวนรอบจำลอง",
+    "refining": "กำลังปรับปรุงผลลัพธ์..."
+  },
+  "stress_test": {
+    "title": "ทดสอบความเครียดพอร์ต",
+    "description": "ทดสอบพอร์ตภายใต้ 4 สถานการณ์วิกฤต",
+    "normal": "ปกติ",
+    "var99": "VaR (99%)",
+    "blackSwan": "Black Swan",
+    "combined": "สถานการณ์รวม",
+    "maxDrawdown": "การลดลงสูงสุด",
+    "doublingProbability": "โอกาสเงินเพิ่มเท่าตัว",
+    "recoveryTime": "เวลาฟื้นตัว"
+  },
+  "mpt": {
+    "title": "จัดพอร์ตด้วย MPT",
+    "description": "ปรับสัดส่วนพอร์ตให้เหมาะสมด้วย Modern Portfolio Theory",
+    "efficientFrontier": "เส้น Efficient Frontier",
+    "maxSharpe": "Sharpe สูงสุด",
+    "minVolatility": "ความผันผวนต่ำสุด",
+    "customRisk": "กำหนดเอง",
+    "portfolioWeights": "สัดส่วนพอร์ต",
+    "expectedReturn": "ผลตอบแทนคาดหวัง",
+    "portfolioRisk": "ความเสี่ยงพอร์ต"
+  },
+  "dca": {
+    "title": "คำนวณ DCA",
+    "description": "คำนวณผลตอบแทนจากการลงทุนแบบ Dollar-Cost Averaging",
+    "monthlyAmount": "เงินลงทุนต่อเดือน",
+    "investmentPeriod": "ระยะเวลาลงทุน (ปี)",
+    "totalInvested": "เงินลงทุนรวม",
+    "totalValue": "มูลค่ารวม",
+    "totalReturn": "ผลตอบแทนรวม"
+  },
+  "tax": {
+    "title": "วางแผนภาษี",
+    "description": "คำนวณการลดหย่อนภาษีจากเครื่องมือการออมและการลงทุน",
+    "annualIncome": "รายได้ต่อปี",
+    "ssfAmount": "SSF (กองทุนรวมเพื่อการออม)",
+    "rmfAmount": "RMF (กองทุนรวมเพื่อการเลี้ยงชีพ)",
+    "lifeInsurance": "เบี้ยประกันชีวิต",
+    "healthInsurance": "เบี้ยประกันสุขภาพ",
+    "pensionInsurance": "เบี้ยประกันบำนาญ",
+    "taxSaved": "ภาษีที่ประหยัดได้",
+    "effectiveTaxRate": "อัตราภาษีที่แท้จริง",
+    "maxDeduction": "ลดหย่อนสูงสุด"
+  },
+  "chat": {
+    "title": "ที่ปรึกษา AI",
+    "description": "สอบถามเรื่องการเงินและการเกษียณ",
+    "placeholder": "พิมพ์คำถามของคุณ...",
+    "disclaimer": "AI อาจให้ข้อมูลที่ไม่ถูกต้อง กรุณาตรวจสอบกับผู้เชี่ยวชาญก่อนตัดสินใจ",
+    "dailyLimit": "คุณใช้ข้อความครบ {count}/{max} ครั้งแล้ววันนี้",
+    "upgradeForMore": "อัปเกรดเป็นพรีเมียมเพื่อแชทไม่จำกัด"
+  },
+  "funds": {
+    "title": "กองทุน",
+    "description": "ค้นหาและเปรียบเทียบกองทุนรวม",
+    "ticker": "ชื่อย่อ",
+    "category": "ประเภท",
+    "return": "ผลตอบแทน",
+    "risk": "ความเสี่ยง",
+    "roic": "ROIC",
+    "equity": "หุ้น",
+    "bond": "ตราสารหนี้",
+    "gold": "ทองคำ",
+    "mixed": "ผสม",
+    "moneyMarket": "ตลาดเงิน"
+  },
+  "community": {
+    "title": "ชุมชน",
+    "description": "แลกเปลี่ยนความรู้กับผู้ใช้งานคนอื่น",
+    "newPost": "โพสต์ใหม่",
+    "reply": "ตอบกลับ",
+    "upvote": "โหวต",
+    "report": "รายงาน",
+    "pinned": "ปักหมุด"
+  },
+  "profile": {
+    "title": "โปรไฟล์",
+    "settings": "ตั้งค่า",
+    "language": "ภาษา",
+    "darkMode": "โหมดมืด",
+    "notifications": "การแจ้งเตือน",
+    "exportData": "ส่งออกข้อมูล",
+    "deleteAccount": "ลบบัญชี"
+  },
+  "onboarding": {
+    "welcome": "ยินดีต้อนรับสู่ Nub!",
+    "step1Title": "คุณทำงานประเภทไหน?",
+    "step2Title": "เป้าหมายหลักของคุณคืออะไร?",
+    "step3Title": "เลือกภาษาที่ต้องการ",
+    "goalRetirement": "วางแผนเกษียณ",
+    "goalInvesting": "ปรับพอร์ตลงทุน",
+    "goalTax": "ประหยัดภาษี",
+    "finish": "เริ่มใช้งาน"
+  }
+}
