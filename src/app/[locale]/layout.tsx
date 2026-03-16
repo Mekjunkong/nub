@@ -29,6 +29,16 @@ export const metadata: Metadata = {
   title: "Nub - วางแผนเกษียณอย่างมั่นใจ",
   description:
     "เครื่องมือวางแผนการเงินเพื่อการเกษียณที่ครบครัน ด้วยเทคโนโลยี Monte Carlo Simulation",
+  manifest: "/manifest.json",
+  themeColor: "#4F7CF7",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Nub",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export function generateStaticParams() {
@@ -49,6 +59,10 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <meta name="theme-color" content="#4F7CF7" />
+      </head>
       <body
         className={`${inter.variable} ${ibmPlexSansThai.variable} ${ibmPlexMono.variable} antialiased`}
       >

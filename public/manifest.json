@@ -1,0 +1,24 @@
+{
+  "name": "Nub - Retirement Planning",
+  "short_name": "Nub",
+  "description": "Plan your retirement with confidence using Monte Carlo simulations",
+  "start_url": "/th/dashboard",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#4F7CF7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
