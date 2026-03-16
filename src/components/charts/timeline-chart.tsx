@@ -37,7 +37,7 @@ export function TimelineChart({ data }: TimelineChartProps) {
             <XAxis dataKey="age" tick={{ fontSize: 12 }} label={{ value: "Age", position: "insideBottom", offset: -5 }} />
             <YAxis tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} tick={{ fontSize: 11 }} />
             <Tooltip
-              formatter={(value: number) => formatCurrency(value)}
+              formatter={(value) => formatCurrency(Number(value))}
               labelFormatter={(label) => `Age ${label}`}
             />
             <Area

@@ -54,7 +54,7 @@ export function DcaComparisonChart({ data }: DcaComparisonChartProps) {
             <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
             <YAxis tickFormatter={(v) => formatCurrency(v)} tick={{ fontSize: 11 }} />
-            <Tooltip formatter={(v: number) => formatCurrency(v)} />
+            <Tooltip formatter={(v) => formatCurrency(Number(v))} />
             <Legend />
             <Line type="monotone" dataKey="Static" stroke="var(--color-primary)" strokeWidth={2} dot={false} />
             <Line type="monotone" dataKey="Glidepath" stroke="var(--color-secondary)" strokeWidth={2} dot={false} />

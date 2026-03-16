@@ -46,7 +46,7 @@ export function ScenarioComparisonChart({
             <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
             <XAxis dataKey="name" tick={{ fontSize: 11 }} />
             <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `${v}%`} />
-            <Tooltip formatter={(v: number) => `${v.toFixed(2)}%`} />
+            <Tooltip formatter={(v) => `${Number(v).toFixed(2)}%`} />
             <Bar dataKey="drawdown" name="Max Drawdown %" fill="var(--color-danger)" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>

@@ -59,7 +59,7 @@ export function TaxComparisonChart({
             <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
             <XAxis dataKey="label" tick={{ fontSize: 12 }} />
             <YAxis tickFormatter={(v) => formatCurrency(v)} tick={{ fontSize: 11 }} />
-            <Tooltip formatter={(v: number) => formatCurrency(v)} />
+            <Tooltip formatter={(v) => formatCurrency(Number(v))} />
             <Bar dataKey="tax" radius={[8, 8, 0, 0]}>
               {/* Colors handled via CSS */}
             </Bar>

@@ -47,7 +47,7 @@ export function WealthProjectionChart({
             <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
             <YAxis tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} tick={{ fontSize: 12 }} />
-            <Tooltip formatter={(value: number) => formatCurrency(value)} />
+            <Tooltip formatter={(value) => formatCurrency(Number(value))} />
             <Area type="monotone" dataKey="p90" stackId="band" stroke="none" fill="var(--color-primary)" fillOpacity={0.1} />
             <Area type="monotone" dataKey="p75" stackId="band2" stroke="none" fill="var(--color-primary)" fillOpacity={0.15} />
             <Area type="monotone" dataKey="p50" stroke="var(--color-primary)" strokeWidth={2} fill="var(--color-primary)" fillOpacity={0.2} />
