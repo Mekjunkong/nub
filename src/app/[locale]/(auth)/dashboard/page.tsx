@@ -1,49 +1,55 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import { setRequestLocale } from "next-intl/server";
+import { DashboardPageClient } from "./dashboard-page-client";
+import type { Profile, SavedPlan } from "@/types/database";
 
-import { HealthScoreCard } from "@/components/dashboard/health-score-card";
-import { SavedPlansList } from "@/components/dashboard/saved-plans-list";
-import { ProgressTracker } from "@/components/dashboard/progress-tracker";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
-import { QuickActions } from "@/components/dashboard/quick-actions";
+type ProfileScore = Pick<Profile, "financial_health_score">;
+type SavedPlanItem = Pick<SavedPlan, "id" | "name" | "plan_type" | "is_favorite" | "updated_at" | "results">;
 
-// Placeholder data - will be fetched from Supabase
-const mockPlans: any[] = [];
-const mockHistory = [
-  { date: "2026-01", score: 45 },
-  { date: "2026-02", score: 52 },
-  { date: "2026-03", score: 62 },
-];
-const mockActivities: any[] = [];
+export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-export default function DashboardPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  let healthScore: number | null = null;
+  let previousScore: number | null = null;
+  let plans: SavedPlanItem[] = [];
+
+  if (user) {
+    // Fetch profile for health score
+    const { data: profileData } = await supabase
+      .from("profiles")
+      .select("financial_health_score")
+      .eq("id", user.id)
+      .single();
+
+    const profile = profileData as ProfileScore | null;
+    healthScore = profile?.financial_health_score ?? null;
+
+    // Fetch saved plans
+    const { data: plansData } = await supabase
+      .from("saved_plans")
+      .select("id, name, plan_type, is_favorite, updated_at, results")
+      .eq("user_id", user.id)
+      .order("updated_at", { ascending: false });
+
+    plans = (plansData ?? []) as SavedPlanItem[];
+  }
+
+  // Build score history from current score
+  const scoreHistory = healthScore != null
+    ? [{ date: new Date().toISOString().slice(0, 7), score: healthScore }]
+    : [];
+
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-text font-heading">Dashboard</h1>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left column */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <HealthScoreCard score={62} previousScore={52} />
-            <QuickActions />
-          </div>
-
-          <div>
-            <h2 className="mb-3 text-sm font-semibold text-text">Saved Plans</h2>
-            <SavedPlansList
-              plans={mockPlans}
-              onToggleFavorite={(id) => console.log("toggle", id)}
-              onOpen={(id) => console.log("open", id)}
-            />
-          </div>
-        </div>
-
-        {/* Right column */}
-        <div className="flex flex-col gap-6">
-          <ProgressTracker history={mockHistory} />
-          <RecentActivity activities={mockActivities} />
-        </div>
-      </div>
-    </div>
+    <DashboardPageClient
+      healthScore={healthScore}
+      previousScore={previousScore}
+      plans={plans}
+      scoreHistory={scoreHistory}
+      locale={locale}
+    />
   );
 }

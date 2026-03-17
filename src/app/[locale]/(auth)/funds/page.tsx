@@ -1,45 +1,32 @@
-"use client";
+import { createClient } from "@/lib/supabase/server";
+import { setRequestLocale } from "next-intl/server";
+import { FundsPageClient } from "./funds-page-client";
+import type { Fund } from "@/types/database";
 
-import { useState } from "react";
-import { useLocale } from "next-intl";
-import { FundTable } from "@/components/funds/fund-table";
-import { FundFilters } from "@/components/funds/fund-filters";
-import { FundComparison } from "@/components/funds/fund-comparison";
+type FundListItem = Pick<Fund, "id" | "ticker" | "name_th" | "name_en" | "category" | "expected_return" | "standard_deviation" | "roic_current" | "affiliate_url">;
 
-const mockFunds = [
-  { id: "1", ticker: "SCBRMS&P500", name: "SCB US Equity S&P 500", category: "equity", expectedReturn: 0.08, standardDeviation: 0.1858, roicCurrent: 0.12, affiliateUrl: "https://www.scbam.com" },
-  { id: "2", ticker: "SCBRM2", name: "SCB Short-term Fixed Income", category: "bond", expectedReturn: 0.025, standardDeviation: 0.0191, roicCurrent: 0.03, affiliateUrl: "https://www.scbam.com" },
-  { id: "3", ticker: "SCBRMGOLDH", name: "SCB Gold THB Hedged", category: "gold", expectedReturn: 0.05, standardDeviation: 0.1511, roicCurrent: 0.08, affiliateUrl: "https://www.scbam.com" },
-];
+export default async function FundsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-export default function FundsPage() {
-  const locale = useLocale();
-  const [category, setCategory] = useState("all");
-  const [search, setSearch] = useState("");
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("funds")
+    .select("id, ticker, name_th, name_en, category, expected_return, standard_deviation, roic_current, affiliate_url")
+    .order("ticker", { ascending: true });
 
-  function toggleSelect(id: string) {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id].slice(0, 3)
-    );
-  }
+  const rawFunds = (data ?? []) as FundListItem[];
 
-  const filtered = mockFunds.filter((f) => {
-    if (category !== "all" && f.category !== category) return false;
-    if (search && !f.ticker.toLowerCase().includes(search.toLowerCase()) && !f.name.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
+  const funds = rawFunds.map((f) => ({
+    id: f.id,
+    ticker: f.ticker,
+    name: locale === "th" ? f.name_th : f.name_en,
+    category: f.category,
+    expectedReturn: f.expected_return,
+    standardDeviation: f.standard_deviation,
+    roicCurrent: f.roic_current,
+    affiliateUrl: f.affiliate_url,
+  }));
 
-  const comparisonFunds = mockFunds.filter((f) => selectedIds.includes(f.id));
-
-  return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-text font-heading">
-        {locale === "th" ? "กองทุน" : "Fund Screener"}
-      </h1>
-      <FundFilters selectedCategory={category} searchQuery={search} onCategoryChange={setCategory} onSearchChange={setSearch} />
-      <FundTable funds={filtered} selectedIds={selectedIds} onToggleSelect={toggleSelect} />
-      {comparisonFunds.length >= 2 && <FundComparison funds={comparisonFunds} />}
-    </div>
-  );
+  return <FundsPageClient funds={funds} locale={locale} />;
 }

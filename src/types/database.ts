@@ -236,6 +236,7 @@ export interface Database {
           id?: string;
         };
         Update: Partial<SavedPlan>;
+        Relationships: [];
       };
       blog_posts: {
         Row: BlogPost;
@@ -243,16 +244,19 @@ export interface Database {
           id?: string;
         };
         Update: Partial<BlogPost>;
+        Relationships: [];
       };
       funds: {
         Row: Fund;
         Insert: Omit<Fund, "id" | "updated_at"> & { id?: string };
         Update: Partial<Fund>;
+        Relationships: [];
       };
       fund_correlations: {
         Row: FundCorrelation;
         Insert: FundCorrelation;
         Update: Partial<FundCorrelation>;
+        Relationships: [];
       };
       bookings: {
         Row: Booking;
@@ -260,6 +264,7 @@ export interface Database {
           id?: string;
         };
         Update: Partial<Booking>;
+        Relationships: [];
       };
       forum_posts: {
         Row: ForumPost;
@@ -267,31 +272,37 @@ export interface Database {
           id?: string;
         };
         Update: Partial<ForumPost>;
+        Relationships: [];
       };
       forum_replies: {
         Row: ForumReply;
         Insert: Omit<ForumReply, "id" | "created_at"> & { id?: string };
         Update: Partial<ForumReply>;
+        Relationships: [];
       };
       forum_votes: {
         Row: ForumVote;
         Insert: ForumVote;
         Update: Partial<ForumVote>;
+        Relationships: [];
       };
       notifications: {
         Row: Notification;
         Insert: Omit<Notification, "id" | "created_at"> & { id?: string };
         Update: Partial<Notification>;
+        Relationships: [];
       };
       referrals: {
         Row: Referral;
         Insert: Omit<Referral, "id" | "created_at"> & { id?: string };
         Update: Partial<Referral>;
+        Relationships: [];
       };
       chat_history: {
         Row: ChatHistory;
         Insert: Omit<ChatHistory, "id" | "created_at"> & { id?: string };
         Update: Partial<ChatHistory>;
+        Relationships: [];
       };
       glossary_terms: {
         Row: GlossaryTerm;
@@ -299,18 +310,23 @@ export interface Database {
           id?: string;
         };
         Update: Partial<GlossaryTerm>;
+        Relationships: [];
       };
       calendar_events: {
         Row: CalendarEvent;
         Insert: Omit<CalendarEvent, "id" | "created_at"> & { id?: string };
         Update: Partial<CalendarEvent>;
+        Relationships: [];
       };
       chat_daily_usage: {
         Row: ChatDailyUsage;
         Insert: ChatDailyUsage;
         Update: Partial<ChatDailyUsage>;
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
     Enums: {
       employment_type: EmploymentType;
       subscription_tier: SubscriptionTier;

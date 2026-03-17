@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 interface NotificationItem {
   id: string;
@@ -13,19 +14,47 @@ interface NotificationItem {
 
 const POLL_INTERVAL = 60000; // 60 seconds
 
-export function useNotifications() {
+export function useNotifications(locale: string = "en") {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchNotifications = useCallback(async () => {
-    // Will fetch from Supabase notifications table
-    // Placeholder: return empty array
-    return [] as NotificationItem[];
-  }, []);
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        return [] as NotificationItem[];
+      }
+
+      const { data, error } = await supabase
+        .from("notifications")
+        .select("id, type, title_th, title_en, body_th, body_en, read, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(50);
+
+      if (error || !data) {
+        return [] as NotificationItem[];
+      }
+
+      return data.map((n: Record<string, string | boolean>) => ({
+        id: n.id as string,
+        type: n.type as string,
+        title: (locale === "th" ? n.title_th : n.title_en) as string,
+        body: (locale === "th" ? n.body_th : n.body_en) as string,
+        read: n.read as boolean,
+        created_at: n.created_at as string,
+      }));
+    } catch {
+      return [] as NotificationItem[];
+    }
+  }, [locale]);
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
+      setLoading(true);
       const data = await fetchNotifications();
       if (!cancelled) {
         setNotifications(data);
@@ -43,12 +72,32 @@ export function useNotifications() {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     );
-    // Will update in Supabase
+    try {
+      const supabase = createClient();
+      await supabase
+        .from("notifications")
+        .update({ read: true, read_at: new Date().toISOString() })
+        .eq("id", id);
+    } catch {
+      // Silently fail - optimistic update already applied
+    }
   }, []);
 
   const markAllAsRead = useCallback(async () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    // Will update in Supabase
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from("notifications")
+          .update({ read: true, read_at: new Date().toISOString() })
+          .eq("user_id", user.id)
+          .eq("read", false);
+      }
+    } catch {
+      // Silently fail - optimistic update already applied
+    }
   }, []);
 
   return { notifications, unreadCount, loading, markAsRead, markAllAsRead };
