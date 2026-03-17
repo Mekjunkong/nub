@@ -45,6 +45,8 @@
     "heroSubtitle": "Comprehensive retirement planning tools powered by Monte Carlo Simulation technology",
     "cta": "Start Planning for Free",
     "features": {
+      "sectionTitle": "Everything You Need for Retirement Planning",
+      "sectionSubtitle": "Comprehensive tools powered by quantitative finance",
       "retirement": {
         "title": "Retirement Calculator",
         "description": "Analyze retirement gaps for government, private sector, and freelance workers"

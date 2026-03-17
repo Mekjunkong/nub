@@ -1,37 +1,47 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Calculator, TrendingUp, PieChart, Receipt, MessageCircle, Users } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 
-const featureIcons = [Calculator, TrendingUp, PieChart, Receipt, MessageCircle, Users];
-const featureKeys = ["retirement", "monteCarlo", "portfolio", "tax", "ai", "community"];
-const featureColors = ["text-primary", "text-success", "text-secondary", "text-warning", "text-primary", "text-success"];
+const features = [
+  { key: "retirement", emoji: "🧮", color: "bg-primary/10" },
+  { key: "monteCarlo", emoji: "📊", color: "bg-success/10" },
+  { key: "portfolio", emoji: "🎯", color: "bg-secondary/10" },
+  { key: "tax", emoji: "💰", color: "bg-warning/10" },
+  { key: "ai", emoji: "🤖", color: "bg-primary/10" },
+  { key: "community", emoji: "👥", color: "bg-success/10" },
+];
 
 export function Features() {
   const t = useTranslations("landing.features");
 
   return (
-    <section className="px-4 py-16 bg-surface">
+    <section className="px-4 py-16 lg:py-24">
       <div className="mx-auto max-w-6xl">
-        <h2 className="mb-12 text-center text-2xl font-bold text-text font-heading sm:text-3xl">
-          Everything You Need for Retirement Planning
-        </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featureKeys.map((key, i) => {
-            const Icon = featureIcons[i];
-            return (
-              <Card key={key} className="transition-all hover:shadow-md">
-                <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
-                  <div className={`flex h-14 w-14 items-center justify-center rounded-xl bg-surface-hover ${featureColors[i]}`}>
-                    <Icon className="h-7 w-7" />
-                  </div>
-                  <h3 className="font-semibold text-text">{t(`${key}.title`)}</h3>
-                  <p className="text-sm text-text-muted">{t(`${key}.description`)}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
+        <div className="mb-12 text-center">
+          <h2 className="text-2xl font-bold text-text font-heading sm:text-3xl">
+            {t("sectionTitle") || "Everything You Need for Retirement Planning"}
+          </h2>
+          <p className="mx-auto mt-3 max-w-lg text-sm text-text-muted">
+            {t("sectionSubtitle") || "Comprehensive tools powered by quantitative finance"}
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f) => (
+            <div
+              key={f.key}
+              className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all hover:border-primary/20 hover:bg-white/[0.04]"
+            >
+              <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl ${f.color}`}>
+                <span className="text-lg">{f.emoji}</span>
+              </div>
+              <h3 className="mb-1 text-sm font-semibold text-text">
+                {t(`${f.key}.title`)}
+              </h3>
+              <p className="text-xs leading-relaxed text-text-muted">
+                {t(`${f.key}.description`)}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

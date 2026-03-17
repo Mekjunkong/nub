@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { NubLogo } from "@/components/shared/nub-logo";
 import { LanguageToggle } from "./language-toggle";
 import { DarkModeToggle } from "./dark-mode-toggle";
-import { cn } from "@/lib/utils";
 
 export function Header() {
   const t = useTranslations("common");
@@ -21,13 +21,11 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-bg/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <a href={`/${locale}`} className="flex items-center gap-2">
-          <span className="text-2xl font-bold gradient-text font-heading">
-            {t("appName")}
-          </span>
+          <NubLogo size="sm" />
         </a>
 
         {/* Desktop nav */}
@@ -36,7 +34,7 @@ export function Header() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-text-secondary transition-colors hover:text-text"
+              className="text-sm font-medium text-text-muted transition-colors hover:text-text"
             >
               {link.label}
             </a>
