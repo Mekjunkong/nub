@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { PostCard } from "@/components/community/post-card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -36,9 +37,9 @@ export function CommunityPageClient({ posts, locale }: CommunityPageClientProps)
         <h1 className="text-2xl font-bold text-text font-heading">
           {locale === "th" ? "ชุมชน" : "Community"}
         </h1>
-        <a href={`/${locale}/community/new`}>
+        <Link href={`/${locale}/community/new`}>
           <Button size="sm"><Plus className="h-4 w-4" /> {locale === "th" ? "โพสต์ใหม่" : "New Post"}</Button>
-        </a>
+        </Link>
       </div>
 
       <div className="flex flex-wrap gap-2">

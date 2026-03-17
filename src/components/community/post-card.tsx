@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ThumbsUp, MessageSquare, Pin, Flag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,7 +21,7 @@ interface PostCardProps {
 
 export function PostCard({ id, title, content, category, authorName, upvotes, replyCount, isPinned, createdAt, locale }: PostCardProps) {
   return (
-    <a href={`/${locale}/community/${id}`}>
+    <Link href={`/${locale}/community/${id}`}>
       <Card className={cn("transition-all hover:shadow-md", isPinned && "border-primary/30 bg-primary/5")}>
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-2">
@@ -41,6 +42,6 @@ export function PostCard({ id, title, content, category, authorName, upvotes, re
           </div>
         </CardContent>
       </Card>
-    </a>
+    </Link>
   );
 }

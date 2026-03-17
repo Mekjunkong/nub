@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   LayoutDashboard,
   Calculator,
@@ -179,7 +180,7 @@ export function Sidebar() {
                       <ul className="ml-4 flex flex-col gap-0.5 border-l border-border pl-3">
                         {item.children.map((child) => (
                           <li key={child.href}>
-                            <a
+                            <Link
                               href={child.href}
                               className={cn(
                                 "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm transition-colors",
@@ -190,14 +191,14 @@ export function Sidebar() {
                             >
                               {child.icon}
                               <span>{child.label}</span>
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
                     )}
                 </>
               ) : (
-                <a
+                <Link
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
@@ -208,7 +209,7 @@ export function Sidebar() {
                 >
                   {item.icon}
                   {!collapsed && <span>{item.label}</span>}
-                </a>
+                </Link>
               )}
             </li>
           ))}

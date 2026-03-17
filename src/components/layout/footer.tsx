@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useLocale } from "next-intl";
 
 export function Footer() {
@@ -19,13 +20,13 @@ export function Footer() {
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           <div className="flex flex-wrap items-center justify-center gap-4">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="text-xs text-text-muted transition-colors hover:text-text"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
           <p className="text-xs text-text-muted">

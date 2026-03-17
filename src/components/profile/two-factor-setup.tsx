@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,7 +89,7 @@ export function TwoFactorSetup({ isEnabled, onEnable, onVerify, onDisable }: Two
         {step === "setup" && (
           <div className="flex flex-col items-center gap-4">
             <p className="text-sm text-text">Scan this QR code with your authenticator app</p>
-            {qrUrl && <img src={qrUrl} alt="2FA QR Code" className="h-48 w-48 rounded-lg border border-border" />}
+            {qrUrl && <Image src={qrUrl} alt="2FA QR Code" width={192} height={192} className="h-48 w-48 rounded-lg border border-border" unoptimized />}
             <p className="text-xs text-text-muted">Manual key: <code className="font-mono">{secret}</code></p>
             <Button size="sm" onClick={() => setStep("verify")}>Next: Verify Code</Button>
           </div>

@@ -2,6 +2,7 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   LayoutDashboard,
   Calculator,
@@ -55,7 +56,7 @@ export function BottomNav() {
           const Icon = tab.icon;
           const active = isActive(tab.href);
           return (
-            <a
+            <Link
               key={tab.href}
               href={tab.href}
               className={cn(
@@ -65,7 +66,7 @@ export function BottomNav() {
             >
               <Icon className="h-5 w-5" />
               <span className="text-[10px] font-medium">{tab.label}</span>
-            </a>
+            </Link>
           );
         })}
       </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
+import Link from "next/link";
+import Image from "next/image";
 import { User, Settings, LogOut } from "lucide-react";
 import {
   Popover,
@@ -26,10 +28,13 @@ export function UserMenu({ displayName, avatarUrl }: UserMenuProps) {
           aria-label="User menu"
         >
           {avatarUrl ? (
-            <img
+            <Image
               src={avatarUrl}
               alt={displayName || "User"}
+              width={36}
+              height={36}
               className="h-9 w-9 rounded-full object-cover"
+              unoptimized
             />
           ) : (
             <User className="h-4 w-4" />
@@ -43,13 +48,13 @@ export function UserMenu({ displayName, avatarUrl }: UserMenuProps) {
               <p className="text-sm font-medium text-text">{displayName}</p>
             </div>
           )}
-          <a
+          <Link
             href={`/${locale}/profile`}
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-text-secondary hover:bg-surface-hover hover:text-text"
           >
             <Settings className="h-4 w-4" />
             {t("nav.settings")}
-          </a>
+          </Link>
           <button
             type="button"
             className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-danger hover:bg-surface-hover"

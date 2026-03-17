@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { VoteButton } from "@/components/community/vote-button";
 import { ReplyForm } from "@/components/community/reply-form";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,9 +33,9 @@ interface ThreadPageClientProps {
 export function ThreadPageClient({ post, replies, locale }: ThreadPageClientProps) {
   return (
     <div className="flex flex-col gap-6">
-      <a href={`/${locale}/community`} className="text-sm text-primary hover:underline">
+      <Link href={`/${locale}/community`} className="text-sm text-primary hover:underline">
         &larr; {locale === "th" ? "กลับไปชุมชน" : "Back to Community"}
-      </a>
+      </Link>
 
       <Card>
         <CardContent className="p-6">

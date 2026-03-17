@@ -1,9 +1,40 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import type { GlossaryTerm } from "@/types/database";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; term: string }>;
+}): Promise<Metadata> {
+  const { locale, term: termSlug } = await params;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("glossary_terms")
+    .select("*")
+    .eq("slug", termSlug)
+    .single();
+
+  if (!data) return { title: "Not Found" };
+
+  const displayTerm = locale === "th" ? data.term_th : data.term_en;
+  const definition = locale === "th" ? data.definition_th : data.definition_en;
+  const description = definition?.slice(0, 160) || displayTerm;
+
+  return {
+    title: `${displayTerm} - ${locale === "th" ? "คำศัพท์การเงิน" : "Financial Glossary"} | Nub`,
+    description,
+    openGraph: {
+      title: displayTerm,
+      description,
+    },
+  };
+}
 
 export default async function GlossaryTermPage({ params }: { params: Promise<{ locale: string; term: string }> }) {
   const { locale, term: termSlug } = await params;
@@ -27,9 +58,9 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ l
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <a href={`/${locale}/glossary`} className="text-sm text-primary hover:underline mb-4 inline-block">
+      <Link href={`/${locale}/glossary`} className="text-sm text-primary hover:underline mb-4 inline-block">
         &larr; {locale === "th" ? "กลับไปคำศัพท์ทั้งหมด" : "Back to Glossary"}
-      </a>
+      </Link>
       <Card>
         <CardContent className="p-6">
           <Badge variant="primary" className="mb-3">{term.category}</Badge>
@@ -44,13 +75,13 @@ export default async function GlossaryTermPage({ params }: { params: Promise<{ l
               </p>
               <div className="flex flex-wrap gap-2">
                 {term.related_terms.map((related) => (
-                  <a
+                  <Link
                     key={related}
                     href={`/${locale}/glossary/${related}`}
                     className="text-sm text-primary hover:underline"
                   >
                     {related}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

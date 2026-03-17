@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export function CtaSection() {
@@ -20,11 +21,11 @@ export function CtaSection() {
               : "Start for free. No credit card required."}
           </p>
           <div className="mt-8">
-            <a href={`/${locale}/login`}>
+            <Link href={`/${locale}/login`}>
               <Button size="lg" className="px-12 shadow-lg shadow-primary/25">
                 {t("cta")} →
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

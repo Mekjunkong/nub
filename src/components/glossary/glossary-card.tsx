@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -18,7 +19,7 @@ export function GlossaryCard({ slug, termTh, termEn, definitionTh, definitionEn,
   const definition = locale === "th" ? definitionTh : definitionEn;
 
   return (
-    <a href={`/${locale}/glossary/${slug}`}>
+    <Link href={`/${locale}/glossary/${slug}`}>
       <Card className="transition-all hover:shadow-md">
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-2">
@@ -28,6 +29,6 @@ export function GlossaryCard({ slug, termTh, termEn, definitionTh, definitionEn,
           <p className="mt-1 text-sm text-text-muted line-clamp-2">{definition}</p>
         </CardContent>
       </Card>
-    </a>
+    </Link>
   );
 }

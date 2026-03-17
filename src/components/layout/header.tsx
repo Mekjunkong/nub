@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NubLogo } from "@/components/shared/nub-logo";
@@ -24,20 +25,20 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border/50 bg-bg/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
-        <a href={`/${locale}`} className="flex items-center gap-2">
+        <Link href={`/${locale}`} className="flex items-center gap-2">
           <NubLogo size="sm" />
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="text-sm font-medium text-text-muted transition-colors hover:text-text"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -45,14 +46,14 @@ export function Header() {
         <div className="hidden items-center gap-3 md:flex">
           <LanguageToggle />
           <DarkModeToggle />
-          <a href={`/${locale}/login`}>
+          <Link href={`/${locale}/login`}>
             <Button variant="outline" size="sm">
               {t("login")}
             </Button>
-          </a>
-          <a href={`/${locale}/login`}>
+          </Link>
+          <Link href={`/${locale}/login`}>
             <Button size="sm">{t("register")}</Button>
-          </a>
+          </Link>
         </div>
 
         {/* Mobile menu button */}
@@ -75,14 +76,14 @@ export function Header() {
         <div className="border-t border-border bg-surface p-4 md:hidden">
           <nav className="flex flex-col gap-3">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="text-sm font-medium text-text-secondary transition-colors hover:text-text"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <hr className="border-border" />
             <div className="flex items-center gap-3">
@@ -90,16 +91,16 @@ export function Header() {
               <DarkModeToggle />
             </div>
             <div className="flex gap-2">
-              <a href={`/${locale}/login`} className="flex-1">
+              <Link href={`/${locale}/login`} className="flex-1">
                 <Button variant="outline" size="sm" className="w-full">
                   {t("login")}
                 </Button>
-              </a>
-              <a href={`/${locale}/login`} className="flex-1">
+              </Link>
+              <Link href={`/${locale}/login`} className="flex-1">
                 <Button size="sm" className="w-full">
                   {t("register")}
                 </Button>
-              </a>
+              </Link>
             </div>
           </nav>
         </div>

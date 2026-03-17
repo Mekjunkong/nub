@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
@@ -40,16 +41,16 @@ export function Hero() {
 
             {/* CTAs */}
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
-              <a href={`/${locale}/login`}>
+              <Link href={`/${locale}/login`}>
                 <Button size="lg" className="px-8 shadow-lg shadow-primary/25">
                   {t("cta")} →
                 </Button>
-              </a>
-              <a href={`/${locale}/methodology`}>
+              </Link>
+              <Link href={`/${locale}/methodology`}>
                 <Button variant="outline" size="lg">
                   {locale === "th" ? "ดูวิธีการคำนวณ" : "See Methodology"}
                 </Button>
-              </a>
+              </Link>
             </div>
 
             {/* Trust Badges */}

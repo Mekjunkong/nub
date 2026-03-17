@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -15,11 +17,11 @@ interface BlogCardProps {
 
 export function BlogCard({ slug, title, description, category, coverImageUrl, publishedAt, locale }: BlogCardProps) {
   return (
-    <a href={`/${locale}/blog/${slug}`}>
+    <Link href={`/${locale}/blog/${slug}`}>
       <Card className="overflow-hidden transition-all hover:shadow-md">
         {coverImageUrl && (
-          <div className="aspect-video w-full overflow-hidden bg-surface-hover">
-            <img src={coverImageUrl} alt={title} className="h-full w-full object-cover" />
+          <div className="relative aspect-video w-full overflow-hidden bg-surface-hover">
+            <Image src={coverImageUrl} alt={title} fill className="object-cover" unoptimized />
           </div>
         )}
         <CardContent className="p-4">
@@ -33,6 +35,6 @@ export function BlogCard({ slug, title, description, category, coverImageUrl, pu
           <p className="mt-1 text-sm text-text-muted line-clamp-2">{description}</p>
         </CardContent>
       </Card>
-    </a>
+    </Link>
   );
 }
