@@ -33,12 +33,15 @@ export function TimelineChart({ data }: TimelineChartProps) {
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-            <XAxis dataKey="age" tick={{ fontSize: 12 }} label={{ value: "Age", position: "insideBottom", offset: -5 }} />
-            <YAxis tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} tick={{ fontSize: 11 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.5} />
+            <XAxis dataKey="age" tick={{ fontSize: 12, fill: "var(--color-text-muted)" }} label={{ value: "Age", position: "insideBottom", offset: -5, fill: "var(--color-text-muted)" }} />
+            <YAxis tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} tick={{ fontSize: 11, fill: "var(--color-text-muted)" }} />
             <Tooltip
               formatter={(value) => formatCurrency(Number(value))}
               labelFormatter={(label) => `Age ${label}`}
+              contentStyle={{ backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: 8, color: "var(--color-text)" }}
+              labelStyle={{ color: "var(--color-text)" }}
+              itemStyle={{ color: "var(--color-text-secondary)" }}
             />
             <Area
               type="monotone"

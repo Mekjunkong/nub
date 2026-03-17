@@ -85,7 +85,7 @@ export function LoginForm() {
           <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-surface px-2 text-text-muted">
+          <span className="bg-bg px-2 text-text-muted">
             {t("orContinueWith")}
           </span>
         </div>

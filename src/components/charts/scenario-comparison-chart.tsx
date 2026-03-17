@@ -43,10 +43,15 @@ export function ScenarioComparisonChart({
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-            <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-            <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `${v}%`} />
-            <Tooltip formatter={(v) => `${Number(v).toFixed(2)}%`} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.5} />
+            <XAxis dataKey="name" tick={{ fontSize: 11, fill: "var(--color-text-muted)" }} />
+            <YAxis tick={{ fontSize: 12, fill: "var(--color-text-muted)" }} tickFormatter={(v) => `${v}%`} />
+            <Tooltip
+              formatter={(v) => `${Number(v).toFixed(2)}%`}
+              contentStyle={{ backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: 8, color: "var(--color-text)" }}
+              labelStyle={{ color: "var(--color-text)" }}
+              itemStyle={{ color: "var(--color-text-secondary)" }}
+            />
             <Bar dataKey="drawdown" name="Max Drawdown %" fill="var(--color-danger)" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>

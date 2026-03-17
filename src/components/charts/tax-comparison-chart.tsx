@@ -56,10 +56,15 @@ export function TaxComparisonChart({
       <div className="h-48 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-            <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-            <YAxis tickFormatter={(v) => formatCurrency(v)} tick={{ fontSize: 11 }} />
-            <Tooltip formatter={(v) => formatCurrency(Number(v))} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.5} />
+            <XAxis dataKey="label" tick={{ fontSize: 12, fill: "var(--color-text-muted)" }} />
+            <YAxis tickFormatter={(v) => formatCurrency(v)} tick={{ fontSize: 11, fill: "var(--color-text-muted)" }} />
+            <Tooltip
+              formatter={(v) => formatCurrency(Number(v))}
+              contentStyle={{ backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: 8, color: "var(--color-text)" }}
+              labelStyle={{ color: "var(--color-text)" }}
+              itemStyle={{ color: "var(--color-text-secondary)" }}
+            />
             <Bar dataKey="tax" radius={[8, 8, 0, 0]}>
               {/* Colors handled via CSS */}
             </Bar>

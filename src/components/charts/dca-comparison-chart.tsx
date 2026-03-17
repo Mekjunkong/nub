@@ -51,11 +51,16 @@ export function DcaComparisonChart({ data }: DcaComparisonChartProps) {
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-            <YAxis tickFormatter={(v) => formatCurrency(v)} tick={{ fontSize: 11 }} />
-            <Tooltip formatter={(v) => formatCurrency(Number(v))} />
-            <Legend />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.5} />
+            <XAxis dataKey="month" tick={{ fontSize: 12, fill: "var(--color-text-muted)" }} />
+            <YAxis tickFormatter={(v) => formatCurrency(v)} tick={{ fontSize: 11, fill: "var(--color-text-muted)" }} />
+            <Tooltip
+              formatter={(v) => formatCurrency(Number(v))}
+              contentStyle={{ backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: 8, color: "var(--color-text)" }}
+              labelStyle={{ color: "var(--color-text)" }}
+              itemStyle={{ color: "var(--color-text-secondary)" }}
+            />
+            <Legend wrapperStyle={{ color: "var(--color-text-secondary)" }} />
             <Line type="monotone" dataKey="Static" stroke="var(--color-primary)" strokeWidth={2} dot={false} />
             <Line type="monotone" dataKey="Glidepath" stroke="var(--color-secondary)" strokeWidth={2} dot={false} />
             <Line type="monotone" dataKey="DAA" stroke="var(--color-success)" strokeWidth={2} dot={false} />

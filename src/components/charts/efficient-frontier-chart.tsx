@@ -36,9 +36,9 @@ export function EfficientFrontierChart({
       <div className="h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart>
-            <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-            <XAxis dataKey="risk" name="Risk (%)" unit="%" tick={{ fontSize: 12 }} />
-            <YAxis dataKey="return" name="Return (%)" unit="%" tick={{ fontSize: 12 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.5} />
+            <XAxis dataKey="risk" name="Risk (%)" unit="%" tick={{ fontSize: 12, fill: "var(--color-text-muted)" }} />
+            <YAxis dataKey="return" name="Return (%)" unit="%" tick={{ fontSize: 12, fill: "var(--color-text-muted)" }} />
             <Tooltip
               content={({ payload }) => {
                 if (!payload || payload.length === 0) return null;
