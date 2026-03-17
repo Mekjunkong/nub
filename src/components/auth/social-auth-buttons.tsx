@@ -1,29 +1,30 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
 export function SocialAuthButtons() {
   const t = useTranslations("auth");
+  const locale = useLocale();
 
   async function signInWithGoogle() {
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/${locale}/auth/callback`,
       },
     });
   }
 
   async function signInWithLINE() {
-    // LINE OAuth is handled via custom OIDC in Supabase
+    // LINE OAuth requires custom OIDC setup in Supabase — disabled for now
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({
-      provider: "google", // Placeholder - LINE requires custom OIDC setup in Supabase
+      provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/${locale}/auth/callback`,
       },
     });
   }

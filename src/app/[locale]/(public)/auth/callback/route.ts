@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ locale: string }> }
+) {
+  const { locale } = await params;
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/th/dashboard";
+  const next = searchParams.get("next") ?? `/${locale}/dashboard`;
 
   if (code) {
     const supabase = await createClient();
@@ -14,6 +18,5 @@ export async function GET(request: Request) {
     }
   }
 
-  // Return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/th/login?error=auth`);
+  return NextResponse.redirect(`${origin}/${locale}/login?error=auth`);
 }
