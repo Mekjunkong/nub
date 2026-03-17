@@ -1,19 +1,17 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export function LanguageToggle({ className }: { className?: string }) {
   const locale = useLocale();
-  const router = useRouter();
   const pathname = usePathname();
 
-  function switchLocale(newLocale: string) {
-    // Replace the locale segment in the pathname
+  function getLocalePath(newLocale: string) {
     const segments = pathname.split("/");
     segments[1] = newLocale;
-    router.push(segments.join("/"));
+    return segments.join("/");
   }
 
   return (
@@ -23,9 +21,8 @@ export function LanguageToggle({ className }: { className?: string }) {
         className
       )}
     >
-      <button
-        type="button"
-        onClick={() => switchLocale("th")}
+      <a
+        href={getLocalePath("th")}
         className={cn(
           "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
           locale === "th"
@@ -34,10 +31,9 @@ export function LanguageToggle({ className }: { className?: string }) {
         )}
       >
         TH
-      </button>
-      <button
-        type="button"
-        onClick={() => switchLocale("en")}
+      </a>
+      <a
+        href={getLocalePath("en")}
         className={cn(
           "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
           locale === "en"
@@ -46,7 +42,7 @@ export function LanguageToggle({ className }: { className?: string }) {
         )}
       >
         EN
-      </button>
+      </a>
     </div>
   );
 }
