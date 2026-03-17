@@ -51,7 +51,6 @@ export function runDcaStrategy(
       const weights = Array(n).fill(0);
       weights[equityAssetIndex] = equityWeight;
       // Distribute remaining weight proportionally among other assets
-      const otherAssets = assets.filter((_, i) => i !== equityAssetIndex);
       const otherTotalWeight = assets
         .filter((_, i) => i !== equityAssetIndex)
         .reduce((sum, a) => sum + a.weight, 0);

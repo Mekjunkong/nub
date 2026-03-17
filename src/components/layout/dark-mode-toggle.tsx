@@ -4,18 +4,19 @@ import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+function getInitialDarkMode(): boolean {
+  if (typeof window === "undefined") return false;
+  const stored = localStorage.getItem("nub-dark-mode");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return stored ? stored === "true" : prefersDark;
+}
+
 export function DarkModeToggle({ className }: { className?: string }) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(getInitialDarkMode);
 
   useEffect(() => {
-    const stored = localStorage.getItem("nub-dark-mode");
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    const dark = stored ? stored === "true" : prefersDark;
-    setIsDark(dark);
-    document.documentElement.classList.toggle("dark", dark);
-  }, []);
+    document.documentElement.classList.toggle("dark", isDark);
+  }, [isDark]);
 
   function toggle() {
     const newValue = !isDark;

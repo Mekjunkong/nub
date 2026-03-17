@@ -5,15 +5,13 @@ import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "nub-cookie-consent";
 
-export function CookieConsent() {
-  const [visible, setVisible] = useState(false);
+function getInitialVisibility(): boolean {
+  if (typeof window === "undefined") return false;
+  return !localStorage.getItem(STORAGE_KEY);
+}
 
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) {
-      setVisible(true);
-    }
-  }, []);
+export function CookieConsent() {
+  const [visible, setVisible] = useState(getInitialVisibility);
 
   function handleAccept() {
     localStorage.setItem(STORAGE_KEY, "accepted");

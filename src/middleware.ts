@@ -15,19 +15,6 @@ const authRequiredPaths = [
   "/community/new",
 ];
 
-// Routes that are public
-const publicPaths = [
-  "/",
-  "/login",
-  "/auth",
-  "/blog",
-  "/glossary",
-  "/calendar",
-  "/legal",
-  "/funds",
-  "/community",
-];
-
 function isAuthRequired(pathname: string): boolean {
   // Remove locale prefix for matching
   const pathWithoutLocale = pathname.replace(/^\/(th|en)/, "") || "/";

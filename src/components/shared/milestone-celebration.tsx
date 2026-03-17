@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { LottieLoader } from "./lottie-loader";
@@ -16,31 +16,28 @@ interface MilestoneCelebrationProps {
   onDismiss: () => void;
 }
 
+function isDismissed(milestoneId: string): boolean {
+  if (typeof window === "undefined") return true;
+  return !!localStorage.getItem(`nub-milestone-${milestoneId}`);
+}
+
 export function MilestoneCelebration({ milestone, onDismiss }: MilestoneCelebrationProps) {
-  const [open, setOpen] = useState(false);
+  const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
 
-  useEffect(() => {
-    if (milestone) {
-      // Check if already dismissed
-      const dismissed = localStorage.getItem(`nub-milestone-${milestone.id}`);
-      if (!dismissed) {
-        setOpen(true);
-      }
-    }
-  }, [milestone]);
+  const isOpen = milestone != null && !isDismissed(milestone.id) && !dismissedIds.has(milestone.id);
 
-  function handleDismiss() {
+  const handleDismiss = useCallback(() => {
     if (milestone) {
       localStorage.setItem(`nub-milestone-${milestone.id}`, "dismissed");
+      setDismissedIds((prev) => new Set(prev).add(milestone.id));
     }
-    setOpen(false);
     onDismiss();
-  }
+  }, [milestone, onDismiss]);
 
   if (!milestone) return null;
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { if (!v) handleDismiss(); }}>
+    <Dialog open={isOpen} onOpenChange={(v) => { if (!v) handleDismiss(); }}>
       <DialogContent className="text-center">
         <DialogHeader>
           <DialogTitle className="text-xl gradient-text">

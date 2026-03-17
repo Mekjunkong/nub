@@ -1,6 +1,5 @@
 import {
   compoundInterest,
-  futureValueAnnuity,
   presentValueAnnuity,
 } from "@/lib/finance-math";
 import type {
@@ -21,19 +20,8 @@ export function calculateRetirement(
   const retirementYears = inputs.lifeExpectancy - inputs.retirementAge;
   const monthsToRetirement = yearsToRetirement * 12;
   const monthlyReturn = inputs.expectedReturn / 12;
-  const monthlyInflation = inputs.inflationRate / 12;
 
   // === Calculate projected corpus at retirement ===
-
-  // 1. Current savings grown
-  const currentSavingsGrown = compoundInterest(
-    inputs.currentSavings,
-    inputs.expectedReturn,
-    yearsToRetirement
-  );
-
-  // 2. Monthly contributions grown (with salary growth)
-  let totalContributions = 0;
   let currentSalary = inputs.monthlySalary;
   const projectionByYear: YearProjection[] = [];
   let runningContributions = 0;
@@ -62,7 +50,6 @@ export function calculateRetirement(
     // Freelance: no employer contributions
 
     const annualContrib = monthlyContrib * 12;
-    totalContributions += annualContrib;
     runningContributions += annualContrib;
 
     // Grow savings for this year

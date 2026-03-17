@@ -20,13 +20,21 @@ export function useNotifications() {
   const fetchNotifications = useCallback(async () => {
     // Will fetch from Supabase notifications table
     // Placeholder: return empty array
-    setLoading(false);
+    return [] as NotificationItem[];
   }, []);
 
   useEffect(() => {
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, POLL_INTERVAL);
-    return () => clearInterval(interval);
+    let cancelled = false;
+    async function load() {
+      const data = await fetchNotifications();
+      if (!cancelled) {
+        setNotifications(data);
+        setLoading(false);
+      }
+    }
+    load();
+    const interval = setInterval(load, POLL_INTERVAL);
+    return () => { cancelled = true; clearInterval(interval); };
   }, [fetchNotifications]);
 
   const unreadCount = notifications.filter((n) => !n.read).length;

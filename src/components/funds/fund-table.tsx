@@ -24,6 +24,18 @@ interface FundTableProps {
 
 type SortKey = "ticker" | "expectedReturn" | "standardDeviation" | "roicCurrent";
 
+const categoryColors: Record<string, "primary" | "success" | "warning" | "secondary" | "default"> = {
+  equity: "primary", bond: "success", gold: "warning", mixed: "secondary", money_market: "default",
+};
+
+function SortHeader({ label, field, onSort }: { label: string; field: SortKey; onSort: (key: SortKey) => void }) {
+  return (
+    <th className="cursor-pointer px-3 py-2 text-left text-xs font-medium text-text-muted" onClick={() => onSort(field)}>
+      <span className="flex items-center gap-1">{label} <ArrowUpDown className="h-3 w-3" /></span>
+    </th>
+  );
+}
+
 export function FundTable({ funds, selectedIds, onToggleSelect }: FundTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>("ticker");
   const [sortAsc, setSortAsc] = useState(true);
@@ -39,28 +51,18 @@ export function FundTable({ funds, selectedIds, onToggleSelect }: FundTableProps
     return sortAsc ? (aVal > bVal ? 1 : -1) : (aVal < bVal ? 1 : -1);
   });
 
-  const SortHeader = ({ label, field }: { label: string; field: SortKey }) => (
-    <th className="cursor-pointer px-3 py-2 text-left text-xs font-medium text-text-muted" onClick={() => handleSort(field)}>
-      <span className="flex items-center gap-1">{label} <ArrowUpDown className="h-3 w-3" /></span>
-    </th>
-  );
-
-  const categoryColors: Record<string, "primary" | "success" | "warning" | "secondary" | "default"> = {
-    equity: "primary", bond: "success", gold: "warning", mixed: "secondary", money_market: "default",
-  };
-
   return (
     <div className="overflow-x-auto rounded-xl border border-border">
       <table className="w-full text-sm">
         <thead className="bg-surface-hover">
           <tr>
             <th className="px-3 py-2 w-10"></th>
-            <SortHeader label="Ticker" field="ticker" />
+            <SortHeader label="Ticker" field="ticker" onSort={handleSort} />
             <th className="px-3 py-2 text-left text-xs font-medium text-text-muted">Name</th>
             <th className="px-3 py-2 text-left text-xs font-medium text-text-muted">Category</th>
-            <SortHeader label="E(R)" field="expectedReturn" />
-            <SortHeader label="SD" field="standardDeviation" />
-            <SortHeader label="ROIC" field="roicCurrent" />
+            <SortHeader label="E(R)" field="expectedReturn" onSort={handleSort} />
+            <SortHeader label="SD" field="standardDeviation" onSort={handleSort} />
+            <SortHeader label="ROIC" field="roicCurrent" onSort={handleSort} />
             <th className="px-3 py-2"></th>
           </tr>
         </thead>
