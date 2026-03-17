@@ -20,6 +20,7 @@ interface FundTableProps {
   funds: FundRow[];
   selectedIds: string[];
   onToggleSelect: (id: string) => void;
+  locale?: string;
 }
 
 type SortKey = "ticker" | "expectedReturn" | "standardDeviation" | "roicCurrent";
@@ -36,7 +37,7 @@ function SortHeader({ label, field, onSort }: { label: string; field: SortKey; o
   );
 }
 
-export function FundTable({ funds, selectedIds, onToggleSelect }: FundTableProps) {
+export function FundTable({ funds, selectedIds, onToggleSelect, locale = "en" }: FundTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>("ticker");
   const [sortAsc, setSortAsc] = useState(true);
 
@@ -58,8 +59,8 @@ export function FundTable({ funds, selectedIds, onToggleSelect }: FundTableProps
           <tr>
             <th className="px-3 py-2 w-10"></th>
             <SortHeader label="Ticker" field="ticker" onSort={handleSort} />
-            <th className="px-3 py-2 text-left text-xs font-medium text-text-muted">Name</th>
-            <th className="px-3 py-2 text-left text-xs font-medium text-text-muted">Category</th>
+            <th className="px-3 py-2 text-left text-xs font-medium text-text-muted">{locale === "th" ? "ชื่อกองทุน" : "Name"}</th>
+            <th className="px-3 py-2 text-left text-xs font-medium text-text-muted">{locale === "th" ? "ประเภท" : "Category"}</th>
             <SortHeader label="E(R)" field="expectedReturn" onSort={handleSort} />
             <SortHeader label="SD" field="standardDeviation" onSort={handleSort} />
             <SortHeader label="ROIC" field="roicCurrent" onSort={handleSort} />

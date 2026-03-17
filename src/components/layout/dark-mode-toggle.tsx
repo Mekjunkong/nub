@@ -1,28 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function getInitialDarkMode(): boolean {
-  if (typeof window === "undefined") return false;
+let listeners: Array<() => void> = [];
+
+function emitChange() {
+  for (const listener of listeners) {
+    listener();
+  }
+}
+
+function subscribe(listener: () => void) {
+  listeners = [...listeners, listener];
+  return () => {
+    listeners = listeners.filter((l) => l !== listener);
+  };
+}
+
+function getSnapshot(): boolean {
   const stored = localStorage.getItem("nub-dark-mode");
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   return stored ? stored === "true" : prefersDark;
 }
 
+function getServerSnapshot(): boolean {
+  return false;
+}
+
 export function DarkModeToggle({ className }: { className?: string }) {
-  const [isDark, setIsDark] = useState(getInitialDarkMode);
+  const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDark);
-  }, [isDark]);
-
-  function toggle() {
-    const newValue = !isDark;
-    setIsDark(newValue);
-    document.documentElement.classList.toggle("dark", newValue);
+  const toggle = useCallback(() => {
+    const newValue = !getSnapshot();
     localStorage.setItem("nub-dark-mode", String(newValue));
+    document.documentElement.classList.toggle("dark", newValue);
+    emitChange();
+  }, []);
+
+  // Sync the DOM class on first client render
+  if (typeof window !== "undefined") {
+    document.documentElement.classList.toggle("dark", isDark);
   }
 
   return (

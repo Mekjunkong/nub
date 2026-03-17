@@ -24,7 +24,7 @@ interface DashboardPageClientProps {
   locale: string;
 }
 
-export function DashboardPageClient({ healthScore, previousScore, plans, scoreHistory }: DashboardPageClientProps) {
+export function DashboardPageClient({ healthScore, previousScore, plans, scoreHistory, locale }: DashboardPageClientProps) {
   const typedPlans = plans.map((p) => ({
     ...p,
     plan_type: p.plan_type as PlanType,
@@ -32,7 +32,7 @@ export function DashboardPageClient({ healthScore, previousScore, plans, scoreHi
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-text font-heading">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-text font-heading">{locale === "th" ? "แดชบอร์ด" : "Dashboard"}</h1>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left column */}
@@ -43,7 +43,7 @@ export function DashboardPageClient({ healthScore, previousScore, plans, scoreHi
           </div>
 
           <div>
-            <h2 className="mb-3 text-sm font-semibold text-text">Saved Plans</h2>
+            <h2 className="mb-3 text-sm font-semibold text-text">{locale === "th" ? "แผนที่บันทึกไว้" : "Saved Plans"}</h2>
             <SavedPlansList
               plans={typedPlans}
               onToggleFavorite={(id) => console.log("toggle", id)}

@@ -29,7 +29,7 @@ export function Features() {
           {features.map((f) => (
             <div
               key={f.key}
-              className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all hover:border-primary/20 hover:bg-white/[0.04]"
+              className="group rounded-2xl border border-border bg-surface p-5 transition-all hover:border-primary/20 hover:bg-surface-hover"
             >
               <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl ${f.color}`}>
                 <span className="text-lg">{f.emoji}</span>

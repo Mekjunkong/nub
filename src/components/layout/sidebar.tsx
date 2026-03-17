@@ -53,17 +53,17 @@ export function Sidebar() {
       children: [
         {
           href: `/${locale}/calculator/retirement`,
-          label: "Retirement",
+          label: locale === "th" ? "เกษียณ" : "Retirement",
           icon: <Landmark className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/withdrawal`,
-          label: "Withdrawal",
+          label: locale === "th" ? "ถอนเงิน" : "Withdrawal",
           icon: <TrendingUp className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/stress-test`,
-          label: "Stress Test",
+          label: locale === "th" ? "ทดสอบความเสี่ยง" : "Stress Test",
           icon: <Shield className="h-4 w-4" />,
         },
         {
@@ -78,7 +78,7 @@ export function Sidebar() {
         },
         {
           href: `/${locale}/calculator/tax`,
-          label: "Tax",
+          label: locale === "th" ? "ภาษี" : "Tax",
           icon: <Receipt className="h-4 w-4" />,
         },
       ],

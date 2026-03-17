@@ -81,7 +81,7 @@ function TrustBadge({ color, label }: { color: string; label: string }) {
 
 function GlassDashboardCard() {
   return (
-    <div className="rounded-3xl border border-white/[0.08] bg-white/[0.04] p-7 shadow-2xl backdrop-blur-xl">
+    <div className="rounded-3xl border border-border bg-surface/90 p-7 shadow-2xl backdrop-blur-xl">
       {/* Health Score Gauge */}
       <div className="mb-5 text-center">
         <p className="mb-3 text-xs text-text-muted">Financial Health Score</p>
@@ -115,7 +115,7 @@ function GlassDashboardCard() {
       </div>
 
       {/* Mini Wealth Chart */}
-      <div className="rounded-xl bg-white/[0.03] p-4">
+      <div className="rounded-xl bg-surface-hover/50 p-4">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-[10px] text-text-muted">Wealth Projection</span>
           <span className="text-[10px] text-primary">60,000 simulations</span>
@@ -137,7 +137,7 @@ function GlassDashboardCard() {
 
 function StatBox({ label, value, valueColor }: { label: string; value: string; valueColor: string }) {
   return (
-    <div className="flex-1 rounded-xl bg-white/[0.03] p-3 text-center">
+    <div className="flex-1 rounded-xl bg-surface-hover/50 p-3 text-center">
       <p className="text-[10px] text-text-muted">{label}</p>
       <p className={`mt-0.5 text-lg font-bold ${valueColor}`}>{value}</p>
     </div>

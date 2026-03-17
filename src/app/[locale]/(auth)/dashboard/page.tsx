@@ -14,7 +14,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   const { data: { user } } = await supabase.auth.getUser();
 
   let healthScore: number | null = null;
-  let previousScore: number | null = null;
+  const previousScore: number | null = null;
   let plans: SavedPlanItem[] = [];
 
   if (user) {
