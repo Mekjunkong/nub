@@ -1,10 +1,26 @@
 import { NextResponse } from "next/server";
 import { formatPdfData, type PdfData } from "@/lib/pdf-generator";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function POST(request: Request) {
   try {
     const body: PdfData = await request.json();
     const formatted = formatPdfData(body);
+
+    // Sanitize all user-provided values before inserting into HTML
+    const safeTitle = escapeHtml(formatted.title);
+    const safeSubtitle = escapeHtml(formatted.subtitle);
+    const safeDisclaimer = escapeHtml(formatted.disclaimer);
+    const safeGeneratedAt = escapeHtml(body.generatedAt || new Date().toISOString());
+    const safePlanType = escapeHtml(body.planType);
 
     // Build a simple HTML-based PDF (lightweight alternative to @react-pdf/renderer
     // for server-side generation without React rendering context)
@@ -28,17 +44,17 @@ export async function POST(request: Request) {
 </head>
 <body>
   <div class="header">
-    <div class="title">${formatted.title}</div>
-    <div class="subtitle">${formatted.subtitle}</div>
+    <div class="title">${safeTitle}</div>
+    <div class="subtitle">${safeSubtitle}</div>
   </div>
-  <div class="date">Generated: ${body.generatedAt || new Date().toISOString()}</div>
+  <div class="date">Generated: ${safeGeneratedAt}</div>
   ${formatted.sections.map((s) => `
     <div class="section">
-      <span class="label">${s.label}</span>
-      <span class="value">${s.value}</span>
+      <span class="label">${escapeHtml(s.label)}</span>
+      <span class="value">${escapeHtml(s.value)}</span>
     </div>
   `).join("")}
-  <div class="disclaimer">${formatted.disclaimer}</div>
+  <div class="disclaimer">${safeDisclaimer}</div>
   <div class="footer">Nub - Plan Your Retirement with Confidence | nub.finance</div>
 </body>
 </html>`;
@@ -47,7 +63,7 @@ export async function POST(request: Request) {
     return new NextResponse(html, {
       headers: {
         "Content-Type": "text/html",
-        "Content-Disposition": `inline; filename="nub-${body.planType}-report.html"`,
+        "Content-Disposition": `inline; filename="nub-${safePlanType}-report.html"`,
       },
     });
   } catch {
