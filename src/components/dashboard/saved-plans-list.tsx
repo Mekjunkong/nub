@@ -28,6 +28,12 @@ const planIcons: Record<PlanType, React.ReactNode> = {
   mpt: <PieChart className="h-4 w-4" />,
   dca: <DollarSign className="h-4 w-4" />,
   tax: <Receipt className="h-4 w-4" />,
+  cashflow: <Receipt className="h-4 w-4" />,
+  roic: <TrendingUp className="h-4 w-4" />,
+  gpf_optimizer: <PieChart className="h-4 w-4" />,
+  tipp: <Shield className="h-4 w-4" />,
+  portfolio_health: <TrendingUp className="h-4 w-4" />,
+  bumnan95: <Calculator className="h-4 w-4" />,
 };
 
 const planLabels: Record<PlanType, string> = {
@@ -37,6 +43,12 @@ const planLabels: Record<PlanType, string> = {
   mpt: "MPT",
   dca: "DCA",
   tax: "Tax",
+  cashflow: "Cashflow",
+  roic: "ROIC",
+  gpf_optimizer: "GPF Optimizer",
+  tipp: "TIPP/VPPI",
+  portfolio_health: "Portfolio Health",
+  bumnan95: "Bumnan 95",
 };
 
 export function SavedPlansList({ plans, onToggleFavorite, onOpen }: SavedPlansListProps) {
