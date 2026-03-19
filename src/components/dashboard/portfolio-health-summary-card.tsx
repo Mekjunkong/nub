@@ -9,6 +9,7 @@ import type { PortfolioHealthResults } from "@/types/calculator";
 
 interface PortfolioHealthSummaryCardProps {
   results: PortfolioHealthResults | null;
+  nav?: number;
 }
 
 const riskBadgeVariant: Record<string, "success" | "warning" | "danger"> = {
@@ -17,7 +18,7 @@ const riskBadgeVariant: Record<string, "success" | "warning" | "danger"> = {
   High: "danger",
 };
 
-export function PortfolioHealthSummaryCard({ results }: PortfolioHealthSummaryCardProps) {
+export function PortfolioHealthSummaryCard({ results, nav = 0 }: PortfolioHealthSummaryCardProps) {
   const t = useTranslations("portfolioHealth");
   if (!results) {
     return (
@@ -54,7 +55,7 @@ export function PortfolioHealthSummaryCard({ results }: PortfolioHealthSummaryCa
               style: "currency",
               currency: "THB",
               maximumFractionDigits: 0,
-            }).format(460_000)}
+            }).format(nav)}
           </p>
         </div>
 

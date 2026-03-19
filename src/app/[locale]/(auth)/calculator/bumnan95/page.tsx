@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useBumnan95Worker } from "@/hooks/use-bumnan95-worker";
 import { Bumnan95Form } from "@/components/calculator/bumnan95/bumnan95-form";
@@ -13,8 +14,10 @@ import type { Bumnan95Inputs } from "@/types/calculator";
 export default function Bumnan95Page() {
   const t = useTranslations("calculator");
   const { results, computing, compute } = useBumnan95Worker();
+  const [lastGender, setLastGender] = useState<"male" | "female">("male");
 
   function handleCalculate(inputs: Bumnan95Inputs) {
+    setLastGender(inputs.gender);
     compute(inputs);
   }
 
@@ -42,7 +45,7 @@ export default function Bumnan95Page() {
           />
           <Bumnan95TierTable tiers={results.tiers} />
           <Bumnan95PremiumCalc
-            gender={results.annualPremium > 0 ? "male" : "male"}
+            gender={lastGender}
             annualPremium={results.annualPremium}
             paymentDuration={results.paymentDuration}
             totalPremiumPaid={results.totalPremiumPaid}
