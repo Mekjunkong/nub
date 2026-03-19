@@ -21,9 +21,9 @@ import { WithdrawalResults } from "../withdrawal-results";
 describe("WithdrawalForm", () => {
   it("renders input fields for withdrawal simulation", () => {
     render(<WithdrawalForm onCalculate={() => {}} />);
-    expect(screen.getByLabelText(/Monthly Expenses/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Lump Sum/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Life Expectancy/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/monthlyExpenses/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/lumpSum/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/lifeExpectancy/)).toBeInTheDocument();
   });
 });
 

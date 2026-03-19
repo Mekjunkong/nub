@@ -18,8 +18,8 @@ import { StressResults } from "../stress-results";
 describe("StressForm", () => {
   it("renders input fields", () => {
     render(<StressForm onCalculate={() => {}} />);
-    expect(screen.getByLabelText(/Expected Return/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/DCA Amount/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/expectedReturn/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/dcaAmount/)).toBeInTheDocument();
   });
 });
 

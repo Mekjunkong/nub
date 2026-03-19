@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 
+vi.mock("next-intl", () => ({ useTranslations: () => (key: string) => key, useLocale: () => "en" }));
+
 import { RoicForm } from "../roic-form";
 import { RoicResultsView } from "../roic-results";
 import { RoicRankingTable } from "../roic-ranking-table";
@@ -8,55 +10,55 @@ import { RoicRankingTable } from "../roic-ranking-table";
 describe("RoicForm", () => {
   it("renders without crashing", () => {
     render(<RoicForm onCalculate={() => {}} />);
-    expect(screen.getByText("Financial Data")).toBeInTheDocument();
+    expect(screen.getByText("roic.inputSection")).toBeInTheDocument();
   });
 
   it("renders all input fields", () => {
     render(<RoicForm onCalculate={() => {}} />);
-    expect(screen.getByLabelText("Ticker")).toBeInTheDocument();
-    expect(screen.getByLabelText("EBIT")).toBeInTheDocument();
-    expect(screen.getByLabelText("Tax Rate (%)")).toBeInTheDocument();
-    expect(screen.getByLabelText("Total Assets")).toBeInTheDocument();
-    expect(screen.getByLabelText("Current Liabilities")).toBeInTheDocument();
-    expect(screen.getByLabelText("Cash & Equivalents")).toBeInTheDocument();
-    expect(screen.getByLabelText("Net Income")).toBeInTheDocument();
-    expect(screen.getByLabelText("Operating Cash Flow")).toBeInTheDocument();
-    expect(screen.getByLabelText("WACC (%)")).toBeInTheDocument();
-    expect(screen.getByLabelText("Growth Rate (%)")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.ticker")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.ebit")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.taxRate (%)")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.totalAssets")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.currentLiabilities")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.cash")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.netIncome")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.operatingCashFlow")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.wacc (%)")).toBeInTheDocument();
+    expect(screen.getByLabelText("roic.growthRate (%)")).toBeInTheDocument();
   });
 
   it("renders the Analyze submit button", () => {
     render(<RoicForm onCalculate={() => {}} />);
-    expect(screen.getByText("Analyze")).toBeInTheDocument();
+    expect(screen.getByText("roic.analyze")).toBeInTheDocument();
   });
 
   it("calls onCalculate when form is submitted with valid data", () => {
     const onCalculate = vi.fn();
     render(<RoicForm onCalculate={onCalculate} />);
 
-    fireEvent.change(screen.getByLabelText("Ticker"), {
+    fireEvent.change(screen.getByLabelText("roic.ticker"), {
       target: { value: "MEGA" },
     });
-    fireEvent.change(screen.getByLabelText("EBIT"), {
+    fireEvent.change(screen.getByLabelText("roic.ebit"), {
       target: { value: "1000000" },
     });
-    fireEvent.change(screen.getByLabelText("Total Assets"), {
+    fireEvent.change(screen.getByLabelText("roic.totalAssets"), {
       target: { value: "5000000" },
     });
-    fireEvent.change(screen.getByLabelText("Current Liabilities"), {
+    fireEvent.change(screen.getByLabelText("roic.currentLiabilities"), {
       target: { value: "1000000" },
     });
-    fireEvent.change(screen.getByLabelText("Cash & Equivalents"), {
+    fireEvent.change(screen.getByLabelText("roic.cash"), {
       target: { value: "500000" },
     });
-    fireEvent.change(screen.getByLabelText("Net Income"), {
+    fireEvent.change(screen.getByLabelText("roic.netIncome"), {
       target: { value: "800000" },
     });
-    fireEvent.change(screen.getByLabelText("Operating Cash Flow"), {
+    fireEvent.change(screen.getByLabelText("roic.operatingCashFlow"), {
       target: { value: "900000" },
     });
 
-    fireEvent.submit(screen.getByText("Analyze").closest("form")!);
+    fireEvent.submit(screen.getByText("roic.analyze").closest("form")!);
     expect(onCalculate).toHaveBeenCalledWith(
       expect.objectContaining({
         ticker: "MEGA",
@@ -80,7 +82,7 @@ describe("RoicResultsView", () => {
 
   it("renders without crashing", () => {
     render(<RoicResultsView results={mockResults} />);
-    expect(screen.getByText("Quality Rating:")).toBeInTheDocument();
+    expect(screen.getByText("roic.quality:")).toBeInTheDocument();
   });
 
   it("displays the quality rating badge", () => {
@@ -90,17 +92,17 @@ describe("RoicResultsView", () => {
 
   it("renders all metric cards", () => {
     render(<RoicResultsView results={mockResults} />);
-    expect(screen.getByText("NOPAT")).toBeInTheDocument();
-    expect(screen.getByText("Invested Capital")).toBeInTheDocument();
-    expect(screen.getByText("ROIC")).toBeInTheDocument();
-    expect(screen.getByText("Sloan Ratio")).toBeInTheDocument();
-    expect(screen.getByText("Fair Equity Value")).toBeInTheDocument();
-    expect(screen.getByText("ROIC vs WACC")).toBeInTheDocument();
+    expect(screen.getByText("roic.nopat")).toBeInTheDocument();
+    expect(screen.getByText("roic.investedCapital")).toBeInTheDocument();
+    expect(screen.getByText("roic.roicLabel")).toBeInTheDocument();
+    expect(screen.getByText("roic.sloan")).toBeInTheDocument();
+    expect(screen.getByText("roic.fairValue")).toBeInTheDocument();
+    expect(screen.getByText("roic.roicVsWacc")).toBeInTheDocument();
   });
 
   it("shows Quality Earnings badge for negative sloan ratio", () => {
     render(<RoicResultsView results={mockResults} />);
-    expect(screen.getByText("Quality Earnings")).toBeInTheDocument();
+    expect(screen.getByText("roic.qualityEarnings")).toBeInTheDocument();
   });
 });
 
@@ -128,7 +130,7 @@ describe("RoicRankingTable", () => {
 
   it("renders without crashing", () => {
     render(<RoicRankingTable entries={entries} />);
-    expect(screen.getByText("Stock Ranking")).toBeInTheDocument();
+    expect(screen.getByText("roic.ranking")).toBeInTheDocument();
   });
 
   it("renders all stock entries", () => {
@@ -139,9 +141,9 @@ describe("RoicRankingTable", () => {
 
   it("renders column headers", () => {
     render(<RoicRankingTable entries={entries} />);
-    expect(screen.getByText(/Ticker/)).toBeInTheDocument();
-    expect(screen.getByText(/ROIC Current/)).toBeInTheDocument();
-    expect(screen.getByText(/Rating/)).toBeInTheDocument();
+    expect(screen.getByText(/roic.ticker/)).toBeInTheDocument();
+    expect(screen.getByText(/roic.roicCurrent/)).toBeInTheDocument();
+    expect(screen.getByText(/roic.quality/)).toBeInTheDocument();
   });
 
   it("displays history year columns", () => {

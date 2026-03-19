@@ -1,6 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 
+// Mock next-intl
+vi.mock("next-intl", () => ({ useTranslations: () => (key: string) => key, useLocale: () => "en" }));
+
 // Mock recharts
 vi.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
@@ -30,14 +33,14 @@ describe("CashflowTemplateForm", () => {
     render(
       <CashflowTemplateForm templates={[]} onAdd={noop} onDelete={noop} />
     );
-    expect(screen.getByText("Recurring Items")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.templates")).toBeInTheDocument();
   });
 
   it("shows add button when form is hidden", () => {
     render(
       <CashflowTemplateForm templates={[]} onAdd={noop} onDelete={noop} />
     );
-    expect(screen.getByText("Add Recurring Item")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.addTemplate")).toBeInTheDocument();
   });
 
   it("renders existing templates in a table", () => {
@@ -81,7 +84,7 @@ describe("CashflowTemplateForm", () => {
         onDelete={onDelete}
       />
     );
-    fireEvent.click(screen.getByText("Delete"));
+    fireEvent.click(screen.getByText("delete"));
     expect(onDelete).toHaveBeenCalledWith("t1");
   });
 });
@@ -131,7 +134,7 @@ describe("CashflowMonthView", () => {
         onDelete={noop}
       />
     );
-    expect(screen.getByText("Monthly Transactions")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.monthlyTransactions")).toBeInTheDocument();
   });
 
   it("shows empty state when no transactions", () => {
@@ -147,7 +150,7 @@ describe("CashflowMonthView", () => {
       />
     );
     expect(
-      screen.getByText("No transactions for this month")
+      screen.getByText("cashflow.noTransactions")
     ).toBeInTheDocument();
   });
 
@@ -176,7 +179,7 @@ describe("CashflowMonthView", () => {
       />
     );
     expect(screen.getByText("Monthly Pay")).toBeInTheDocument();
-    expect(screen.getByText("Income")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.income")).toBeInTheDocument();
   });
 });
 
@@ -199,21 +202,21 @@ describe("CashflowResultsView", () => {
 
   it("renders summary metric cards", () => {
     render(<CashflowResultsView results={mockResults} />);
-    expect(screen.getByText("Total Income")).toBeInTheDocument();
-    expect(screen.getByText("Total Expenses")).toBeInTheDocument();
-    expect(screen.getByText("Net Cashflow")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.totalIncome")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.totalExpenses")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.netCashflow")).toBeInTheDocument();
   });
 
   it("renders ratio cards", () => {
     render(<CashflowResultsView results={mockResults} />);
     expect(
-      screen.getByText("Savings & Investment Ratio")
+      screen.getByText("cashflow.savingsRatio")
     ).toBeInTheDocument();
-    expect(screen.getByText("Debt Service Ratio")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.debtRatio")).toBeInTheDocument();
   });
 
   it("renders lifestyle breakdown chart", () => {
     render(<CashflowResultsView results={mockResults} />);
-    expect(screen.getByText("Lifestyle Breakdown")).toBeInTheDocument();
+    expect(screen.getByText("cashflow.lifestyle")).toBeInTheDocument();
   });
 });
