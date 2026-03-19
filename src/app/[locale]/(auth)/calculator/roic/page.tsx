@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RoicForm } from "@/components/calculator/roic/roic-form";
 import { RoicResultsView } from "@/components/calculator/roic/roic-results";
 import { RoicRankingTable } from "@/components/calculator/roic/roic-ranking-table";
 import { calculateRoic } from "@/lib/roic-math";
+import { createClient } from "@/lib/supabase/client";
 import type { RoicResults } from "@/lib/roic-math";
 
 const SAMPLE_STOCKS = [
@@ -47,9 +48,75 @@ const SAMPLE_STOCKS = [
   },
 ];
 
+interface RankingEntry {
+  ticker: string;
+  name: string;
+  roicCurrent: number;
+  roicHistory: Record<string, number>;
+  sloanRatio: number;
+  fairValue: number;
+  rating: string;
+}
+
+function getRating(roic: number): string {
+  if (roic >= 0.2) return "Excellent";
+  if (roic >= 0.15) return "Good";
+  if (roic >= 0.1) return "Moderate";
+  return "Poor";
+}
+
 export default function RoicPage() {
   const [results, setResults] = useState<RoicResults | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [rankingEntries, setRankingEntries] = useState<RankingEntry[]>(SAMPLE_STOCKS);
+  const [rankingLoading, setRankingLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchFunds() {
+      try {
+        const supabase = createClient();
+        const { data: funds, error: fetchError } = await supabase
+          .from("funds")
+          .select("ticker, name_en, roic_current, roic_history")
+          .not("roic_current", "is", null);
+
+        if (fetchError || !funds || cancelled) {
+          if (!cancelled) setRankingLoading(false);
+          return;
+        }
+
+        if (funds.length === 0) {
+          // No funds with ROIC data, keep SAMPLE_STOCKS
+          if (!cancelled) setRankingLoading(false);
+          return;
+        }
+
+        const entries: RankingEntry[] = funds.map((f) => ({
+          ticker: f.ticker,
+          name: f.name_en,
+          roicCurrent: f.roic_current as number,
+          roicHistory: (f.roic_history as Record<string, number>) ?? {},
+          sloanRatio: 0,
+          fairValue: 0,
+          rating: getRating(f.roic_current as number),
+        }));
+
+        if (!cancelled) {
+          setRankingEntries(entries);
+        }
+      } catch (err) {
+        console.error("Failed to fetch fund rankings:", err);
+        // Keep SAMPLE_STOCKS as fallback
+      } finally {
+        if (!cancelled) setRankingLoading(false);
+      }
+    }
+
+    fetchFunds();
+    return () => { cancelled = true; };
+  }, []);
 
   function handleCalculate(inputs: Parameters<typeof calculateRoic>[0]) {
     try {
@@ -81,7 +148,11 @@ export default function RoicPage() {
           {results && <RoicResultsView results={results} />}
         </TabsContent>
         <TabsContent value="ranking" className="mt-4">
-          <RoicRankingTable entries={SAMPLE_STOCKS} />
+          {rankingLoading ? (
+            <p className="text-sm text-text-muted">Loading rankings...</p>
+          ) : (
+            <RoicRankingTable entries={rankingEntries} />
+          )}
         </TabsContent>
       </Tabs>
     </div>

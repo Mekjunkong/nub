@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { CashflowTemplateForm } from "@/components/calculator/cashflow/cashflow-template-form";
 import { CashflowMonthView } from "@/components/calculator/cashflow/cashflow-month-view";
 import { CashflowResultsView } from "@/components/calculator/cashflow/cashflow-results";
 import { calculateCashflowResults } from "@/lib/cashflow-math";
+import { createClient } from "@/lib/supabase/client";
 import type { CashflowDirection, CashflowCategory } from "@/types/database";
 
 interface Template {
@@ -33,6 +34,167 @@ export default function CashflowPage() {
   const [year, setYear] = useState(now.getFullYear());
   const [templates, setTemplates] = useState<Template[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch user session and initial data
+  useEffect(() => {
+    let cancelled = false;
+
+    async function init() {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user || cancelled) {
+          if (!cancelled) setLoading(false);
+          return;
+        }
+
+        setUserId(user.id);
+
+        // Fetch templates and transactions in parallel
+        const [templatesRes, transactionsRes] = await Promise.all([
+          supabase
+            .from("cashflow_templates")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at"),
+          supabase
+            .from("cashflow_transactions")
+            .select("*")
+            .eq("user_id", user.id)
+            .eq("month", now.getMonth() + 1)
+            .eq("year", now.getFullYear()),
+        ]);
+
+        if (cancelled) return;
+
+        const dbTemplates = (templatesRes.data ?? []).map((t) => ({
+          id: t.id,
+          name: t.name,
+          direction: t.direction as CashflowDirection,
+          category: t.category as CashflowCategory,
+          amount: t.amount,
+          isActive: t.is_active,
+        }));
+
+        const dbTransactions = (transactionsRes.data ?? []).map((t) => ({
+          id: t.id,
+          templateId: t.template_id,
+          direction: t.direction as CashflowDirection,
+          category: t.category as CashflowCategory,
+          name: t.name,
+          amount: t.amount,
+          month: t.month,
+          year: t.year,
+        }));
+
+        setTemplates(dbTemplates);
+        setTransactions(dbTransactions);
+      } catch (err) {
+        console.error("Failed to load cashflow data:", err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    init();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Fetch transactions when month/year changes
+  const fetchTransactionsForMonth = useCallback(
+    async (m: number, y: number) => {
+      if (!userId) return [];
+
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase
+          .from("cashflow_transactions")
+          .select("*")
+          .eq("user_id", userId)
+          .eq("month", m)
+          .eq("year", y);
+
+        if (error) {
+          console.error("Failed to fetch transactions:", error);
+          return [];
+        }
+
+        return (data ?? []).map((t) => ({
+          id: t.id,
+          templateId: t.template_id,
+          direction: t.direction as CashflowDirection,
+          category: t.category as CashflowCategory,
+          name: t.name,
+          amount: t.amount,
+          month: t.month,
+          year: t.year,
+        }));
+      } catch (err) {
+        console.error("Failed to fetch transactions:", err);
+        return [];
+      }
+    },
+    [userId]
+  );
+
+  // Auto-fill from templates when navigating to a month with no transactions
+  const autoFillMonth = useCallback(
+    async (m: number, y: number, existingTransactions: Transaction[]) => {
+      if (!userId || templates.length === 0) return;
+
+      const monthTransactions = existingTransactions.filter(
+        (t) => t.month === m && t.year === y
+      );
+      if (monthTransactions.length > 0) return;
+
+      const activeTemplates = templates.filter((t) => t.isActive);
+      if (activeTemplates.length === 0) return;
+
+      try {
+        const supabase = createClient();
+        const rows = activeTemplates.map((t) => ({
+          user_id: userId,
+          template_id: t.id,
+          direction: t.direction,
+          category: t.category,
+          name: t.name,
+          amount: t.amount,
+          month: m,
+          year: y,
+        }));
+
+        const { data, error } = await supabase
+          .from("cashflow_transactions")
+          .insert(rows)
+          .select();
+
+        if (error) {
+          console.error("Failed to auto-fill transactions:", error);
+          return;
+        }
+
+        const newTransactions = (data ?? []).map((t) => ({
+          id: t.id,
+          templateId: t.template_id,
+          direction: t.direction as CashflowDirection,
+          category: t.category as CashflowCategory,
+          name: t.name,
+          amount: t.amount,
+          month: t.month,
+          year: t.year,
+        }));
+
+        setTransactions((prev) => [...prev, ...newTransactions]);
+      } catch (err) {
+        console.error("Failed to auto-fill transactions:", err);
+      }
+    },
+    [userId, templates]
+  );
 
   // Memoize filtered transactions and results together to avoid stale refs
   const { currentTransactions, results } = useMemo(() => {
@@ -45,64 +207,198 @@ export default function CashflowPage() {
     };
   }, [transactions, month, year]);
 
-  // Auto-fill from templates when navigating to a new month with no transactions
-  function autoFillMonth(m: number, y: number) {
-    const existing = transactions.filter((t) => t.month === m && t.year === y);
-    if (existing.length === 0 && templates.length > 0) {
-      const autoFilled = templates
-        .filter((t) => t.isActive)
-        .map((t) => ({
-          id: crypto.randomUUID(),
-          templateId: t.id,
+  async function handleMonthChange(newMonth: number) {
+    setMonth(newMonth);
+    const fetched = await fetchTransactionsForMonth(newMonth, year);
+    setTransactions((prev) => {
+      // Remove old data for this month/year and replace with fresh data
+      const other = prev.filter(
+        (t) => !(t.month === newMonth && t.year === year)
+      );
+      return [...other, ...fetched];
+    });
+    // Auto-fill if the fetched month has no transactions
+    if (fetched.length === 0) {
+      await autoFillMonth(newMonth, year, fetched);
+    }
+  }
+
+  async function handleYearChange(newYear: number) {
+    setYear(newYear);
+    const fetched = await fetchTransactionsForMonth(month, newYear);
+    setTransactions((prev) => {
+      const other = prev.filter(
+        (t) => !(t.month === month && t.year === newYear)
+      );
+      return [...other, ...fetched];
+    });
+    if (fetched.length === 0) {
+      await autoFillMonth(month, newYear, fetched);
+    }
+  }
+
+  async function handleAddTemplate(t: Omit<Template, "id" | "isActive">) {
+    if (!userId) return;
+
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("cashflow_templates")
+        .insert({
+          user_id: userId,
+          name: t.name,
+          direction: t.direction,
+          category: t.category,
+          amount: t.amount,
+          is_active: true,
+        })
+        .select()
+        .single();
+
+      if (error || !data) {
+        console.error("Failed to add template:", error);
+        return;
+      }
+
+      setTemplates((prev) => [
+        ...prev,
+        {
+          id: data.id,
+          name: data.name,
+          direction: data.direction as CashflowDirection,
+          category: data.category as CashflowCategory,
+          amount: data.amount,
+          isActive: data.is_active,
+        },
+      ]);
+    } catch (err) {
+      console.error("Failed to add template:", err);
+    }
+  }
+
+  async function handleUpdateTemplate(id: string, updates: Partial<Template>) {
+    // Optimistic update
+    setTemplates((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
+    );
+
+    try {
+      const supabase = createClient();
+      // Map camelCase to snake_case for DB
+      const dbUpdates: Record<string, unknown> = {};
+      if (updates.name !== undefined) dbUpdates.name = updates.name;
+      if (updates.direction !== undefined) dbUpdates.direction = updates.direction;
+      if (updates.category !== undefined) dbUpdates.category = updates.category;
+      if (updates.amount !== undefined) dbUpdates.amount = updates.amount;
+      if (updates.isActive !== undefined) dbUpdates.is_active = updates.isActive;
+
+      const { error } = await supabase
+        .from("cashflow_templates")
+        .update(dbUpdates)
+        .eq("id", id);
+
+      if (error) {
+        console.error("Failed to update template:", error);
+      }
+    } catch (err) {
+      console.error("Failed to update template:", err);
+    }
+  }
+
+  async function handleDeleteTemplate(id: string) {
+    // Optimistic update
+    setTemplates((prev) => prev.filter((t) => t.id !== id));
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("cashflow_templates")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        console.error("Failed to delete template:", error);
+      }
+    } catch (err) {
+      console.error("Failed to delete template:", err);
+    }
+  }
+
+  async function handleAddTransaction(
+    t: Omit<Transaction, "id" | "templateId" | "month" | "year">
+  ) {
+    if (!userId) return;
+
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("cashflow_transactions")
+        .insert({
+          user_id: userId,
+          template_id: null,
           direction: t.direction,
           category: t.category,
           name: t.name,
           amount: t.amount,
-          month: m,
-          year: y,
-        }));
-      setTransactions((prev) => [...prev, ...autoFilled]);
+          month,
+          year,
+        })
+        .select()
+        .single();
+
+      if (error || !data) {
+        console.error("Failed to add transaction:", error);
+        return;
+      }
+
+      setTransactions((prev) => [
+        ...prev,
+        {
+          id: data.id,
+          templateId: data.template_id,
+          direction: data.direction as CashflowDirection,
+          category: data.category as CashflowCategory,
+          name: data.name,
+          amount: data.amount,
+          month: data.month,
+          year: data.year,
+        },
+      ]);
+    } catch (err) {
+      console.error("Failed to add transaction:", err);
     }
   }
 
-  function handleMonthChange(newMonth: number) {
-    setMonth(newMonth);
-    autoFillMonth(newMonth, year);
-  }
-
-  function handleYearChange(newYear: number) {
-    setYear(newYear);
-    autoFillMonth(month, newYear);
-  }
-
-  function handleAddTemplate(t: Omit<Template, "id" | "isActive">) {
-    setTemplates((prev) => [
-      ...prev,
-      { ...t, id: crypto.randomUUID(), isActive: true },
-    ]);
-  }
-
-  function handleUpdateTemplate(id: string, updates: Partial<Template>) {
-    setTemplates((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, ...updates } : t))
-    );
-  }
-
-  function handleDeleteTemplate(id: string) {
-    setTemplates((prev) => prev.filter((t) => t.id !== id));
-  }
-
-  function handleAddTransaction(
-    t: Omit<Transaction, "id" | "templateId" | "month" | "year">
-  ) {
-    setTransactions((prev) => [
-      ...prev,
-      { ...t, id: crypto.randomUUID(), templateId: null, month, year },
-    ]);
-  }
-
-  function handleDeleteTransaction(id: string) {
+  async function handleDeleteTransaction(id: string) {
+    // Optimistic update
     setTransactions((prev) => prev.filter((t) => t.id !== id));
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("cashflow_transactions")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        console.error("Failed to delete transaction:", error);
+      }
+    } catch (err) {
+      console.error("Failed to delete transaction:", err);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-6">
+        <div>
+          <h1 className="text-2xl font-bold text-text font-heading">
+            Cashflow Tracker
+          </h1>
+          <p className="text-sm text-text-muted">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
