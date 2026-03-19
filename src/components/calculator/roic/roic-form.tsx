@@ -70,24 +70,30 @@ export function RoicForm({ onCalculate }: RoicFormProps) {
           <Input
             label={`${t("roic.taxRate")} (%)`}
             type="number"
+            min={0}
+            max={100}
+            step={0.1}
             value={taxRate}
             onChange={(e) => setTaxRate(e.target.value)}
           />
           <Input
             label={t("roic.totalAssets")}
             type="number"
+            min={0}
             value={totalAssets}
             onChange={(e) => setTotalAssets(e.target.value)}
           />
           <Input
             label={t("roic.currentLiabilities")}
             type="number"
+            min={0}
             value={currentLiabilities}
             onChange={(e) => setCurrentLiabilities(e.target.value)}
           />
           <Input
             label={t("roic.cash")}
             type="number"
+            min={0}
             value={cashAndEquivalents}
             onChange={(e) => setCashAndEquivalents(e.target.value)}
           />
@@ -106,12 +112,18 @@ export function RoicForm({ onCalculate }: RoicFormProps) {
           <Input
             label={`${t("roic.wacc")} (%)`}
             type="number"
+            min={0}
+            max={50}
+            step={0.1}
             value={wacc}
             onChange={(e) => setWacc(e.target.value)}
           />
           <Input
             label={`${t("roic.growthRate")} (%)`}
             type="number"
+            min={0}
+            max={30}
+            step={0.1}
             value={growthRate}
             onChange={(e) => setGrowthRate(e.target.value)}
             error={growthError}

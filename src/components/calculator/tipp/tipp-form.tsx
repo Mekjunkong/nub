@@ -62,6 +62,7 @@ export function TippForm({ onSimulate, computing }: TippFormProps) {
       <Input
         label={`${t("tipp.initialCapital")} (THB)`}
         type="number"
+        min={0}
         value={initialCapital}
         onChange={(e) => setInitialCapital(Number(e.target.value))}
       />
@@ -87,12 +88,17 @@ export function TippForm({ onSimulate, computing }: TippFormProps) {
         <Input
           label={t("tipp.volatility")}
           type="number"
+          min={0}
+          max={100}
+          step={0.1}
           value={targetVolatility}
           onChange={(e) => setTargetVolatility(Number(e.target.value))}
         />
         <Input
           label={t("tipp.simulationMonths")}
           type="number"
+          min={1}
+          max={600}
           value={simulationMonths}
           onChange={(e) => setSimulationMonths(Number(e.target.value))}
         />

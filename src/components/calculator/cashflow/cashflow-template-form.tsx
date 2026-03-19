@@ -211,6 +211,7 @@ export function CashflowTemplateForm({
                 <Input
                   label={`${t("cashflow.amount")} (THB)`}
                   type="number"
+                  min={0}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0"

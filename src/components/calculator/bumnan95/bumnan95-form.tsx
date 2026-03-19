@@ -53,21 +53,21 @@ export function Bumnan95Form({ onCalculate, computing }: Bumnan95FormProps) {
       <CardContent>
         <div className="flex flex-col gap-4">
           <div className="grid gap-4 sm:grid-cols-3">
-            <Input label={t("bumnan95.currentAge")} type="number" value={values.currentAge} onChange={(e) => handleChange("currentAge", Number(e.target.value))} />
-            <Input label={t("bumnan95.retirementAge")} type="number" value={values.retirementAge} onChange={(e) => handleChange("retirementAge", Number(e.target.value))} />
-            <Input label={t("bumnan95.lifeExpectancy")} type="number" value={values.lifeExpectancy} onChange={(e) => handleChange("lifeExpectancy", Number(e.target.value))} />
+            <Input label={t("bumnan95.currentAge")} type="number" min={18} max={100} value={values.currentAge} onChange={(e) => handleChange("currentAge", Number(e.target.value))} />
+            <Input label={t("bumnan95.retirementAge")} type="number" min={40} max={100} value={values.retirementAge} onChange={(e) => handleChange("retirementAge", Number(e.target.value))} />
+            <Input label={t("bumnan95.lifeExpectancy")} type="number" min={40} max={120} value={values.lifeExpectancy} onChange={(e) => handleChange("lifeExpectancy", Number(e.target.value))} />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Input label={`${t("bumnan95.monthlyExpenses")} (฿)`} type="number" value={values.monthlyExpenses} onChange={(e) => handleChange("monthlyExpenses", Number(e.target.value))} />
-            <Input label={`${t("bumnan95.currentSavings")} (฿)`} type="number" value={values.currentSavings} onChange={(e) => handleChange("currentSavings", Number(e.target.value))} />
+            <Input label={`${t("bumnan95.monthlyExpenses")} (฿)`} type="number" min={0} value={values.monthlyExpenses} onChange={(e) => handleChange("monthlyExpenses", Number(e.target.value))} />
+            <Input label={`${t("bumnan95.currentSavings")} (฿)`} type="number" min={0} value={values.currentSavings} onChange={(e) => handleChange("currentSavings", Number(e.target.value))} />
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            <Input label={`${t("bumnan95.inflationRate")} (%)`} type="number" value={values.inflationRate} onChange={(e) => handleChange("inflationRate", Number(e.target.value))} />
-            <Input label={`${t("bumnan95.portfolioReturn")} (%)`} type="number" value={values.portfolioReturn} onChange={(e) => handleChange("portfolioReturn", Number(e.target.value))} />
-            <Input label={`${t("bumnan95.portfolioSD")} (%)`} type="number" value={values.portfolioSD} onChange={(e) => handleChange("portfolioSD", Number(e.target.value))} />
+            <Input label={`${t("bumnan95.inflationRate")} (%)`} type="number" min={0} max={30} step={0.1} value={values.inflationRate} onChange={(e) => handleChange("inflationRate", Number(e.target.value))} />
+            <Input label={`${t("bumnan95.portfolioReturn")} (%)`} type="number" min={0} max={50} step={0.1} value={values.portfolioReturn} onChange={(e) => handleChange("portfolioReturn", Number(e.target.value))} />
+            <Input label={`${t("bumnan95.portfolioSD")} (%)`} type="number" min={0} max={100} step={0.1} value={values.portfolioSD} onChange={(e) => handleChange("portfolioSD", Number(e.target.value))} />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Input label={`${t("bumnan95.governmentPension")} (฿)`} type="number" value={values.governmentPension} onChange={(e) => handleChange("governmentPension", Number(e.target.value))} />
+            <Input label={`${t("bumnan95.governmentPension")} (฿)`} type="number" min={0} value={values.governmentPension} onChange={(e) => handleChange("governmentPension", Number(e.target.value))} />
             <div>
               <label className="mb-1.5 block text-sm font-medium text-text">{t("bumnan95.gender")}</label>
               <select className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text" value={values.gender} onChange={(e) => handleChange("gender", e.target.value)}>
@@ -77,9 +77,9 @@ export function Bumnan95Form({ onCalculate, computing }: Bumnan95FormProps) {
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
-            <Input label={t("bumnan95.annuityStartAge")} type="number" value={values.annuityStartAge} onChange={(e) => handleChange("annuityStartAge", Number(e.target.value))} />
-            <Input label={t("bumnan95.paymentYears")} type="number" value={values.annuityPaymentYears} onChange={(e) => handleChange("annuityPaymentYears", Number(e.target.value))} />
-            <Input label={`${t("bumnan95.annuityRate")} (%)`} type="number" value={values.annuityRate} onChange={(e) => handleChange("annuityRate", Number(e.target.value))} />
+            <Input label={t("bumnan95.annuityStartAge")} type="number" min={40} max={100} value={values.annuityStartAge} onChange={(e) => handleChange("annuityStartAge", Number(e.target.value))} />
+            <Input label={t("bumnan95.paymentYears")} type="number" min={1} max={60} value={values.annuityPaymentYears} onChange={(e) => handleChange("annuityPaymentYears", Number(e.target.value))} />
+            <Input label={`${t("bumnan95.annuityRate")} (%)`} type="number" min={0} max={100} step={0.01} value={values.annuityRate} onChange={(e) => handleChange("annuityRate", Number(e.target.value))} />
           </div>
           <div className="flex justify-end">
             <Button onClick={handleSubmit} loading={computing}>{t("bumnan95.calculate")}</Button>

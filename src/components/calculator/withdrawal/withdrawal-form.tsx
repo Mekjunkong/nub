@@ -38,20 +38,20 @@ export function WithdrawalForm({ onCalculate }: WithdrawalFormProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label={t("monthlyExpenses")} type="number" value={values.currentMonthlyExpenses} onChange={(e) => handleChange("currentMonthlyExpenses", Number(e.target.value))} />
-        <Input label={t("lumpSum")} type="number" value={values.lumpSum} onChange={(e) => handleChange("lumpSum", Number(e.target.value))} />
+        <Input label={t("monthlyExpenses")} type="number" min={0} value={values.currentMonthlyExpenses} onChange={(e) => handleChange("currentMonthlyExpenses", Number(e.target.value))} />
+        <Input label={t("lumpSum")} type="number" min={0} value={values.lumpSum} onChange={(e) => handleChange("lumpSum", Number(e.target.value))} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label={t("retirementAge")} type="number" value={values.retirementAge} onChange={(e) => handleChange("retirementAge", Number(e.target.value))} />
-        <Input label={t("lifeExpectancy")} type="number" value={values.lifeExpectancy} onChange={(e) => handleChange("lifeExpectancy", Number(e.target.value))} />
+        <Input label={t("retirementAge")} type="number" min={40} max={100} value={values.retirementAge} onChange={(e) => handleChange("retirementAge", Number(e.target.value))} />
+        <Input label={t("lifeExpectancy")} type="number" min={40} max={120} value={values.lifeExpectancy} onChange={(e) => handleChange("lifeExpectancy", Number(e.target.value))} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label={t("governmentPension")} type="number" value={values.governmentPension} onChange={(e) => handleChange("governmentPension", Number(e.target.value))} />
-        <Input label={t("annuity")} type="number" value={values.annuity} onChange={(e) => handleChange("annuity", Number(e.target.value))} />
+        <Input label={t("governmentPension")} type="number" min={0} value={values.governmentPension} onChange={(e) => handleChange("governmentPension", Number(e.target.value))} />
+        <Input label={t("annuity")} type="number" min={0} value={values.annuity} onChange={(e) => handleChange("annuity", Number(e.target.value))} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label={t("portfolioReturn")} type="number" value={values.portfolioExpectedReturn * 100} onChange={(e) => handleChange("portfolioExpectedReturn", Number(e.target.value) / 100)} />
-        <Input label={t("portfolioSD")} type="number" value={values.portfolioSD * 100} onChange={(e) => handleChange("portfolioSD", Number(e.target.value) / 100)} />
+        <Input label={t("portfolioReturn")} type="number" min={0} max={50} step={0.1} value={values.portfolioExpectedReturn * 100} onChange={(e) => handleChange("portfolioExpectedReturn", Number(e.target.value) / 100)} />
+        <Input label={t("portfolioSD")} type="number" min={0} max={100} step={0.1} value={values.portfolioSD * 100} onChange={(e) => handleChange("portfolioSD", Number(e.target.value) / 100)} />
       </div>
       <div className="flex justify-end">
         <Button onClick={handleSubmit}>{t("simulate")}</Button>
