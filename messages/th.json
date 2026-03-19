@@ -182,6 +182,42 @@
       "moderate": "ปานกลาง",
       "poor": "ต่ำ",
       "growthRateError": "อัตราเติบโตต้องน้อยกว่า WACC"
+    },
+    "gpfOptimizer": {
+      "title": "เครื่องมือจัดพอร์ต กบข.",
+      "subtitle": "เพิ่มประสิทธิภาพการจัดสรรกองทุนบำเหน็จบำนาญข้าราชการ",
+      "bondPlan": "แผนตราสารหนี้",
+      "equityPlan": "แผนหุ้นต่างประเทศ",
+      "goldPlan": "แผนทองคำ",
+      "contribution": "เงินสมทบรายเดือน",
+      "horizon": "ระยะเวลาลงทุน (ปี)",
+      "optimize": "จัดพอร์ตเหมาะสม",
+      "rebalance": "สัญญาณปรับสมดุล",
+      "buy": "ซื้อ",
+      "sell": "ขาย",
+      "hold": "ถือ",
+      "optimalAllocation": "สัดส่วนเหมาะสม",
+      "riskMetrics": "ตัวชี้วัดความเสี่ยง",
+      "wealthProjection": "คาดการณ์ความมั่งคั่ง",
+      "successRate": "อัตราความสำเร็จ",
+      "drawdownAnalysis": "วิเคราะห์ Drawdown"
+    },
+    "tipp": {
+      "title": "TIPP/VPPI ปกป้องพอร์ตลงทุน",
+      "subtitle": "กลยุทธ์ประกันพอร์ตแบบ Floor-based",
+      "initialCapital": "เงินลงทุนเริ่มต้น",
+      "floor": "ระดับป้องกัน (%)",
+      "multiplier": "ตัวคูณสูงสุด",
+      "volatility": "ความผันผวนเป้าหมาย (%)",
+      "simulate": "จำลองผล",
+      "safe": "ปลอดภัย",
+      "warning": "เฝ้าระวัง",
+      "danger": "อันตราย",
+      "cushion": "ส่วนเกินจาก Floor",
+      "riskyAllocation": "สัดส่วนเสี่ยง",
+      "safeAllocation": "สัดส่วนปลอดภัย",
+      "strategyChart": "ผลการดำเนินกลยุทธ์",
+      "riskDashboard": "แดชบอร์ดความเสี่ยง"
     }
   },
   "retirement": {
@@ -303,5 +339,24 @@
     "goalInvesting": "ปรับพอร์ตลงทุน",
     "goalTax": "ประหยัดภาษี",
     "finish": "เริ่มใช้งาน"
+  },
+  "portfolioHealth": {
+    "title": "แดชบอร์ดสุขภาพพอร์ต",
+    "subtitle": "ติดตามผลการดำเนินงานและความเสี่ยงพอร์ตลงทุน",
+    "nav": "มูลค่าทรัพย์สินสุทธิ",
+    "previousNAV": "มูลค่าครั้งก่อน",
+    "monthlyDCA": "DCA รายเดือน",
+    "return": "ผลตอบแทนรายเดือน",
+    "alpha": "อัลฟา",
+    "sharpe": "อัตราส่วนชาร์ป",
+    "risk": "ความเสี่ยงพอร์ต",
+    "mdd": "Max Drawdown",
+    "recovery": "ระยะฟื้นตัว",
+    "outperform": "ชนะตลาด",
+    "underperform": "แพ้ตลาด",
+    "viewDetails": "ดูรายละเอียด",
+    "drawdownTable": "วิเคราะห์ Drawdown และการฟื้นตัว",
+    "performanceMetrics": "ตัวชี้วัดผลการดำเนินงาน",
+    "riskCommentary": "ประเมินความเสี่ยง"
   }
 }

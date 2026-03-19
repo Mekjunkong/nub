@@ -182,6 +182,42 @@
       "moderate": "Moderate",
       "poor": "Poor",
       "growthRateError": "Growth rate must be less than WACC"
+    },
+    "gpfOptimizer": {
+      "title": "GPF Portfolio Optimizer",
+      "subtitle": "Optimize your Government Pension Fund allocation",
+      "bondPlan": "Bond Plan (แผนตราสารหนี้)",
+      "equityPlan": "Foreign Equity Plan (แผนหุ้นต่างประเทศ)",
+      "goldPlan": "Gold Plan (แผนทองคำ)",
+      "contribution": "Monthly Contribution",
+      "horizon": "Investment Horizon (Years)",
+      "optimize": "Optimize Portfolio",
+      "rebalance": "Rebalancing Actions",
+      "buy": "BUY",
+      "sell": "SELL",
+      "hold": "HOLD",
+      "optimalAllocation": "Optimal Allocation",
+      "riskMetrics": "Risk Metrics",
+      "wealthProjection": "Wealth Projection",
+      "successRate": "Success Rate",
+      "drawdownAnalysis": "Max Drawdown Analysis"
+    },
+    "tipp": {
+      "title": "TIPP/VPPI Portfolio Protection",
+      "subtitle": "Dynamic floor-based portfolio insurance strategy",
+      "initialCapital": "Initial Capital",
+      "floor": "Floor Protection (%)",
+      "multiplier": "Max Multiplier",
+      "volatility": "Target Volatility (%)",
+      "simulate": "Run Simulation",
+      "safe": "SAFE",
+      "warning": "WARNING",
+      "danger": "DANGER",
+      "cushion": "Cushion",
+      "riskyAllocation": "Risky Allocation",
+      "safeAllocation": "Safe Allocation",
+      "strategyChart": "Strategy Performance",
+      "riskDashboard": "Risk Dashboard"
     }
   },
   "retirement": {
@@ -303,5 +339,24 @@
     "goalInvesting": "Investment Optimization",
     "goalTax": "Tax Savings",
     "finish": "Get Started"
+  },
+  "portfolioHealth": {
+    "title": "Portfolio Health Dashboard",
+    "subtitle": "Monitor your portfolio performance and risk metrics",
+    "nav": "Total NAV",
+    "previousNAV": "Previous NAV",
+    "monthlyDCA": "Monthly DCA",
+    "return": "Monthly Return",
+    "alpha": "Alpha",
+    "sharpe": "Sharpe Ratio",
+    "risk": "Portfolio Risk",
+    "mdd": "Max Drawdown",
+    "recovery": "Recovery Period",
+    "outperform": "Outperform",
+    "underperform": "Underperform",
+    "viewDetails": "View Details",
+    "drawdownTable": "Drawdown & Recovery Analysis",
+    "performanceMetrics": "Performance Metrics",
+    "riskCommentary": "Risk Assessment"
   }
 }
