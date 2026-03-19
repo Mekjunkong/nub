@@ -7,6 +7,7 @@ import { CashflowMonthView } from "@/components/calculator/cashflow/cashflow-mon
 import { CashflowResultsView } from "@/components/calculator/cashflow/cashflow-results";
 import { calculateCashflowResults } from "@/lib/cashflow-math";
 import { createClient } from "@/lib/supabase/client";
+import { track, Events } from "@/lib/analytics";
 import type { CashflowDirection, CashflowCategory } from "@/types/database";
 
 interface Template {
@@ -366,6 +367,7 @@ export default function CashflowPage() {
           year: data.year,
         },
       ]);
+      track(Events.CALCULATOR_COMPLETED, { type: "cashflow" });
     } catch (err) {
       console.error("Failed to add transaction:", err);
     }

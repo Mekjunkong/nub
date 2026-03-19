@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { runMonteCarlo, runWithdrawalComparison } from "@/workers/monte-carlo.worker";
+import { track, Events } from "@/lib/analytics";
 import type { MonteCarloInputs, MonteCarloResults, WithdrawalComparisonResults } from "@/types/calculator";
 
 export default function WithdrawalSimulatorPage() {
@@ -29,6 +30,7 @@ export default function WithdrawalSimulatorPage() {
         const compResult = runWithdrawalComparison({ ...inputs, comparisonPension, rounds: 10000 });
         setResults(compResult.baseline);
         setComparisonResults(compResult);
+        track(Events.CALCULATOR_COMPLETED, { type: "withdrawal" });
         setIsRefining(false);
       });
     } else {
@@ -39,6 +41,7 @@ export default function WithdrawalSimulatorPage() {
       requestAnimationFrame(() => {
         const final = runMonteCarlo({ ...inputs, rounds: 10000 });
         setResults(final);
+        track(Events.CALCULATOR_COMPLETED, { type: "withdrawal" });
         setIsRefining(false);
       });
     }

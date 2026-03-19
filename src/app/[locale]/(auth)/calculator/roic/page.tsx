@@ -8,6 +8,7 @@ import { RoicResultsView } from "@/components/calculator/roic/roic-results";
 import { RoicRankingTable } from "@/components/calculator/roic/roic-ranking-table";
 import { calculateRoic } from "@/lib/roic-math";
 import { createClient } from "@/lib/supabase/client";
+import { track, Events } from "@/lib/analytics";
 import type { RoicResults } from "@/lib/roic-math";
 
 const SAMPLE_STOCKS = [
@@ -124,6 +125,7 @@ export default function RoicPage() {
     try {
       setError(null);
       setResults(calculateRoic(inputs));
+      track(Events.CALCULATOR_COMPLETED, { type: "roic" });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Calculation error");
       setResults(null);

@@ -12,6 +12,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { createClient } from "@/lib/supabase/client";
+import { track, Events } from "@/lib/analytics";
 import type { PlanType } from "@/types/database";
 
 interface SavePlanButtonProps {
@@ -48,6 +49,7 @@ export function SavePlanButton({ planType, inputs, results }: SavePlanButtonProp
       });
 
       setSaved(true);
+      track(Events.PLAN_SAVED, { planType });
       setTimeout(() => {
         setOpen(false);
         setSaved(false);

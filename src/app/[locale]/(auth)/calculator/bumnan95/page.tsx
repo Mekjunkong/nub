@@ -9,6 +9,7 @@ import { Bumnan95TierTable } from "@/components/calculator/bumnan95/bumnan95-tie
 import { Bumnan95PremiumCalc } from "@/components/calculator/bumnan95/bumnan95-premium-calc";
 import { Bumnan95Strategies } from "@/components/calculator/bumnan95/bumnan95-strategies";
 import { FinancialDisclaimer } from "@/components/calculator/shared/financial-disclaimer";
+import { track, Events } from "@/lib/analytics";
 import type { Bumnan95Inputs } from "@/types/calculator";
 
 export default function Bumnan95Page() {
@@ -19,6 +20,7 @@ export default function Bumnan95Page() {
   function handleCalculate(inputs: Bumnan95Inputs) {
     setLastGender(inputs.gender);
     compute(inputs);
+    track(Events.CALCULATOR_COMPLETED, { type: "bumnan95" });
   }
 
   return (

@@ -7,6 +7,7 @@ import { GpfOptimizerResultsView } from "@/components/calculator/gpf/gpf-optimiz
 import { GpfWealthProjection } from "@/components/calculator/gpf/gpf-wealth-projection";
 import { GpfDrawdownTable } from "@/components/calculator/gpf/gpf-drawdown-table";
 import { FinancialDisclaimer } from "@/components/calculator/shared/financial-disclaimer";
+import { track, Events } from "@/lib/analytics";
 import type { GpfOptimizerInputs } from "@/types/calculator";
 
 export default function GpfOptimizerPage() {
@@ -15,6 +16,7 @@ export default function GpfOptimizerPage() {
 
   function handleOptimize(inputs: GpfOptimizerInputs) {
     compute(inputs);
+    track(Events.CALCULATOR_COMPLETED, { type: "gpf_optimizer" });
   }
 
   return (

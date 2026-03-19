@@ -7,6 +7,7 @@ import { TippRiskDashboard } from "@/components/calculator/tipp/tipp-risk-dashbo
 import { TippAllocationView } from "@/components/calculator/tipp/tipp-allocation-view";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTippWorker } from "@/hooks/use-tipp-worker";
+import { track, Events } from "@/lib/analytics";
 import type { TippInputs } from "@/types/calculator";
 
 export default function TippPage() {
@@ -15,6 +16,7 @@ export default function TippPage() {
 
   function handleSimulate(inputs: TippInputs) {
     calculate(inputs);
+    track(Events.CALCULATOR_COMPLETED, { type: "tipp" });
   }
 
   return (

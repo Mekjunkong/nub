@@ -10,6 +10,7 @@ import { AllocationBreakdown } from "@/components/portfolio-health/allocation-br
 import { MddRecoveryTable } from "@/components/portfolio-health/mdd-recovery-table";
 import { RiskCommentary } from "@/components/portfolio-health/risk-commentary";
 import { Plus, Trash2 } from "lucide-react";
+import { track, Events } from "@/lib/analytics";
 import type { PortfolioHealthInputs } from "@/types/calculator";
 
 interface HoldingRow {
@@ -103,6 +104,7 @@ export default function PortfolioHealthPage() {
       simulations,
     };
     calculate(inputs);
+    track(Events.CALCULATOR_COMPLETED, { type: "portfolio_health" });
   }
 
   return (

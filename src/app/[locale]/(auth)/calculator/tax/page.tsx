@@ -5,13 +5,16 @@ import { TaxForm } from "@/components/calculator/tax/tax-form";
 import { TaxResultsView } from "@/components/calculator/tax/tax-results";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { optimizeTax } from "@/workers/tax-optimizer.worker";
+import { track, Events } from "@/lib/analytics";
 import type { TaxInputs, TaxResults } from "@/types/calculator";
 
 export default function TaxOptimizerPage() {
   const [results, setResults] = useState<TaxResults | null>(null);
 
   function handleCalculate(inputs: TaxInputs) {
-    setResults(optimizeTax(inputs));
+    const result = optimizeTax(inputs);
+    setResults(result);
+    track(Events.CALCULATOR_COMPLETED, { type: "tax" });
   }
 
   return (
