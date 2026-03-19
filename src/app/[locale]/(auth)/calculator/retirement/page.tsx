@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { EmploymentSelector } from "@/components/calculator/retirement/employment-selector";
 import { GovernmentForm } from "@/components/calculator/retirement/government-form";
 import { PrivateForm } from "@/components/calculator/retirement/private-form";
@@ -10,10 +10,38 @@ import { WhatIfSliders } from "@/components/calculator/retirement/what-if-slider
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { calculateRetirement } from "@/workers/retirement-planner.worker";
+import { track, Events } from "@/lib/analytics";
 import type { RetirementInputs, RetirementResults as Results } from "@/types/calculator";
 import type { EmploymentType } from "@/types/database";
 
-const defaults = {
+interface RetirementFormValues {
+  currentAge: number;
+  retirementAge: number;
+  lifeExpectancy: number;
+  monthlySalary: number;
+  monthlyExpenses: number;
+  currentSavings: number;
+  monthlyContribution: number;
+  expectedReturn: number;
+  inflationRate: number;
+  salaryGrowthRate: number;
+  legacyAmount: number;
+  hasInsurance: boolean;
+  hasDiversifiedPortfolio: boolean;
+  // Government
+  gpfContributionRate?: number;
+  currentGpfValue?: number;
+  serviceStartYear?: number;
+  positionLevel?: number;
+  // Private
+  pvdContributionRate?: number;
+  employerMatchRate?: number;
+  hasSocialSecurity?: boolean;
+  // Freelance
+  section40SocialSecurity?: boolean;
+}
+
+const defaults: RetirementFormValues = {
   currentAge: 30,
   retirementAge: 60,
   lifeExpectancy: 85,
@@ -31,9 +59,10 @@ const defaults = {
 
 export default function RetirementPlannerPage() {
   const [employmentType, setEmploymentType] = useState<EmploymentType | null>(null);
-  const [formValues, setFormValues] = useState<Record<string, any>>(defaults);
+  const [formValues, setFormValues] = useState<RetirementFormValues>(defaults);
   const [results, setResults] = useState<Results | null>(null);
   const [calculating, setCalculating] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   function handleFieldChange(field: string, value: number | string | boolean) {
     setFormValues((prev) => ({ ...prev, [field]: value }));
@@ -46,16 +75,20 @@ export default function RetirementPlannerPage() {
     const inputs = buildInputs(employmentType, formValues);
     const result = calculateRetirement(inputs);
     setResults(result);
+    track(Events.CALCULATOR_COMPLETED, { type: "retirement" });
     setCalculating(false);
   }, [employmentType, formValues]);
 
   function handleWhatIf(field: string, value: number) {
     const updated = { ...formValues, [field]: value };
     setFormValues(updated);
-    if (employmentType) {
-      const inputs = buildInputs(employmentType, updated);
-      setResults(calculateRetirement(inputs));
-    }
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      if (employmentType) {
+        const inputs = buildInputs(employmentType, updated);
+        setResults(calculateRetirement(inputs));
+      }
+    }, 150);
   }
 
   return (
@@ -122,7 +155,7 @@ export default function RetirementPlannerPage() {
 
 function buildInputs(
   type: EmploymentType,
-  values: Record<string, any>
+  values: RetirementFormValues
 ): RetirementInputs {
   const base = {
     currentAge: values.currentAge ?? 30,

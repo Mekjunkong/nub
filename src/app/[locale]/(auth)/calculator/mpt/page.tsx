@@ -13,6 +13,7 @@ import {
   buildCorrelationFromPairs,
   buildCorrelationFromHistory,
 } from "@/lib/correlation-utils";
+import { track, Events } from "@/lib/analytics";
 import type { Fund } from "@/types/database";
 import type { MptResults } from "@/types/calculator";
 
@@ -153,6 +154,7 @@ export default function MptPage() {
       });
 
       setResults(result);
+      track(Events.CALCULATOR_COMPLETED, { type: "mpt" });
     } catch {
       // If correlation fetch fails, show error state
       setResults(null);

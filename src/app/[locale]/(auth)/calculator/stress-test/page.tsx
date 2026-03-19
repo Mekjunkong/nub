@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { runStressTest, runEnhancedStressTest } from "@/workers/stress-test.worker";
+import { track, Events } from "@/lib/analytics";
 import type { StressTestInputs, StressTestResults, EnhancedStressTestResults } from "@/types/calculator";
 
 export default function StressTestPage() {
@@ -43,6 +44,7 @@ export default function StressTestPage() {
       } else {
         setResults(runStressTest(inputs));
       }
+      track(Events.CALCULATOR_COMPLETED, { type: "stress_test" });
       setIsCalculating(false);
     });
   }

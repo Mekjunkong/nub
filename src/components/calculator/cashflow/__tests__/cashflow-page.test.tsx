@@ -188,6 +188,7 @@ describe("CashflowResultsView", () => {
     totalIncome: 80000,
     totalExpenses: 40000,
     totalSavingsInvestment: 20000,
+    totalOutflow: 60000,
     netCashflow: 20000,
     savingsInvestmentRatio: 0.25,
     debtServiceRatio: 0.1,
@@ -195,8 +196,12 @@ describe("CashflowResultsView", () => {
     taxDeductibleTotal: 10000,
     lifestyleBreakdown: {
       personal: 15000,
+      family: 0,
       transport: 10000,
+      education: 0,
+      travel: 0,
       housing: 15000,
+      other: 0,
     },
   };
 

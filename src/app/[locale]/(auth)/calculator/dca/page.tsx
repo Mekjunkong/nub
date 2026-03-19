@@ -6,6 +6,7 @@ import { DcaResultsView } from "@/components/calculator/dca/dca-results";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { runDca } from "@/workers/dca-tracker.worker";
 import { seededRandom } from "@/lib/finance-math";
+import { track, Events } from "@/lib/analytics";
 import type { DcaResults } from "@/types/calculator";
 
 export default function DcaPage() {
@@ -33,6 +34,7 @@ export default function DcaPage() {
       momentumLookback: 3,
     });
     setResults(result);
+    track(Events.CALCULATOR_COMPLETED, { type: "dca" });
   }
 
   return (

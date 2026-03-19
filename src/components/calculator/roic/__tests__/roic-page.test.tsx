@@ -77,7 +77,7 @@ describe("RoicResultsView", () => {
     sloanRatio: -0.125,
     fairEquityValue: 13333333,
     roicVsWacc: 0.1486,
-    qualityRating: "Excellent",
+    qualityRating: "Excellent" as const,
   };
 
   it("renders without crashing", () => {
