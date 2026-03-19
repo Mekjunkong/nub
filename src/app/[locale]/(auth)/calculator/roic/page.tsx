@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RoicForm } from "@/components/calculator/roic/roic-form";
 import { RoicResultsView } from "@/components/calculator/roic/roic-results";
@@ -66,6 +67,7 @@ function getRating(roic: number): string {
 }
 
 export default function RoicPage() {
+  const t = useTranslations("calculator");
   const [results, setResults] = useState<RoicResults | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [rankingEntries, setRankingEntries] = useState<RankingEntry[]>(SAMPLE_STOCKS);
@@ -131,16 +133,16 @@ export default function RoicPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-text font-heading">ROIC Stock Analyzer</h1>
+        <h1 className="text-2xl font-bold text-text font-heading">{t("roic.title")}</h1>
         <p className="text-sm text-text-muted">
-          Analyze Return on Invested Capital and stock fair value
+          {t("roic.subtitle")}
         </p>
       </div>
 
       <Tabs defaultValue="analyze">
         <TabsList>
-          <TabsTrigger value="analyze">Analyze</TabsTrigger>
-          <TabsTrigger value="ranking">Ranking</TabsTrigger>
+          <TabsTrigger value="analyze">{t("roic.analyzeTab")}</TabsTrigger>
+          <TabsTrigger value="ranking">{t("roic.rankingTab")}</TabsTrigger>
         </TabsList>
         <TabsContent value="analyze" className="flex flex-col gap-6 mt-4">
           <RoicForm onCalculate={handleCalculate} />
@@ -149,7 +151,7 @@ export default function RoicPage() {
         </TabsContent>
         <TabsContent value="ranking" className="mt-4">
           {rankingLoading ? (
-            <p className="text-sm text-text-muted">Loading rankings...</p>
+            <p className="text-sm text-text-muted">{t("roic.loadingRankings")}</p>
           ) : (
             <RoicRankingTable entries={rankingEntries} />
           )}

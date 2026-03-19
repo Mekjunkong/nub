@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,54 +32,54 @@ const MONTH_NAMES = [
   "July", "August", "September", "October", "November", "December",
 ];
 
-const CATEGORY_LABELS: Record<CashflowCategory, string> = {
-  salary: "Salary",
-  overtime: "Overtime",
-  bonus: "Bonus",
-  allowance: "Allowance",
-  personal: "Personal",
-  family: "Family",
-  transport: "Transport",
-  education: "Education",
-  travel: "Travel",
-  housing: "Housing",
-  debt: "Debt",
-  donation: "Donation",
-  other: "Other",
-  insurance_life: "Life Insurance",
-  insurance_health: "Health Insurance",
-  insurance_pension: "Pension Insurance",
-  rmf: "RMF",
-  ssf: "SSF",
-  pvd: "PVD",
-  gpf: "GPF",
-  tesg: "TESG",
+const CATEGORY_KEYS: Record<CashflowCategory, string> = {
+  salary: "salary",
+  overtime: "overtime",
+  bonus: "bonus",
+  allowance: "allowance",
+  personal: "personal",
+  family: "family",
+  transport: "transport",
+  education: "education",
+  travel: "travel",
+  housing: "housing",
+  debt: "debt",
+  donation: "donation",
+  other: "other",
+  insurance_life: "insuranceLife",
+  insurance_health: "insuranceHealth",
+  insurance_pension: "insurancePension",
+  rmf: "rmf",
+  ssf: "ssf",
+  pvd: "pvd",
+  gpf: "gpf",
+  tesg: "tesg",
 };
 
 const SECTION_CONFIG: {
   key: string;
-  title: string;
+  titleKey: string;
   directions: CashflowDirection[];
   defaultDirection: CashflowDirection;
   defaultCategory: CashflowCategory;
 }[] = [
   {
     key: "income",
-    title: "Income",
+    titleKey: "income",
     directions: ["income"],
     defaultDirection: "income",
     defaultCategory: "salary",
   },
   {
     key: "expenses",
-    title: "Expenses",
+    titleKey: "expenses",
     directions: ["expense"],
     defaultDirection: "expense",
     defaultCategory: "personal",
   },
   {
     key: "savings",
-    title: "Savings & Investments",
+    titleKey: "savingsAndInvestments",
     directions: ["saving", "investment"],
     defaultDirection: "saving",
     defaultCategory: "rmf",
@@ -107,6 +108,7 @@ export function CashflowMonthView({
   onAdd,
   onDelete,
 }: CashflowMonthViewProps) {
+  const t = useTranslations("calculator");
   function handlePrev() {
     const nav = navigateMonth(month, year, -1);
     if (nav.year !== year) onYearChange(nav.year);
@@ -133,7 +135,7 @@ export function CashflowMonthView({
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Monthly Transactions</CardTitle>
+            <CardTitle>{t("cashflow.monthlyTransactions")}</CardTitle>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" onClick={handlePrev}>
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -154,7 +156,7 @@ export function CashflowMonthView({
         <CardContent>
           {transactions.length === 0 ? (
             <p className="py-8 text-center text-sm text-text-muted">
-              No transactions for this month
+              {t("cashflow.noTransactions")}
             </p>
           ) : (
             <div className="flex flex-col gap-6">
@@ -170,7 +172,7 @@ export function CashflowMonthView({
                   <div key={section.key}>
                     <div className="mb-2 flex items-center justify-between">
                       <h4 className="text-sm font-semibold text-text">
-                        {section.title}
+                        {t(`cashflow.${section.titleKey}`)}
                       </h4>
                       <span className="text-sm font-medium text-text-muted">
                         {"\u0E3F"}{subtotal.toLocaleString()}
@@ -185,7 +187,7 @@ export function CashflowMonthView({
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-text">{tx.name}</span>
                             <Badge variant="default">
-                              {CATEGORY_LABELS[tx.category]}
+                              {t(`cashflow.${CATEGORY_KEYS[tx.category]}`)}
                             </Badge>
                             {tx.templateId != null && (
                               <Badge variant="secondary">Auto</Badge>
@@ -216,7 +218,7 @@ export function CashflowMonthView({
                           handleQuickAdd(section.defaultDirection, section.defaultCategory)
                         }
                       >
-                        + Add Transaction
+                        + {t("cashflow.addTransaction")}
                       </Button>
                     </div>
                   </div>

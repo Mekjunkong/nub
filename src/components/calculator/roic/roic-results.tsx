@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { RoicResults } from "@/lib/roic-math";
@@ -27,6 +28,7 @@ function formatPercent(value: number): string {
 }
 
 export function RoicResultsView({ results }: RoicResultsViewProps) {
+  const t = useTranslations("calculator");
   const roicColor =
     results.roic > 0.15
       ? "text-success"
@@ -39,7 +41,7 @@ export function RoicResultsView({ results }: RoicResultsViewProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-text-muted">Quality Rating:</span>
+        <span className="text-sm font-medium text-text-muted">{t("roic.quality")}:</span>
         <Badge variant={ratingVariant[results.qualityRating]} className="text-sm px-3 py-1">
           {results.qualityRating}
         </Badge>
@@ -49,7 +51,7 @@ export function RoicResultsView({ results }: RoicResultsViewProps) {
         {/* NOPAT */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-text-muted">NOPAT</CardTitle>
+            <CardTitle className="text-sm text-text-muted">{t("roic.nopat")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold text-text">
@@ -61,7 +63,7 @@ export function RoicResultsView({ results }: RoicResultsViewProps) {
         {/* Invested Capital */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-text-muted">Invested Capital</CardTitle>
+            <CardTitle className="text-sm text-text-muted">{t("roic.investedCapital")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold text-text">
@@ -73,7 +75,7 @@ export function RoicResultsView({ results }: RoicResultsViewProps) {
         {/* ROIC */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-text-muted">ROIC</CardTitle>
+            <CardTitle className="text-sm text-text-muted">{t("roic.roicLabel")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className={`text-2xl font-bold ${roicColor}`}>
@@ -85,16 +87,16 @@ export function RoicResultsView({ results }: RoicResultsViewProps) {
         {/* Sloan Ratio */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-text-muted">Sloan Ratio</CardTitle>
+            <CardTitle className="text-sm text-text-muted">{t("roic.sloan")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold text-text">
               {results.sloanRatio.toFixed(4)}
             </p>
             {results.sloanRatio < 0 ? (
-              <Badge variant="success" className="mt-2">Quality Earnings</Badge>
+              <Badge variant="success" className="mt-2">{t("roic.qualityEarnings")}</Badge>
             ) : (
-              <Badge variant="danger" className="mt-2">Accrual Warning</Badge>
+              <Badge variant="danger" className="mt-2">{t("roic.accrualWarning")}</Badge>
             )}
           </CardContent>
         </Card>
@@ -102,7 +104,7 @@ export function RoicResultsView({ results }: RoicResultsViewProps) {
         {/* Fair Equity Value */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-text-muted">Fair Equity Value</CardTitle>
+            <CardTitle className="text-sm text-text-muted">{t("roic.fairValue")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold text-primary">
@@ -114,7 +116,7 @@ export function RoicResultsView({ results }: RoicResultsViewProps) {
         {/* ROIC vs WACC */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-text-muted">ROIC vs WACC</CardTitle>
+            <CardTitle className="text-sm text-text-muted">{t("roic.roicVsWacc")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">

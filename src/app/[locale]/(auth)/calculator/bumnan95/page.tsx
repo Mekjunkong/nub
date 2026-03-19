@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useBumnan95Worker } from "@/hooks/use-bumnan95-worker";
 import { Bumnan95Form } from "@/components/calculator/bumnan95/bumnan95-form";
 import { Bumnan95GapAnalysis } from "@/components/calculator/bumnan95/bumnan95-gap-analysis";
@@ -10,6 +11,7 @@ import { FinancialDisclaimer } from "@/components/calculator/shared/financial-di
 import type { Bumnan95Inputs } from "@/types/calculator";
 
 export default function Bumnan95Page() {
+  const t = useTranslations("calculator");
   const { results, computing, compute } = useBumnan95Worker();
 
   function handleCalculate(inputs: Bumnan95Inputs) {
@@ -20,10 +22,10 @@ export default function Bumnan95Page() {
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-bold text-text font-heading">
-          Bumnan 95 Annuity Planner
+          {t("bumnan95.title")}
         </h1>
         <p className="text-sm text-text-muted">
-          Plan pension income to close your retirement gap
+          {t("bumnan95.subtitle")}
         </p>
       </div>
 

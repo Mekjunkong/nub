@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Bumnan95StrategiesProps {
@@ -13,22 +14,24 @@ export function Bumnan95Strategies({
   monthlyTopUp,
   recommendedStrategy,
 }: Bumnan95StrategiesProps) {
+  const t = useTranslations("calculator");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Gap-Closing Strategies</CardTitle>
+        <CardTitle>{t("bumnan95.strategies")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-lg border border-border p-4">
-            <p className="text-sm font-semibold text-text-muted">Option A: Lump Sum Now</p>
+            <p className="text-sm font-semibold text-text-muted">{t("bumnan95.lumpSum")}</p>
             <p className="mt-2 text-2xl font-bold text-text">฿{lumpSumNeeded.toLocaleString()}</p>
-            <p className="mt-1 text-xs text-text-muted">One-time investment needed today</p>
+            <p className="mt-1 text-xs text-text-muted">{t("bumnan95.lumpSumDesc")}</p>
           </div>
           <div className="rounded-lg border border-border p-4">
-            <p className="text-sm font-semibold text-text-muted">Option B: Monthly Top-Up</p>
+            <p className="text-sm font-semibold text-text-muted">{t("bumnan95.monthlyTopUp")}</p>
             <p className="mt-2 text-2xl font-bold text-text">฿{monthlyTopUp.toLocaleString()}/mo</p>
-            <p className="mt-1 text-xs text-text-muted">Additional monthly saving needed</p>
+            <p className="mt-1 text-xs text-text-muted">{t("bumnan95.monthlyTopUpDesc")}</p>
           </div>
         </div>
         <div className="mt-4 rounded-lg bg-primary/5 p-3">

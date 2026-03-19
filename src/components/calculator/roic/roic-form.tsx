@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ interface RoicFormProps {
 }
 
 export function RoicForm({ onCalculate }: RoicFormProps) {
+  const t = useTranslations("calculator");
   const [ticker, setTicker] = useState("");
   const [ebit, setEbit] = useState("");
   const [taxRate, setTaxRate] = useState("20");
@@ -24,7 +26,7 @@ export function RoicForm({ onCalculate }: RoicFormProps) {
 
   const growthError =
     Number(growthRate) >= Number(wacc)
-      ? "Growth rate must be less than WACC"
+      ? t("roic.growthRateError")
       : undefined;
 
   function handleSubmit(e: React.FormEvent) {
@@ -48,68 +50,67 @@ export function RoicForm({ onCalculate }: RoicFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Financial Data</CardTitle>
+        <CardTitle>{t("roic.inputSection")}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Input
-            label="Ticker"
+            label={t("roic.ticker")}
             type="text"
             value={ticker}
             onChange={(e) => setTicker(e.target.value)}
             placeholder="e.g. MEGA"
           />
           <Input
-            label="EBIT"
+            label={t("roic.ebit")}
             type="number"
             value={ebit}
             onChange={(e) => setEbit(e.target.value)}
-            placeholder="Earnings before interest & tax"
           />
           <Input
-            label="Tax Rate (%)"
+            label={`${t("roic.taxRate")} (%)`}
             type="number"
             value={taxRate}
             onChange={(e) => setTaxRate(e.target.value)}
           />
           <Input
-            label="Total Assets"
+            label={t("roic.totalAssets")}
             type="number"
             value={totalAssets}
             onChange={(e) => setTotalAssets(e.target.value)}
           />
           <Input
-            label="Current Liabilities"
+            label={t("roic.currentLiabilities")}
             type="number"
             value={currentLiabilities}
             onChange={(e) => setCurrentLiabilities(e.target.value)}
           />
           <Input
-            label="Cash & Equivalents"
+            label={t("roic.cash")}
             type="number"
             value={cashAndEquivalents}
             onChange={(e) => setCashAndEquivalents(e.target.value)}
           />
           <Input
-            label="Net Income"
+            label={t("roic.netIncome")}
             type="number"
             value={netIncome}
             onChange={(e) => setNetIncome(e.target.value)}
           />
           <Input
-            label="Operating Cash Flow"
+            label={t("roic.operatingCashFlow")}
             type="number"
             value={operatingCashFlow}
             onChange={(e) => setOperatingCashFlow(e.target.value)}
           />
           <Input
-            label="WACC (%)"
+            label={`${t("roic.wacc")} (%)`}
             type="number"
             value={wacc}
             onChange={(e) => setWacc(e.target.value)}
           />
           <Input
-            label="Growth Rate (%)"
+            label={`${t("roic.growthRate")} (%)`}
             type="number"
             value={growthRate}
             onChange={(e) => setGrowthRate(e.target.value)}
@@ -117,7 +118,7 @@ export function RoicForm({ onCalculate }: RoicFormProps) {
           />
           <div className="sm:col-span-2 flex justify-end">
             <Button type="submit" disabled={!!growthError}>
-              Analyze
+              {t("roic.analyze")}
             </Button>
           </div>
         </form>

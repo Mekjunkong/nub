@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Bumnan95Tier } from "@/types/calculator";
@@ -16,23 +17,24 @@ const STATUS_VARIANT: Record<string, "danger" | "warning" | "primary" | "success
 };
 
 export function Bumnan95TierTable({ tiers }: Bumnan95TierTableProps) {
-  const recommendedIdx = tiers.findIndex((t) => t.status === "STRONG" || t.status === "SECURED");
+  const t = useTranslations("calculator");
+  const recommendedIdx = tiers.findIndex((tier) => tier.status === "STRONG" || tier.status === "SECURED");
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Pension Goal Matrix</CardTitle>
+        <CardTitle>{t("bumnan95.tierTable")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-text-muted">
-                <th className="pb-2 pr-4">Monthly Pension</th>
-                <th className="pb-2 pr-4">Success Rate</th>
-                <th className="pb-2 pr-4">Required Portfolio</th>
-                <th className="pb-2 pr-4">Monthly Saving</th>
-                <th className="pb-2">Status</th>
+                <th className="pb-2 pr-4">{t("bumnan95.monthlyPension")}</th>
+                <th className="pb-2 pr-4">{t("bumnan95.successRate")}</th>
+                <th className="pb-2 pr-4">{t("bumnan95.requiredPortfolio")}</th>
+                <th className="pb-2 pr-4">{t("bumnan95.monthlySaving")}</th>
+                <th className="pb-2">{t("bumnan95.status")}</th>
               </tr>
             </thead>
             <tbody>
@@ -44,7 +46,7 @@ export function Bumnan95TierTable({ tiers }: Bumnan95TierTableProps) {
                   <td className="py-3 pr-4 font-medium text-text">
                     ฿{tier.monthlyPension.toLocaleString()}
                     {i === recommendedIdx && (
-                      <span className="ml-2 text-xs text-primary">Recommended</span>
+                      <span className="ml-2 text-xs text-primary">{t("bumnan95.recommended")}</span>
                     )}
                   </td>
                   <td className="py-3 pr-4 text-text">{tier.successRate}%</td>

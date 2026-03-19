@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import { CashflowTemplateForm } from "@/components/calculator/cashflow/cashflow-template-form";
 import { CashflowMonthView } from "@/components/calculator/cashflow/cashflow-month-view";
 import { CashflowResultsView } from "@/components/calculator/cashflow/cashflow-results";
@@ -29,6 +30,7 @@ interface Transaction {
 }
 
 export default function CashflowPage() {
+  const t = useTranslations("calculator");
   const now = new Date();
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [year, setYear] = useState(now.getFullYear());
@@ -393,9 +395,9 @@ export default function CashflowPage() {
       <div className="flex flex-col gap-6">
         <div>
           <h1 className="text-2xl font-bold text-text font-heading">
-            Cashflow Tracker
+            {t("cashflow.title")}
           </h1>
-          <p className="text-sm text-text-muted">Loading...</p>
+          <p className="text-sm text-text-muted">{t("cashflow.subtitle")}</p>
         </div>
       </div>
     );
@@ -405,10 +407,10 @@ export default function CashflowPage() {
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-bold text-text font-heading">
-          Cashflow Tracker
+          {t("cashflow.title")}
         </h1>
         <p className="text-sm text-text-muted">
-          Track your income, expenses, and financial health ratios
+          {t("cashflow.subtitle")}
         </p>
       </div>
 

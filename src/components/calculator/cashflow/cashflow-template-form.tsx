@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,11 +31,11 @@ interface CashflowTemplateFormProps {
   onDelete: (id: string) => void;
 }
 
-const DIRECTION_LABELS: Record<CashflowDirection, string> = {
-  income: "Income",
-  expense: "Expense",
-  saving: "Saving",
-  investment: "Investment",
+const DIRECTION_KEYS: Record<CashflowDirection, string> = {
+  income: "income",
+  expense: "expense",
+  saving: "saving",
+  investment: "investment",
 };
 
 const DIRECTION_BADGE_VARIANT: Record<CashflowDirection, "success" | "danger" | "primary" | "secondary"> = {
@@ -60,28 +61,28 @@ const CATEGORIES_BY_DIRECTION: Record<CashflowDirection, CashflowCategory[]> = {
   ],
 };
 
-const CATEGORY_LABELS: Record<CashflowCategory, string> = {
-  salary: "Salary",
-  overtime: "Overtime",
-  bonus: "Bonus",
-  allowance: "Allowance",
-  personal: "Personal",
-  family: "Family",
-  transport: "Transport",
-  education: "Education",
-  travel: "Travel",
-  housing: "Housing",
-  debt: "Debt",
-  donation: "Donation",
-  other: "Other",
-  insurance_life: "Life Insurance",
-  insurance_health: "Health Insurance",
-  insurance_pension: "Pension Insurance",
-  rmf: "RMF",
-  ssf: "SSF",
-  pvd: "PVD",
-  gpf: "GPF",
-  tesg: "TESG",
+const CATEGORY_KEYS: Record<CashflowCategory, string> = {
+  salary: "salary",
+  overtime: "overtime",
+  bonus: "bonus",
+  allowance: "allowance",
+  personal: "personal",
+  family: "family",
+  transport: "transport",
+  education: "education",
+  travel: "travel",
+  housing: "housing",
+  debt: "debt",
+  donation: "donation",
+  other: "other",
+  insurance_life: "insuranceLife",
+  insurance_health: "insuranceHealth",
+  insurance_pension: "insurancePension",
+  rmf: "rmf",
+  ssf: "ssf",
+  pvd: "pvd",
+  gpf: "gpf",
+  tesg: "tesg",
 };
 
 export function CashflowTemplateForm({
@@ -90,6 +91,8 @@ export function CashflowTemplateForm({
   onUpdate,
   onDelete,
 }: CashflowTemplateFormProps) {
+  const t = useTranslations("calculator");
+  const tc = useTranslations("common");
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
@@ -139,7 +142,7 @@ export function CashflowTemplateForm({
     <div data-testid="cashflow-templates">
       <Card>
         <CardHeader>
-          <CardTitle>Recurring Items</CardTitle>
+          <CardTitle>{t("cashflow.templates")}</CardTitle>
         </CardHeader>
         <CardContent>
           {/* Existing templates table */}
@@ -148,43 +151,43 @@ export function CashflowTemplateForm({
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-left text-text-muted">
-                    <th className="pb-2 font-medium">Name</th>
-                    <th className="pb-2 font-medium">Type</th>
-                    <th className="pb-2 font-medium">Category</th>
-                    <th className="pb-2 text-right font-medium">Amount</th>
-                    <th className="pb-2 text-right font-medium">Actions</th>
+                    <th className="pb-2 font-medium">{t("cashflow.name")}</th>
+                    <th className="pb-2 font-medium">{t("cashflow.type")}</th>
+                    <th className="pb-2 font-medium">{t("cashflow.category")}</th>
+                    <th className="pb-2 text-right font-medium">{t("cashflow.amount")}</th>
+                    <th className="pb-2 text-right font-medium">{t("cashflow.actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {templates.map((t) => (
-                    <tr key={t.id} className="border-b border-border last:border-0">
-                      <td className="py-2 text-text">{t.name}</td>
+                  {templates.map((tmpl) => (
+                    <tr key={tmpl.id} className="border-b border-border last:border-0">
+                      <td className="py-2 text-text">{tmpl.name}</td>
                       <td className="py-2">
-                        <Badge variant={DIRECTION_BADGE_VARIANT[t.direction]}>
-                          {DIRECTION_LABELS[t.direction]}
+                        <Badge variant={DIRECTION_BADGE_VARIANT[tmpl.direction]}>
+                          {t(`cashflow.${DIRECTION_KEYS[tmpl.direction]}`)}
                         </Badge>
                       </td>
                       <td className="py-2 text-text-muted">
-                        {CATEGORY_LABELS[t.category]}
+                        {t(`cashflow.${CATEGORY_KEYS[tmpl.category]}`)}
                       </td>
                       <td className="py-2 text-right text-text">
-                        {"\u0E3F"}{t.amount.toLocaleString()}
+                        {"\u0E3F"}{tmpl.amount.toLocaleString()}
                       </td>
                       <td className="py-2 text-right">
                         <div className="flex justify-end gap-1">
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleEdit(t)}
+                            onClick={() => handleEdit(tmpl)}
                           >
-                            Edit
+                            {tc("edit")}
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => onDelete(t.id)}
+                            onClick={() => onDelete(tmpl.id)}
                           >
-                            Delete
+                            {tc("delete")}
                           </Button>
                         </div>
                       </td>
@@ -200,13 +203,13 @@ export function CashflowTemplateForm({
             <div className="mb-4 flex flex-col gap-3 rounded-lg border border-border p-4">
               <div className="grid gap-3 sm:grid-cols-2">
                 <Input
-                  label="Name"
+                  label={t("cashflow.name")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Monthly Salary"
                 />
                 <Input
-                  label="Amount (THB)"
+                  label={`${t("cashflow.amount")} (THB)`}
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
@@ -215,21 +218,21 @@ export function CashflowTemplateForm({
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-text">Type</label>
+                  <label className="text-sm font-medium text-text">{t("cashflow.type")}</label>
                   <Select value={direction} onValueChange={(v) => handleDirectionChange(v as CashflowDirection)}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="income">Income</SelectItem>
-                      <SelectItem value="expense">Expense</SelectItem>
-                      <SelectItem value="saving">Saving</SelectItem>
-                      <SelectItem value="investment">Investment</SelectItem>
+                      <SelectItem value="income">{t("cashflow.income")}</SelectItem>
+                      <SelectItem value="expense">{t("cashflow.expense")}</SelectItem>
+                      <SelectItem value="saving">{t("cashflow.saving")}</SelectItem>
+                      <SelectItem value="investment">{t("cashflow.investment")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-sm font-medium text-text">Category</label>
+                  <label className="text-sm font-medium text-text">{t("cashflow.category")}</label>
                   <Select value={category} onValueChange={(v) => setCategory(v as CashflowCategory)}>
                     <SelectTrigger>
                       <SelectValue />
@@ -237,7 +240,7 @@ export function CashflowTemplateForm({
                     <SelectContent>
                       {availableCategories.map((cat) => (
                         <SelectItem key={cat} value={cat}>
-                          {CATEGORY_LABELS[cat]}
+                          {t(`cashflow.${CATEGORY_KEYS[cat]}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -246,10 +249,10 @@ export function CashflowTemplateForm({
               </div>
               <div className="flex justify-end gap-2">
                 <Button variant="ghost" size="sm" onClick={resetForm}>
-                  Cancel
+                  {tc("cancel")}
                 </Button>
                 <Button size="sm" onClick={handleSave}>
-                  {editingId ? "Update" : "Save"}
+                  {editingId ? t("cashflow.update") : tc("save")}
                 </Button>
               </div>
             </div>
@@ -257,7 +260,7 @@ export function CashflowTemplateForm({
 
           {!showForm && (
             <Button variant="outline" size="sm" onClick={() => setShowForm(true)}>
-              Add Recurring Item
+              {t("cashflow.addTemplate")}
             </Button>
           )}
         </CardContent>

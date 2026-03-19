@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -35,6 +36,7 @@ const ratingOrder: Record<string, number> = {
 };
 
 export function RoicRankingTable({ entries }: RoicRankingTableProps) {
+  const t = useTranslations("calculator");
   const [sortKey, setSortKey] = useState<SortKey>("roicCurrent");
   const [sortAsc, setSortAsc] = useState(false);
 
@@ -73,20 +75,20 @@ export function RoicRankingTable({ entries }: RoicRankingTableProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Stock Ranking</CardTitle>
+        <CardTitle>{t("roic.ranking")}</CardTitle>
       </CardHeader>
       <CardContent className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border">
               <th className={thClass} onClick={() => handleSort("ticker")}>
-                Ticker{sortIndicator("ticker")}
+                {t("roic.ticker")}{sortIndicator("ticker")}
               </th>
               <th className={thClass} onClick={() => handleSort("name")}>
-                Name{sortIndicator("name")}
+                {t("roic.name")}{sortIndicator("name")}
               </th>
               <th className={thClass} onClick={() => handleSort("roicCurrent")}>
-                ROIC Current{sortIndicator("roicCurrent")}
+                {t("roic.roicCurrent")}{sortIndicator("roicCurrent")}
               </th>
               {historyKeys.map((year) => (
                 <th key={year} className={`${thClass} cursor-default`}>
@@ -94,13 +96,13 @@ export function RoicRankingTable({ entries }: RoicRankingTableProps) {
                 </th>
               ))}
               <th className={thClass} onClick={() => handleSort("sloanRatio")}>
-                Sloan{sortIndicator("sloanRatio")}
+                {t("roic.sloan")}{sortIndicator("sloanRatio")}
               </th>
               <th className={thClass} onClick={() => handleSort("fairValue")}>
-                Fair Value{sortIndicator("fairValue")}
+                {t("roic.fairValue")}{sortIndicator("fairValue")}
               </th>
               <th className={thClass} onClick={() => handleSort("rating")}>
-                Rating{sortIndicator("rating")}
+                {t("roic.quality")}{sortIndicator("rating")}
               </th>
             </tr>
           </thead>

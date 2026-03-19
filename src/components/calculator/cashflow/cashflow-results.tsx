@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CashflowResults } from "@/lib/cashflow-math";
 import {
@@ -62,6 +63,7 @@ const LIFESTYLE_COLORS: Record<string, string> = {
 };
 
 export function CashflowResultsView({ results }: CashflowResultsViewProps) {
+  const t = useTranslations("calculator");
   const lifestyleData = Object.entries(results.lifestyleBreakdown)
     .filter(([, v]) => v > 0)
     .map(([key, value]) => ({
@@ -87,7 +89,7 @@ export function CashflowResultsView({ results }: CashflowResultsViewProps) {
       <div className="grid gap-4 sm:grid-cols-3">
         <Card>
           <CardContent className="py-4 text-center">
-            <p className="text-xs text-text-muted">Total Income</p>
+            <p className="text-xs text-text-muted">{t("cashflow.totalIncome")}</p>
             <p className="text-2xl font-bold text-success font-heading">
               {formatCurrency(results.totalIncome)}
             </p>
@@ -95,7 +97,7 @@ export function CashflowResultsView({ results }: CashflowResultsViewProps) {
         </Card>
         <Card>
           <CardContent className="py-4 text-center">
-            <p className="text-xs text-text-muted">Total Expenses</p>
+            <p className="text-xs text-text-muted">{t("cashflow.totalExpenses")}</p>
             <p className="text-2xl font-bold text-danger font-heading">
               {formatCurrency(results.totalExpenses)}
             </p>
@@ -103,7 +105,7 @@ export function CashflowResultsView({ results }: CashflowResultsViewProps) {
         </Card>
         <Card>
           <CardContent className="py-4 text-center">
-            <p className="text-xs text-text-muted">Net Cashflow</p>
+            <p className="text-xs text-text-muted">{t("cashflow.netCashflow")}</p>
             <p
               className={`text-2xl font-bold font-heading ${
                 results.netCashflow >= 0 ? "text-success" : "text-danger"
@@ -120,31 +122,31 @@ export function CashflowResultsView({ results }: CashflowResultsViewProps) {
         <Card>
           <CardContent className="flex flex-col gap-2 py-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-text">Savings & Investment Ratio</p>
+              <p className="text-sm font-medium text-text">{t("cashflow.savingsRatio")}</p>
               <p className="text-sm font-bold text-text">
                 {formatPercent(results.savingsInvestmentRatio)}
               </p>
             </div>
             <ProgressBar value={results.savingsInvestmentRatio} target={0.2} />
-            <p className="text-xs text-text-muted">Target: 20% of income</p>
+            <p className="text-xs text-text-muted">{t("cashflow.savingsTarget")}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex flex-col gap-2 py-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-text">Debt Service Ratio</p>
+              <p className="text-sm font-medium text-text">{t("cashflow.debtRatio")}</p>
               <p className="text-sm font-bold text-text">
                 {formatPercent(results.debtServiceRatio)}
               </p>
             </div>
             <ProgressBar value={results.debtServiceRatio} warning />
-            <p className="text-xs text-text-muted">Warning if above 40%</p>
+            <p className="text-xs text-text-muted">{t("cashflow.debtWarning")}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex flex-col gap-2 py-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-text">Insurance Ratio</p>
+              <p className="text-sm font-medium text-text">{t("cashflow.insuranceRatio")}</p>
               <p className="text-sm font-bold text-text">
                 {formatPercent(results.insuranceRiskRatio)}
               </p>
@@ -155,7 +157,7 @@ export function CashflowResultsView({ results }: CashflowResultsViewProps) {
         <Card>
           <CardContent className="flex flex-col gap-2 py-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-text">Tax-Deductible Total</p>
+              <p className="text-sm font-medium text-text">{t("cashflow.taxDeductible")}</p>
               <p className="text-sm font-bold text-text">
                 {formatCurrency(results.taxDeductibleTotal)}
               </p>
@@ -168,7 +170,7 @@ export function CashflowResultsView({ results }: CashflowResultsViewProps) {
       {lifestyleData.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Lifestyle Breakdown</CardTitle>
+            <CardTitle>{t("cashflow.lifestyle")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-[80px]">
