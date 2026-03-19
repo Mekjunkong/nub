@@ -281,14 +281,7 @@ export function Sidebar() {
       >
         {/* Header */}
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
-          {collapsed ? (
-            <Image src="/logo.png" alt="Nub" width={32} height={32} className="rounded-lg" />
-          ) : (
-            <div className="flex items-center gap-2">
-              <Image src="/logo.png" alt="Nub" width={36} height={36} className="rounded-lg" />
-              <span className="text-lg font-bold text-text font-heading">Nub</span>
-            </div>
-          )}
+          <Image src="/logo.png" alt="Nub" width={collapsed ? 36 : 44} height={collapsed ? 36 : 44} className="rounded-lg" />
           <button
             type="button"
             onClick={() => setCollapsed(!collapsed)}
