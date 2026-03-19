@@ -422,3 +422,97 @@ export interface PortfolioHealthResults {
   performanceComment: string;
   riskComment: string;
 }
+
+// ===== Bumnan 95 Annuity Planner =====
+
+export interface Bumnan95Inputs {
+  currentAge: number;
+  retirementAge: number;
+  lifeExpectancy: number;
+  monthlyExpenses: number;
+  inflationRate: number;
+  portfolioReturn: number;
+  portfolioSD: number;
+  currentSavings: number;
+  governmentPension: number;
+  gender: "male" | "female";
+  annuityStartAge: number;
+  annuityPaymentYears: number;
+  annuityRate: number;
+  simulations: number;
+}
+
+export interface Bumnan95Tier {
+  monthlyPension: number;
+  successRate: number;
+  requiredPortfolio: number;
+  monthlySaving: number;
+  status: "RISKY" | "MODERATE" | "STRONG" | "SECURED";
+}
+
+export interface Bumnan95Results {
+  targetCorpus: number;
+  estimatedGPF: number;
+  pensionLumpSum: number;
+  retirementGap: number;
+  gapStatus: "SAFE" | "GAP_EXISTS";
+  tiers: Bumnan95Tier[];
+  annualPremium: number;
+  paymentDuration: number;
+  totalPremiumPaid: number;
+  lumpSumNeeded: number;
+  monthlyTopUp: number;
+  recommendedStrategy: string;
+}
+
+// ===== Enhanced Withdrawal — Pension Comparison =====
+
+export interface WithdrawalComparisonInputs extends MonteCarloInputs {
+  comparisonPension: number;
+}
+
+export interface WithdrawalComparisonResults {
+  baseline: MonteCarloResults & { avgAgeOfRuin: number };
+  withPension: MonteCarloResults & { avgAgeOfRuin: number };
+  improvement: {
+    successRateDelta: number;
+    finalWealthDelta: number;
+    longevityDelta: number;
+  };
+  verdict: string;
+}
+
+// ===== Enhanced Stress Test — Bear Market Injection =====
+
+export interface EnhancedStressTestInputs extends StressTestInputs {
+  bearMarketEnabled: boolean;
+  bearMarketReturn: number;
+  bearMarketYears: number;
+  rebalanceFrequencyMonths: number;
+}
+
+export interface TimelineRiskEntry {
+  year: number;
+  principal: number;
+  probOfLoss: number;
+  probOfDoubling: number;
+}
+
+export interface BearMarketImpact {
+  drawdownDuringBear: number;
+  recoveryMonths: number;
+  wealthAtBearEnd: number;
+}
+
+export interface RebalancedPathEntry {
+  month: number;
+  action: "DCA" | "DCA+Rebal";
+  totalWealth: number;
+  drawdown: number;
+}
+
+export interface EnhancedStressTestResults extends StressTestResults {
+  timelineRisk: TimelineRiskEntry[];
+  bearMarketImpact: BearMarketImpact;
+  rebalancedPath: RebalancedPathEntry[];
+}
