@@ -20,6 +20,7 @@ import {
   DollarSign,
   Receipt,
   Landmark,
+  Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageToggle } from "./language-toggle";
@@ -81,6 +82,16 @@ export function Sidebar() {
           href: `/${locale}/calculator/tax`,
           label: locale === "th" ? "ภาษี" : "Tax",
           icon: <Receipt className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/cashflow`,
+          label: locale === "th" ? "กระแสเงินสด" : "Cashflow",
+          icon: <Wallet className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/roic`,
+          label: "ROIC",
+          icon: <BarChart3 className="h-4 w-4" />,
         },
       ],
     },
