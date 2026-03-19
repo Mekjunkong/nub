@@ -256,3 +256,51 @@ export interface TaxResults {
   recommendations: TaxRecommendation[];
   totalDeductions: number;
 }
+
+// ===== ROIC Analyzer =====
+
+export type { RoicInputs, RoicResults } from "@/lib/roic-math";
+
+// ===== Cashflow Tracker =====
+
+export type { CashflowTransactionInput, CashflowResults } from "@/lib/cashflow-math";
+
+// ===== Wealth Pillars =====
+
+export interface InsurancePolicy {
+  name: string;
+  type: "wholelife" | "saving" | "annuity" | "term" | "critical_illness" | "health";
+  deathBenefit: number;
+  ciCoverage: number;
+  surrenderValue: number;
+  annualPremium: number;
+}
+
+export interface WealthPillarData {
+  emergency: {
+    balance: number;
+    monthlyExpenses: number;
+    monthsCoverage: number;
+    status: "STRONG" | "MODERATE" | "WEAK";
+  };
+  education: {
+    currentAmount: number;
+    goalAmount: number;
+    progressPercent: number;
+    targetDate: string;
+  };
+  retirement: {
+    gpfValue: number;
+    rmfValue: number;
+    otherRetirement: number;
+    totalRetirement: number;
+    targetCorpus: number;
+    progressPercent: number;
+  };
+  insurance: {
+    totalDeathBenefit: number;
+    totalCICoverage: number;
+    totalSurrenderValue: number;
+    policies: InsurancePolicy[];
+  };
+}
