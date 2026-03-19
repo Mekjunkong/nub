@@ -1,0 +1,89 @@
+"use client";
+
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RoicForm } from "@/components/calculator/roic/roic-form";
+import { RoicResultsView } from "@/components/calculator/roic/roic-results";
+import { RoicRankingTable } from "@/components/calculator/roic/roic-ranking-table";
+import { calculateRoic } from "@/lib/roic-math";
+import type { RoicResults } from "@/lib/roic-math";
+
+const SAMPLE_STOCKS = [
+  {
+    ticker: "MEGA",
+    name: "Mega Lifesciences",
+    roicCurrent: 0.1872,
+    roicHistory: { "2566": 0.17, "2565": 0.16 },
+    sloanRatio: -0.013,
+    fairValue: 31208,
+    rating: "Good",
+  },
+  {
+    ticker: "BH",
+    name: "Bumrungrad Hospital",
+    roicCurrent: 0.257,
+    roicHistory: { "2566": 0.22, "2565": 0.2 },
+    sloanRatio: -0.02,
+    fairValue: 127188,
+    rating: "Excellent",
+  },
+  {
+    ticker: "ADVANC",
+    name: "Advanced Info Service",
+    roicCurrent: 0.1276,
+    roicHistory: { "2566": 0.13, "2565": 0.12 },
+    sloanRatio: -0.01,
+    fairValue: 475567,
+    rating: "Moderate",
+  },
+  {
+    ticker: "BDMS",
+    name: "Bangkok Dusit Medical",
+    roicCurrent: 0.1647,
+    roicHistory: { "2566": 0.15, "2565": 0.14 },
+    sloanRatio: -0.008,
+    fairValue: 303820,
+    rating: "Good",
+  },
+];
+
+export default function RoicPage() {
+  const [results, setResults] = useState<RoicResults | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  function handleCalculate(inputs: Parameters<typeof calculateRoic>[0]) {
+    try {
+      setError(null);
+      setResults(calculateRoic(inputs));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Calculation error");
+      setResults(null);
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-bold text-text font-heading">ROIC Stock Analyzer</h1>
+        <p className="text-sm text-text-muted">
+          Analyze Return on Invested Capital and stock fair value
+        </p>
+      </div>
+
+      <Tabs defaultValue="analyze">
+        <TabsList>
+          <TabsTrigger value="analyze">Analyze</TabsTrigger>
+          <TabsTrigger value="ranking">Ranking</TabsTrigger>
+        </TabsList>
+        <TabsContent value="analyze" className="flex flex-col gap-6 mt-4">
+          <RoicForm onCalculate={handleCalculate} />
+          {error && <p className="text-danger text-sm">{error}</p>}
+          {results && <RoicResultsView results={results} />}
+        </TabsContent>
+        <TabsContent value="ranking" className="mt-4">
+          <RoicRankingTable entries={SAMPLE_STOCKS} />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
