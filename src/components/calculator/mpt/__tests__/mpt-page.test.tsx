@@ -18,9 +18,9 @@ import { MptResultsView } from "../mpt-results";
 
 describe("FundSelector", () => {
   const mockFunds = [
-    { id: "1", ticker: "SCBRMS&P500", name: "S&P 500", expectedReturn: 0.08, standardDeviation: 0.1858 },
-    { id: "2", ticker: "SCBRM2", name: "Bond", expectedReturn: 0.025, standardDeviation: 0.0191 },
-    { id: "3", ticker: "SCBRMGOLDH", name: "Gold", expectedReturn: 0.05, standardDeviation: 0.1511 },
+    { id: "1", ticker: "SCBRMS&P500", name_th: "S&P 500", name_en: "S&P 500", category: "equity" as const, expected_return: 0.08, standard_deviation: 0.1858, roic_current: null, roic_history: null, nav_history: null, affiliate_url: null, updated_at: "", source_url: null },
+    { id: "2", ticker: "SCBRM2", name_th: "Bond", name_en: "Bond", category: "bond" as const, expected_return: 0.025, standard_deviation: 0.0191, roic_current: null, roic_history: null, nav_history: null, affiliate_url: null, updated_at: "", source_url: null },
+    { id: "3", ticker: "SCBRMGOLDH", name_th: "Gold", name_en: "Gold", category: "gold" as const, expected_return: 0.05, standard_deviation: 0.1511, roic_current: null, roic_history: null, nav_history: null, affiliate_url: null, updated_at: "", source_url: null },
   ];
 
   it("renders fund list", () => {
