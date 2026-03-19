@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { TimelineRiskEntry } from "@/types/calculator";
 
@@ -8,20 +9,22 @@ interface StressTimelineRiskProps {
 }
 
 export function StressTimelineRisk({ data }: StressTimelineRiskProps) {
+  const t = useTranslations("stress_test");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Timeline Risk Analysis</CardTitle>
+        <CardTitle>{t("timelineRisk")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-text-muted">
-                <th className="pb-2 pr-4">Year</th>
-                <th className="pb-2 pr-4">Principal (฿)</th>
-                <th className="pb-2 pr-4">Prob of Loss</th>
-                <th className="pb-2">Prob of 2x</th>
+                <th className="pb-2 pr-4">{t("year")}</th>
+                <th className="pb-2 pr-4">{t("principal")}</th>
+                <th className="pb-2 pr-4">{t("probOfLoss")}</th>
+                <th className="pb-2">{t("probOfDoubling")}</th>
               </tr>
             </thead>
             <tbody>

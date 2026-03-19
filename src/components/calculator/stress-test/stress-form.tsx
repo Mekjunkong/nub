@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { StressTestInputs } from "@/types/calculator";
@@ -10,6 +11,7 @@ interface StressFormProps {
 }
 
 export function StressForm({ onCalculate }: StressFormProps) {
+  const t = useTranslations("stress_test");
   const [values, setValues] = useState<StressTestInputs>({
     expectedReturn: 0.005,
     sd: 0.04,
@@ -31,20 +33,20 @@ export function StressForm({ onCalculate }: StressFormProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label="Expected Return (% monthly)" type="number" value={values.expectedReturn * 100} onChange={(e) => handleChange("expectedReturn", Number(e.target.value) / 100)} />
-        <Input label="Standard Deviation (% monthly)" type="number" value={values.sd * 100} onChange={(e) => handleChange("sd", Number(e.target.value) / 100)} />
+        <Input label={t("expectedReturn")} type="number" value={values.expectedReturn * 100} onChange={(e) => handleChange("expectedReturn", Number(e.target.value) / 100)} />
+        <Input label={t("standardDeviation")} type="number" value={values.sd * 100} onChange={(e) => handleChange("sd", Number(e.target.value) / 100)} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label="Periods (months)" type="number" value={values.periods} onChange={(e) => handleChange("periods", Number(e.target.value))} />
-        <Input label="DCA Amount (THB)" type="number" value={values.dcaAmount} onChange={(e) => handleChange("dcaAmount", Number(e.target.value))} />
+        <Input label={t("periods")} type="number" value={values.periods} onChange={(e) => handleChange("periods", Number(e.target.value))} />
+        <Input label={t("dcaAmount")} type="number" value={values.dcaAmount} onChange={(e) => handleChange("dcaAmount", Number(e.target.value))} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label="VaR Start Period" type="number" value={values.varStartPeriod} onChange={(e) => handleChange("varStartPeriod", Number(e.target.value))} />
-        <Input label="Black Swan Start Period" type="number" value={values.blackSwanStartPeriod} onChange={(e) => handleChange("blackSwanStartPeriod", Number(e.target.value))} />
+        <Input label={t("varStartPeriod")} type="number" value={values.varStartPeriod} onChange={(e) => handleChange("varStartPeriod", Number(e.target.value))} />
+        <Input label={t("blackSwanStart")} type="number" value={values.blackSwanStartPeriod} onChange={(e) => handleChange("blackSwanStartPeriod", Number(e.target.value))} />
       </div>
-      <Input label="Black Swan Duration (months)" type="number" value={values.blackSwanConsecutivePeriods} onChange={(e) => handleChange("blackSwanConsecutivePeriods", Number(e.target.value))} />
+      <Input label={t("blackSwanDuration")} type="number" value={values.blackSwanConsecutivePeriods} onChange={(e) => handleChange("blackSwanConsecutivePeriods", Number(e.target.value))} />
       <div className="flex justify-end">
-        <Button onClick={() => onCalculate(values)}>Run Stress Test</Button>
+        <Button onClick={() => onCalculate(values)}>{t("runStressTest")}</Button>
       </div>
     </div>
   );

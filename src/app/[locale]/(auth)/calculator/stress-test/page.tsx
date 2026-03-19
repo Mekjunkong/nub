@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { StressForm } from "@/components/calculator/stress-test/stress-form";
 import { StressResults } from "@/components/calculator/stress-test/stress-results";
 import { StressBearImpact } from "@/components/calculator/stress-test/stress-bear-impact";
@@ -13,6 +14,7 @@ import { runStressTest, runEnhancedStressTest } from "@/workers/stress-test.work
 import type { StressTestInputs, StressTestResults, EnhancedStressTestResults } from "@/types/calculator";
 
 export default function StressTestPage() {
+  const t = useTranslations("stress_test");
   const [results, setResults] = useState<StressTestResults | null>(null);
   const [enhancedResults, setEnhancedResults] = useState<EnhancedStressTestResults | null>(null);
   const [bearEnabled, setBearEnabled] = useState(false);
@@ -41,23 +43,23 @@ export default function StressTestPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-text font-heading">Portfolio Stress Test</h1>
-        <p className="text-sm text-text-muted">Test your portfolio under crisis scenarios</p>
+        <h1 className="text-2xl font-bold text-text font-heading">{t("title")}</h1>
+        <p className="text-sm text-text-muted">{t("description")}</p>
       </div>
       <Card>
-        <CardHeader><CardTitle>Parameters</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t("parameters")}</CardTitle></CardHeader>
         <CardContent>
           <StressForm onCalculate={handleCalculate} />
           <div className="mt-4 rounded-lg border border-border p-3">
             <div className="flex items-center gap-4">
               <Switch checked={bearEnabled} onCheckedChange={setBearEnabled} />
-              <span className="text-sm font-medium text-text">Inject bear market?</span>
+              <span className="text-sm font-medium text-text">{t("bearToggle")}</span>
             </div>
             {bearEnabled && (
               <div className="mt-3 grid gap-4 sm:grid-cols-3">
-                <Input label="Annual Bear Return (%)" type="number" value={bearReturn} onChange={(e) => setBearReturn(Number(e.target.value))} />
-                <Input label="Bear Duration (Years)" type="number" value={bearYears} onChange={(e) => setBearYears(Number(e.target.value))} />
-                <Input label="Rebalance Every (months)" type="number" value={rebalanceFreq} onChange={(e) => setRebalanceFreq(Number(e.target.value))} />
+                <Input label={t("bearReturn")} type="number" value={bearReturn} onChange={(e) => setBearReturn(Number(e.target.value))} />
+                <Input label={t("bearDuration")} type="number" value={bearYears} onChange={(e) => setBearYears(Number(e.target.value))} />
+                <Input label={t("rebalanceEvery")} type="number" value={rebalanceFreq} onChange={(e) => setRebalanceFreq(Number(e.target.value))} />
               </div>
             )}
           </div>

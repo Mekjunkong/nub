@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { RebalancedPathEntry } from "@/types/calculator";
 
@@ -8,20 +9,22 @@ interface StressRebalanceLogProps {
 }
 
 export function StressRebalanceLog({ data }: StressRebalanceLogProps) {
+  const t = useTranslations("stress_test");
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>DCA & Rebalance Log</CardTitle>
+        <CardTitle>{t("rebalanceLog")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="max-h-96 overflow-y-auto">
           <table className="w-full text-sm">
             <thead className="sticky top-0 bg-surface">
               <tr className="border-b border-border text-left text-text-muted">
-                <th className="pb-2 pr-4">Month</th>
-                <th className="pb-2 pr-4">Action</th>
-                <th className="pb-2 pr-4">Total Wealth</th>
-                <th className="pb-2">Drawdown</th>
+                <th className="pb-2 pr-4">{t("month")}</th>
+                <th className="pb-2 pr-4">{t("action")}</th>
+                <th className="pb-2 pr-4">{t("totalWealth")}</th>
+                <th className="pb-2">{t("drawdown")}</th>
               </tr>
             </thead>
             <tbody>
