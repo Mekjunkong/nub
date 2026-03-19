@@ -8,7 +8,13 @@ export type PlanType =
   | "stress_test"
   | "mpt"
   | "dca"
-  | "tax";
+  | "tax"
+  | "cashflow"
+  | "roic"
+  | "gpf_optimizer"
+  | "tipp"
+  | "portfolio_health"
+  | "bumnan95";
 export type FundCategory =
   | "equity"
   | "bond"
@@ -219,6 +225,67 @@ export interface ChatDailyUsage {
   message_count: number;
 }
 
+export type CashflowDirection = "income" | "expense" | "saving" | "investment";
+export type CashflowCategory =
+  | "salary" | "overtime" | "bonus" | "allowance"
+  | "insurance_life" | "insurance_health" | "insurance_pension"
+  | "rmf" | "ssf" | "pvd" | "gpf" | "tesg"
+  | "personal" | "family" | "transport" | "education"
+  | "travel" | "housing" | "debt" | "donation" | "other";
+
+export interface CashflowTemplate {
+  id: string;
+  user_id: string;
+  name: string;
+  direction: CashflowDirection;
+  category: CashflowCategory;
+  amount: number;
+  is_active: boolean;
+  updated_at: string;
+  created_at: string;
+}
+
+export interface CashflowTransaction {
+  id: string;
+  user_id: string;
+  template_id: string | null;
+  direction: CashflowDirection;
+  category: CashflowCategory;
+  name: string;
+  amount: number;
+  month: number;
+  year: number;
+  created_at: string;
+}
+
+export type WealthPillarType = "emergency" | "education" | "retirement" | "insurance";
+
+export interface InsurancePolicyRow {
+  name: string;
+  type: "wholelife" | "saving" | "annuity" | "term" | "critical_illness" | "health";
+  death_benefit: number;
+  ci_coverage: number;
+  surrender_value: number;
+  annual_premium: number;
+}
+
+export interface WealthPillarRow {
+  id: string;
+  user_id: string;
+  pillar_type: WealthPillarType;
+  balance: number | null;
+  monthly_expenses: number | null;
+  goal_amount: number | null;
+  current_amount: number | null;
+  target_date: string | null;
+  gpf_value: number | null;
+  rmf_value: number | null;
+  other_retirement: number | null;
+  target_corpus: number | null;
+  policies: InsurancePolicyRow[] | null;
+  updated_at: string;
+}
+
 // ===== Database Type (Supabase compatible) =====
 
 export interface Database {
@@ -324,6 +391,24 @@ export interface Database {
         Update: Partial<ChatDailyUsage>;
         Relationships: [];
       };
+      cashflow_templates: {
+        Row: CashflowTemplate;
+        Insert: Omit<CashflowTemplate, "id" | "created_at" | "updated_at"> & { id?: string };
+        Update: Partial<CashflowTemplate>;
+        Relationships: [];
+      };
+      cashflow_transactions: {
+        Row: CashflowTransaction;
+        Insert: Omit<CashflowTransaction, "id" | "created_at"> & { id?: string };
+        Update: Partial<CashflowTransaction>;
+        Relationships: [];
+      };
+      wealth_pillars: {
+        Row: WealthPillarRow;
+        Insert: Omit<WealthPillarRow, "id" | "updated_at"> & { id?: string };
+        Update: Partial<WealthPillarRow>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -345,6 +430,8 @@ export interface Database {
       vote_target_type: VoteTargetType;
       glossary_category: GlossaryCategory;
       language: Language;
+      cashflow_direction: CashflowDirection;
+      cashflow_category: CashflowCategory;
     };
   };
 }
