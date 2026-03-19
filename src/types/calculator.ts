@@ -304,3 +304,121 @@ export interface WealthPillarData {
     policies: InsurancePolicy[];
   };
 }
+
+// ===== GPF Portfolio Optimizer =====
+
+export interface GpfOptimizerInputs {
+  currentHoldings: { bondPlan: number; equityPlan: number; goldPlan: number };
+  monthlyContribution: number;
+  investmentYears: number;
+  riskFreeRate: number;
+  assetReturns: number[];
+  assetSDs: number[];
+  correlationMatrix: number[][];
+  rebalanceFrequency: number;
+  simulations: number;
+}
+
+export interface GpfRebalanceAction {
+  asset: string;
+  action: "BUY" | "SELL" | "HOLD";
+  amount: number;
+}
+
+export interface GpfDrawdownYear {
+  year: number;
+  avgMDD: number;
+  worstMDD: number;
+  recoveryMonths: number;
+}
+
+export interface GpfOptimizerResults {
+  maxSharpe: { weights: number[]; expectedReturn: number; risk: number; sharpeRatio: number };
+  minVol: { weights: number[]; expectedReturn: number; risk: number; sharpeRatio: number };
+  var95: number;
+  var99: number;
+  cvar95: number;
+  cvar99: number;
+  probabilityOfRuin: number;
+  rebalanceActions: GpfRebalanceAction[];
+  wealthProjections: { average: number; median: number; conservative: number; bull: number; successRate: number };
+  maxDrawdownByYear: GpfDrawdownYear[];
+}
+
+// ===== TIPP/VPPI Portfolio Protection =====
+
+export interface TippInputs {
+  initialCapital: number;
+  floorPercentage: number;
+  maxMultiplier: number;
+  riskFreeRate: number;
+  assets: { name: string; monthlyReturns: number[] }[];
+  correlationMatrix: number[][];
+  targetVolatility: number;
+  rebalanceThreshold: number;
+  simulationMonths: number;
+}
+
+export interface TippWealthPoint {
+  month: number;
+  wealth: number;
+  floor: number;
+  multiplier: number;
+  action: string;
+}
+
+export interface TippResults {
+  expectedReturn: number;
+  annualSD: number;
+  sharpeRatio: number;
+  var95: number;
+  var99: number;
+  cvar95: number;
+  cvar99: number;
+  currentMultiplier: number;
+  floorValue: number;
+  cushion: number;
+  safetyStatus: "SAFE" | "WARNING" | "DANGER";
+  wealthPath: TippWealthPoint[];
+  finalWealth: number;
+  maxDrawdown: number;
+  riskyWeight: number;
+  safeWeight: number;
+}
+
+// ===== Portfolio Health Dashboard =====
+
+export interface PortfolioHealthInputs {
+  totalNAV: number;
+  previousNAV: number;
+  monthlyDCA: number;
+  holdings: { asset: string; weight: number; expectedReturn: number; sd: number }[];
+  correlationMatrix: number[][];
+  benchmarkReturn: number;
+  riskFreeRate: number;
+  investmentYears: number;
+  simulations: number;
+}
+
+export interface DrawdownYearAnalysis {
+  year: number;
+  avgMDD: number;
+  worstMDD: number;
+  avgRecoveryMonths: number;
+  worstRecoveryMonths: number;
+}
+
+export interface PortfolioHealthResults {
+  monthlyReturn: number;
+  targetReturn: number;
+  projectedReturn: number;
+  benchmarkReturn: number;
+  alpha: number;
+  sharpeRatio: number;
+  sharpeRating: string;
+  portfolioRisk: number;
+  riskLevel: "Low" | "Moderate" | "High";
+  drawdownAnalysis: DrawdownYearAnalysis[];
+  performanceComment: string;
+  riskComment: string;
+}
