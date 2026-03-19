@@ -219,6 +219,27 @@
       "safeAllocation": "สัดส่วนปลอดภัย",
       "strategyChart": "ผลการดำเนินกลยุทธ์",
       "riskDashboard": "แดชบอร์ดความเสี่ยง"
+    },
+    "bumnan95": {
+      "title": "เครื่องมือวางแผน บำนาญ 95",
+      "subtitle": "วางแผนเงินบำนาญเพื่อปิดช่องว่างเกษียณ",
+      "gapAnalysis": "วิเคราะห์ช่องว่างเกษียณ",
+      "targetCorpus": "เงินเป้าหมาย",
+      "estimatedGPF": "ประมาณการ กบข.",
+      "retirementGap": "ช่องว่างเกษียณ",
+      "safe": "ปลอดภัย",
+      "gapExists": "มีช่องว่าง",
+      "tierTable": "ตารางเป้าหมายบำนาญ",
+      "monthlyPension": "เงินบำนาญรายเดือน",
+      "successRate": "อัตราความสำเร็จ",
+      "requiredPortfolio": "พอร์ตที่ต้องการ",
+      "monthlySaving": "เงินออมรายเดือน",
+      "premiumCalc": "เบี้ยประกันบำนาญ",
+      "annualPremium": "เบี้ยประกันรายปี",
+      "totalCost": "เบี้ยรวมทั้งหมด",
+      "strategies": "กลยุทธ์ปิดช่องว่าง",
+      "lumpSum": "ทางเลือก A: ลงทุนก้อนเดียว",
+      "monthlyTopUp": "ทางเลือก B: ออมเพิ่มรายเดือน"
     }
   },
   "retirement": {
@@ -245,7 +266,14 @@
     "monthlyWithdrawal": "ถอนต่อเดือน",
     "survivalRate": "อัตราการอยู่รอด",
     "simulations": "จำนวนรอบจำลอง",
-    "refining": "กำลังปรับปรุงผลลัพธ์..."
+    "refining": "กำลังปรับปรุงผลลัพธ์...",
+    "comparison": "เปรียบเทียบบำนาญ",
+    "compareToggle": "เปรียบเทียบกับบำนาญ?",
+    "pensionAmount": "เงินบำนาญเพิ่มเติมรายเดือน",
+    "baseline": "แผนปัจจุบัน",
+    "withPension": "มีบำนาญเพิ่ม",
+    "improvement": "การปรับปรุง",
+    "verdict": "สรุป"
   },
   "stress_test": {
     "title": "ทดสอบความเครียดพอร์ต",
@@ -256,7 +284,16 @@
     "combined": "สถานการณ์รวม",
     "maxDrawdown": "การลดลงสูงสุด",
     "doublingProbability": "โอกาสเงินเพิ่มเท่าตัว",
-    "recoveryTime": "เวลาฟื้นตัว"
+    "recoveryTime": "เวลาฟื้นตัว",
+    "bearMarket": "จำลองตลาดหมี",
+    "bearToggle": "จำลองตลาดหมี?",
+    "bearReturn": "ผลตอบแทนตลาดหมี (ปี)",
+    "bearYears": "ระยะเวลาตลาดหมี (ปี)",
+    "timelineRisk": "วิเคราะห์ความเสี่ยงตามช่วงเวลา",
+    "probOfLoss": "โอกาสขาดทุน",
+    "probOfDoubling": "โอกาสได้ 2 เท่า",
+    "bearImpact": "ผลกระทบตลาดหมี",
+    "rebalanceLog": "บันทึก DCA และปรับสมดุล"
   },
   "mpt": {
     "title": "จัดพอร์ตด้วย MPT",

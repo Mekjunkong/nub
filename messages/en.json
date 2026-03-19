@@ -219,6 +219,27 @@
       "safeAllocation": "Safe Allocation",
       "strategyChart": "Strategy Performance",
       "riskDashboard": "Risk Dashboard"
+    },
+    "bumnan95": {
+      "title": "Bumnan 95 Annuity Planner",
+      "subtitle": "Plan pension income to close your retirement gap",
+      "gapAnalysis": "Retirement Gap Analysis",
+      "targetCorpus": "Target Corpus",
+      "estimatedGPF": "Estimated GPF",
+      "retirementGap": "Retirement Gap",
+      "safe": "Safe",
+      "gapExists": "Gap Exists",
+      "tierTable": "Pension Goal Matrix",
+      "monthlyPension": "Monthly Pension",
+      "successRate": "Success Rate",
+      "requiredPortfolio": "Required Portfolio",
+      "monthlySaving": "Monthly Saving",
+      "premiumCalc": "Annuity Premium",
+      "annualPremium": "Annual Premium",
+      "totalCost": "Total Premium Paid",
+      "strategies": "Gap-Closing Strategies",
+      "lumpSum": "Option A: Lump Sum Now",
+      "monthlyTopUp": "Option B: Monthly Top-Up"
     }
   },
   "retirement": {
@@ -245,7 +266,14 @@
     "monthlyWithdrawal": "Monthly Withdrawal",
     "survivalRate": "Survival Rate",
     "simulations": "Simulation Rounds",
-    "refining": "Refining results..."
+    "refining": "Refining results...",
+    "comparison": "Pension Comparison",
+    "compareToggle": "Compare with pension?",
+    "pensionAmount": "Additional Monthly Pension",
+    "baseline": "Current Plan",
+    "withPension": "With Pension",
+    "improvement": "Improvement",
+    "verdict": "Verdict"
   },
   "stress_test": {
     "title": "Portfolio Stress Test",
@@ -256,7 +284,16 @@
     "combined": "Combined",
     "maxDrawdown": "Max Drawdown",
     "doublingProbability": "Doubling Probability",
-    "recoveryTime": "Recovery Time"
+    "recoveryTime": "Recovery Time",
+    "bearMarket": "Bear Market Injection",
+    "bearToggle": "Inject bear market?",
+    "bearReturn": "Annual Bear Return",
+    "bearYears": "Bear Duration (Years)",
+    "timelineRisk": "Timeline Risk Analysis",
+    "probOfLoss": "Probability of Loss",
+    "probOfDoubling": "Probability of 2x",
+    "bearImpact": "Bear Market Impact",
+    "rebalanceLog": "DCA & Rebalance Log"
   },
   "mpt": {
     "title": "MPT Portfolio Optimizer",
