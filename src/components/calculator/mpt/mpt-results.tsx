@@ -9,9 +9,10 @@ import { SavePlanButton } from "@/components/calculator/shared/save-plan-button"
 interface MptResultsViewProps {
   results: MptResults;
   assetNames: string[];
+  inputs?: Record<string, unknown>;
 }
 
-export function MptResultsView({ results, assetNames }: MptResultsViewProps) {
+export function MptResultsView({ results, assetNames, inputs = {} }: MptResultsViewProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -62,7 +63,7 @@ export function MptResultsView({ results, assetNames }: MptResultsViewProps) {
       </Card>
 
       <div className="flex justify-end">
-        <SavePlanButton onSave={async (name) => console.log("Save:", name)} />
+        <SavePlanButton planType="mpt" inputs={inputs} results={results as unknown as Record<string, unknown>} />
       </div>
       <FinancialDisclaimer />
     </div>

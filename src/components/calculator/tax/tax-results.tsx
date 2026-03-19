@@ -8,9 +8,10 @@ import { SavePlanButton } from "@/components/calculator/shared/save-plan-button"
 
 interface TaxResultsViewProps {
   results: TaxResults;
+  inputs?: Record<string, unknown>;
 }
 
-export function TaxResultsView({ results }: TaxResultsViewProps) {
+export function TaxResultsView({ results, inputs = {} }: TaxResultsViewProps) {
   const formatCurrency = (v: number) => new Intl.NumberFormat("th-TH", { maximumFractionDigits: 0 }).format(v);
 
   return (
@@ -50,7 +51,7 @@ export function TaxResultsView({ results }: TaxResultsViewProps) {
       )}
 
       <div className="flex justify-end">
-        <SavePlanButton onSave={async (name) => console.log("Save:", name)} />
+        <SavePlanButton planType="tax" inputs={inputs} results={results as unknown as Record<string, unknown>} />
       </div>
       <FinancialDisclaimer />
     </div>

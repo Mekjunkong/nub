@@ -8,9 +8,10 @@ import { SavePlanButton } from "@/components/calculator/shared/save-plan-button"
 
 interface DcaResultsViewProps {
   results: DcaResults;
+  inputs?: Record<string, unknown>;
 }
 
-export function DcaResultsView({ results }: DcaResultsViewProps) {
+export function DcaResultsView({ results, inputs = {} }: DcaResultsViewProps) {
   const formatCurrency = (v: number) => new Intl.NumberFormat("th-TH", { maximumFractionDigits: 0 }).format(v);
   const strategies = [
     { key: "Static" as const, data: results.static },
@@ -49,7 +50,7 @@ export function DcaResultsView({ results }: DcaResultsViewProps) {
       )}
 
       <div className="flex justify-end">
-        <SavePlanButton onSave={async (name) => console.log("Save:", name)} />
+        <SavePlanButton planType="dca" inputs={inputs} results={results as unknown as Record<string, unknown>} />
       </div>
       <FinancialDisclaimer />
     </div>

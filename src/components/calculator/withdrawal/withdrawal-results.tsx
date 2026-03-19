@@ -11,9 +11,10 @@ import { SavePlanButton } from "@/components/calculator/shared/save-plan-button"
 interface WithdrawalResultsProps {
   results: MonteCarloResults;
   isRefining: boolean;
+  inputs?: Record<string, unknown>;
 }
 
-export function WithdrawalResults({ results, isRefining }: WithdrawalResultsProps) {
+export function WithdrawalResults({ results, isRefining, inputs = {} }: WithdrawalResultsProps) {
   const formatCurrency = (v: number) =>
     new Intl.NumberFormat("th-TH", { maximumFractionDigits: 0 }).format(v);
 
@@ -66,7 +67,7 @@ export function WithdrawalResults({ results, isRefining }: WithdrawalResultsProp
       )}
 
       <div className="flex justify-end">
-        <SavePlanButton onSave={async (name) => console.log("Save:", name)} />
+        <SavePlanButton planType="withdrawal" inputs={inputs} results={results as unknown as Record<string, unknown>} />
       </div>
 
       <FinancialDisclaimer />

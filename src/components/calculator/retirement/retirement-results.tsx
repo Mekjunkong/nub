@@ -9,9 +9,10 @@ import { SavePlanButton } from "@/components/calculator/shared/save-plan-button"
 
 interface RetirementResultsProps {
   results: Results;
+  inputs?: Record<string, unknown>;
 }
 
-export function RetirementResults({ results }: RetirementResultsProps) {
+export function RetirementResults({ results, inputs = {} }: RetirementResultsProps) {
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat("th-TH", { maximumFractionDigits: 0 }).format(value);
 
@@ -21,11 +22,6 @@ export function RetirementResults({ results }: RetirementResultsProps) {
     savings: p.savings,
     milestone: null as string | null,
   }));
-
-  async function handleSave(name: string) {
-    // Will be connected to Supabase
-    console.log("Saving plan:", name, results);
-  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -81,7 +77,7 @@ export function RetirementResults({ results }: RetirementResultsProps) {
 
       {/* Save & Share */}
       <div className="flex justify-end">
-        <SavePlanButton onSave={handleSave} />
+        <SavePlanButton planType="retirement" inputs={inputs} results={results as unknown as Record<string, unknown>} />
       </div>
 
       <FinancialDisclaimer />

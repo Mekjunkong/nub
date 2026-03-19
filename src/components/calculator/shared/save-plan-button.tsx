@@ -1,52 +1,93 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale } from "next-intl";
-import { Save, Share2 } from "lucide-react";
+import { Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { createClient } from "@/lib/supabase/client";
+import type { PlanType } from "@/types/database";
 
 interface SavePlanButtonProps {
-  onSave: (name: string) => Promise<void>;
-  onShare?: () => void;
+  planType: PlanType;
+  inputs: Record<string, unknown>;
+  results: Record<string, unknown>;
 }
 
-export function SavePlanButton({ onSave, onShare }: SavePlanButtonProps) {
-  const locale = useLocale();
+export function SavePlanButton({ planType, inputs, results }: SavePlanButtonProps) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   async function handleSave() {
+    if (!name.trim()) return;
     setSaving(true);
-    const name = prompt(
-      locale === "th" ? "ตั้งชื่อแผนของคุณ:" : "Name your plan:"
-    );
-    if (name) {
-      await onSave(name);
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      await supabase.from("saved_plans").insert({
+        user_id: user.id,
+        plan_type: planType,
+        name: name.trim(),
+        inputs,
+        results,
+        is_favorite: false,
+        version: 1,
+        parent_version_id: null,
+      });
+
       setSaved(true);
+      setTimeout(() => {
+        setOpen(false);
+        setSaved(false);
+        setName("");
+      }, 1500);
+    } catch (e) {
+      console.error("Failed to save plan:", e);
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   }
 
   return (
-    <div className="flex gap-2">
-      <Button
-        variant={saved ? "secondary" : "outline"}
-        size="sm"
-        onClick={handleSave}
-        loading={saving}
-        disabled={saved}
-      >
-        <Save className="h-4 w-4" />
-        {saved
-          ? locale === "th" ? "บันทึกแล้ว" : "Saved"
-          : locale === "th" ? "บันทึกแผน" : "Save Plan"}
+    <>
+      <Button variant="secondary" size="sm" onClick={() => setOpen(true)}>
+        <Save className="mr-2 h-4 w-4" />
+        Save Plan
       </Button>
-      {onShare && (
-        <Button variant="ghost" size="sm" onClick={onShare}>
-          <Share2 className="h-4 w-4" />
-          {locale === "th" ? "แชร์" : "Share"}
-        </Button>
-      )}
-    </div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Save Plan</DialogTitle>
+          </DialogHeader>
+          <Input
+            label="Plan Name"
+            placeholder="e.g., My Retirement Plan 2024"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoFocus
+          />
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave} loading={saving} disabled={!name.trim()}>
+              {saved ? "Saved!" : "Save"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

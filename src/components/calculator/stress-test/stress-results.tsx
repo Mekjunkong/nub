@@ -8,9 +8,10 @@ import { SavePlanButton } from "@/components/calculator/shared/save-plan-button"
 
 interface StressResultsProps {
   results: StressTestResults;
+  inputs?: Record<string, unknown>;
 }
 
-export function StressResults({ results }: StressResultsProps) {
+export function StressResults({ results, inputs = {} }: StressResultsProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-4 sm:grid-cols-3">
@@ -48,7 +49,7 @@ export function StressResults({ results }: StressResultsProps) {
       </Card>
 
       <div className="flex justify-end">
-        <SavePlanButton onSave={async (name) => console.log("Save:", name)} />
+        <SavePlanButton planType="stress_test" inputs={inputs} results={results as unknown as Record<string, unknown>} />
       </div>
       <FinancialDisclaimer />
     </div>
