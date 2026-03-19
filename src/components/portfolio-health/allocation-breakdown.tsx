@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   ResponsiveContainer,
   PieChart,
@@ -25,6 +26,7 @@ const COLORS = [
 ];
 
 export function AllocationBreakdown({ holdings }: AllocationBreakdownProps) {
+  const t = useTranslations("portfolioHealth");
   const data = holdings.map((h) => ({
     name: h.asset,
     value: Number((h.weight * 100).toFixed(2)),
@@ -33,7 +35,7 @@ export function AllocationBreakdown({ holdings }: AllocationBreakdownProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Asset Allocation</CardTitle>
+        <CardTitle>{t("assetAllocation")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">

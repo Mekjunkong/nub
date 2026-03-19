@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useGpfWorker } from "@/hooks/use-gpf-worker";
 import { GpfHoldingsForm } from "@/components/calculator/gpf/gpf-holdings-form";
 import { GpfOptimizerResultsView } from "@/components/calculator/gpf/gpf-optimizer-results";
@@ -9,6 +10,7 @@ import { FinancialDisclaimer } from "@/components/calculator/shared/financial-di
 import type { GpfOptimizerInputs } from "@/types/calculator";
 
 export default function GpfOptimizerPage() {
+  const t = useTranslations("calculator");
   const { results, computing, compute } = useGpfWorker();
 
   function handleOptimize(inputs: GpfOptimizerInputs) {
@@ -19,10 +21,10 @@ export default function GpfOptimizerPage() {
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-bold text-text font-heading">
-          GPF Portfolio Optimizer
+          {t("gpfOptimizer.title")}
         </h1>
         <p className="text-sm text-text-muted">
-          Optimize your Government Pension Fund allocation using Modern Portfolio Theory
+          {t("gpfOptimizer.subtitle")}
         </p>
       </div>
 

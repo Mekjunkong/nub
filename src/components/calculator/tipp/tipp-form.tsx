@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ const DEFAULT_CORRELATION = [
 ];
 
 export function TippForm({ onSimulate, computing }: TippFormProps) {
+  const t = useTranslations("calculator");
   const [initialCapital, setInitialCapital] = useState(1_000_000);
   const [floorPct, setFloorPct] = useState(85);
   const [maxMultiplier, setMaxMultiplier] = useState(5);
@@ -58,13 +60,13 @@ export function TippForm({ onSimulate, computing }: TippFormProps) {
   return (
     <div className="flex flex-col gap-4">
       <Input
-        label="Initial Capital (THB)"
+        label={`${t("tipp.initialCapital")} (THB)`}
         type="number"
         value={initialCapital}
         onChange={(e) => setInitialCapital(Number(e.target.value))}
       />
       <Slider
-        label="Floor Protection"
+        label={t("tipp.floor")}
         min={70}
         max={95}
         step={1}
@@ -73,7 +75,7 @@ export function TippForm({ onSimulate, computing }: TippFormProps) {
         formatValue={(v) => `${v}%`}
       />
       <Slider
-        label="Max Multiplier"
+        label={t("tipp.multiplier")}
         min={2}
         max={10}
         step={1}
@@ -83,13 +85,13 @@ export function TippForm({ onSimulate, computing }: TippFormProps) {
       />
       <div className="grid gap-4 sm:grid-cols-2">
         <Input
-          label="Target Volatility (%)"
+          label={t("tipp.volatility")}
           type="number"
           value={targetVolatility}
           onChange={(e) => setTargetVolatility(Number(e.target.value))}
         />
         <Input
-          label="Simulation Months"
+          label={t("tipp.simulationMonths")}
           type="number"
           value={simulationMonths}
           onChange={(e) => setSimulationMonths(Number(e.target.value))}
@@ -97,7 +99,7 @@ export function TippForm({ onSimulate, computing }: TippFormProps) {
       </div>
       <div className="flex justify-end">
         <Button onClick={handleSubmit} loading={computing}>
-          Run Simulation
+          {t("tipp.simulate")}
         </Button>
       </div>
     </div>

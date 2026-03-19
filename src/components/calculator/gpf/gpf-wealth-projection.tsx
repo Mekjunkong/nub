@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -26,6 +27,7 @@ const formatCurrency = (value: number) =>
   }).format(value);
 
 export function GpfWealthProjection({ projections, years }: GpfWealthProjectionProps) {
+  const t = useTranslations("calculator");
   // Build chart data: interpolate bands across years
   // The projections contain final values; we linearly interpolate for visualization
   const data = Array.from({ length: years + 1 }, (_, i) => {
@@ -51,12 +53,12 @@ export function GpfWealthProjection({ projections, years }: GpfWealthProjectionP
       {/* Success Rate */}
       <Card>
         <CardContent className="py-6 text-center">
-          <p className="text-sm text-text-muted">Success Rate</p>
+          <p className="text-sm text-text-muted">{t("gpfOptimizer.successRate")}</p>
           <p className={`text-4xl font-bold font-heading ${successColor}`}>
             {(successRate * 100).toFixed(1)}%
           </p>
           <p className="mt-1 text-xs text-text-muted">
-            Probability of meeting your investment goal
+            {t("gpfOptimizer.successRateDescription")}
           </p>
         </CardContent>
       </Card>
@@ -64,7 +66,7 @@ export function GpfWealthProjection({ projections, years }: GpfWealthProjectionP
       {/* Wealth Projection Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Monte Carlo Wealth Projection</CardTitle>
+          <CardTitle>{t("gpfOptimizer.wealthProjection")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-80 w-full">
@@ -78,7 +80,7 @@ export function GpfWealthProjection({ projections, years }: GpfWealthProjectionP
                 <XAxis
                   dataKey="year"
                   tick={{ fontSize: 12, fill: "var(--color-text-muted)" }}
-                  label={{ value: "Year", position: "insideBottom", offset: -5 }}
+                  label={{ value: t("gpfOptimizer.year"), position: "insideBottom", offset: -5 }}
                 />
                 <YAxis
                   tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`}
@@ -99,7 +101,7 @@ export function GpfWealthProjection({ projections, years }: GpfWealthProjectionP
                 <Area
                   type="monotone"
                   dataKey="bull"
-                  name="Bull (P90)"
+                  name={`${t("gpfOptimizer.bull")} (P90)`}
                   stroke="#10b981"
                   fill="#10b981"
                   fillOpacity={0.1}
@@ -108,7 +110,7 @@ export function GpfWealthProjection({ projections, years }: GpfWealthProjectionP
                 <Area
                   type="monotone"
                   dataKey="median"
-                  name="Median (P50)"
+                  name={`${t("gpfOptimizer.median")} (P50)`}
                   stroke="#6366f1"
                   fill="#6366f1"
                   fillOpacity={0.2}
@@ -117,7 +119,7 @@ export function GpfWealthProjection({ projections, years }: GpfWealthProjectionP
                 <Area
                   type="monotone"
                   dataKey="conservative"
-                  name="Conservative (P20)"
+                  name={`${t("gpfOptimizer.conservative")} (P20)`}
                   stroke="#f59e0b"
                   fill="#f59e0b"
                   fillOpacity={0.1}

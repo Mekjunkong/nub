@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { TippResults } from "@/types/calculator";
@@ -24,6 +25,7 @@ const safetyVariant: Record<string, "success" | "warning" | "danger"> = {
 };
 
 export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
+  const t = useTranslations("calculator");
   const cushionPct =
     results.finalWealth > 0
       ? ((results.cushion / results.finalWealth) * 100).toFixed(1)
@@ -33,7 +35,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">VaR 95%</p>
+          <p className="text-xs text-text-muted">{t("tipp.var95")}</p>
           <p className="text-xl font-bold text-text font-heading">
             {formatBaht(results.var95)}
           </p>
@@ -41,7 +43,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
       </Card>
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">VaR 99%</p>
+          <p className="text-xs text-text-muted">{t("tipp.var99")}</p>
           <p className="text-xl font-bold text-text font-heading">
             {formatBaht(results.var99)}
           </p>
@@ -49,7 +51,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
       </Card>
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">CVaR 95%</p>
+          <p className="text-xs text-text-muted">{t("tipp.cvar95")}</p>
           <p className="text-xl font-bold text-text font-heading">
             {formatBaht(results.cvar95)}
           </p>
@@ -57,7 +59,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
       </Card>
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">CVaR 99%</p>
+          <p className="text-xs text-text-muted">{t("tipp.cvar99")}</p>
           <p className="text-xl font-bold text-text font-heading">
             {formatBaht(results.cvar99)}
           </p>
@@ -65,7 +67,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
       </Card>
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">Safety Status</p>
+          <p className="text-xs text-text-muted">{t("tipp.safetyStatus")}</p>
           <Badge
             variant={safetyVariant[results.safetyStatus]}
             className="mt-1 text-base px-4 py-1"
@@ -76,7 +78,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
       </Card>
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">Cushion</p>
+          <p className="text-xs text-text-muted">{t("tipp.cushion")}</p>
           <p className="text-xl font-bold text-success font-heading">
             {formatBaht(results.cushion)}
           </p>
@@ -85,7 +87,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
       </Card>
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">Sharpe Ratio</p>
+          <p className="text-xs text-text-muted">{t("tipp.sharpeRatio")}</p>
           <p className="text-xl font-bold text-text font-heading">
             {results.sharpeRatio.toFixed(2)}
           </p>
@@ -93,7 +95,7 @@ export function TippRiskDashboard({ results }: TippRiskDashboardProps) {
       </Card>
       <Card>
         <CardContent className="py-4 text-center">
-          <p className="text-xs text-text-muted">Max Drawdown</p>
+          <p className="text-xs text-text-muted">{t("tipp.maxDrawdown")}</p>
           <p className="text-xl font-bold text-danger font-heading">
             {(results.maxDrawdown * 100).toFixed(1)}%
           </p>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,13 +12,8 @@ interface GpfHoldingsFormProps {
   computing: boolean;
 }
 
-const ASSET_ASSUMPTIONS = [
-  { name: "Bond Plan (แผนตราสารหนี้)", expectedReturn: "2.5%", sd: "1.26%" },
-  { name: "Foreign Equity Plan (แผนหุ้นต่างประเทศ)", expectedReturn: "8.0%", sd: "12.04%" },
-  { name: "Gold Plan (แผนทองคำ)", expectedReturn: "5.0%", sd: "15.17%" },
-];
-
 export function GpfHoldingsForm({ onOptimize, computing }: GpfHoldingsFormProps) {
+  const t = useTranslations("calculator");
   const [bondPlan, setBondPlan] = useState(0);
   const [equityPlan, setEquityPlan] = useState(0);
   const [goldPlan, setGoldPlan] = useState(0);
@@ -42,30 +38,36 @@ export function GpfHoldingsForm({ onOptimize, computing }: GpfHoldingsFormProps)
     });
   }
 
+  const ASSET_ASSUMPTIONS = [
+    { name: t("gpfOptimizer.bondPlan"), expectedReturn: "2.5%", sd: "1.26%" },
+    { name: t("gpfOptimizer.equityPlan"), expectedReturn: "8.0%", sd: "12.04%" },
+    { name: t("gpfOptimizer.goldPlan"), expectedReturn: "5.0%", sd: "15.17%" },
+  ];
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>GPF Holdings</CardTitle>
+        <CardTitle>{t("gpfOptimizer.currentHoldings")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
           <div className="grid gap-4 sm:grid-cols-3">
             <Input
-              label="Bond Plan (THB)"
+              label={`${t("gpfOptimizer.bondPlan")} (THB)`}
               type="number"
               min={0}
               value={bondPlan || ""}
               onChange={(e) => setBondPlan(Number(e.target.value))}
             />
             <Input
-              label="Foreign Equity Plan (THB)"
+              label={`${t("gpfOptimizer.equityPlan")} (THB)`}
               type="number"
               min={0}
               value={equityPlan || ""}
               onChange={(e) => setEquityPlan(Number(e.target.value))}
             />
             <Input
-              label="Gold Plan (THB)"
+              label={`${t("gpfOptimizer.goldPlan")} (THB)`}
               type="number"
               min={0}
               value={goldPlan || ""}
@@ -75,14 +77,14 @@ export function GpfHoldingsForm({ onOptimize, computing }: GpfHoldingsFormProps)
 
           <div className="grid gap-4 sm:grid-cols-2">
             <Input
-              label="Monthly Contribution (THB)"
+              label={`${t("gpfOptimizer.contribution")} (THB)`}
               type="number"
               min={0}
               value={monthlyContribution || ""}
               onChange={(e) => setMonthlyContribution(Number(e.target.value))}
             />
             <Input
-              label="Investment Horizon (Years)"
+              label={t("gpfOptimizer.horizon")}
               type="number"
               min={1}
               max={40}
@@ -93,7 +95,7 @@ export function GpfHoldingsForm({ onOptimize, computing }: GpfHoldingsFormProps)
 
           {/* Read-only asset assumptions */}
           <div className="rounded-lg border border-border bg-surface-hover/50 p-4">
-            <p className="mb-2 text-sm font-medium text-text">Asset Assumptions</p>
+            <p className="mb-2 text-sm font-medium text-text">{t("gpfOptimizer.assetAssumptions")}</p>
             <div className="grid gap-2 sm:grid-cols-3">
               {ASSET_ASSUMPTIONS.map((asset) => (
                 <div key={asset.name} className="text-xs text-text-muted">
@@ -106,7 +108,7 @@ export function GpfHoldingsForm({ onOptimize, computing }: GpfHoldingsFormProps)
 
           <div className="flex justify-end">
             <Button onClick={handleSubmit} loading={computing}>
-              Optimize Portfolio
+              {t("gpfOptimizer.optimize")}
             </Button>
           </div>
         </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DrawdownYearAnalysis } from "@/types/calculator";
 
@@ -20,24 +21,25 @@ function mddWarning(mdd: number): string {
 }
 
 export function MddRecoveryTable({ data }: MddRecoveryTableProps) {
+  const t = useTranslations("portfolioHealth");
   const fmtPct = (v: number) => (v * 100).toFixed(2) + "%";
   const fmtMo = (v: number) => v.toFixed(1);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Max Drawdown &amp; Recovery Analysis</CardTitle>
+        <CardTitle>{t("drawdownTable")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-left text-xs text-text-muted">
-                <th className="px-3 py-2">Year</th>
-                <th className="px-3 py-2">Avg MDD (%)</th>
-                <th className="px-3 py-2">Worst MDD P5 (%)</th>
-                <th className="px-3 py-2">Avg Recovery (mo)</th>
-                <th className="px-3 py-2">Worst Recovery (mo)</th>
+                <th className="px-3 py-2">{t("year")}</th>
+                <th className="px-3 py-2">{t("avgMDD")}</th>
+                <th className="px-3 py-2">{t("worstMDDP5")}</th>
+                <th className="px-3 py-2">{t("avgRecovery")}</th>
+                <th className="px-3 py-2">{t("worstRecovery")}</th>
               </tr>
             </thead>
             <tbody>

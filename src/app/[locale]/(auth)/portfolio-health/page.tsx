@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { usePortfolioHealthWorker } from "@/hooks/use-portfolio-health-worker";
@@ -23,6 +24,7 @@ const DEFAULT_CORRELATION: number[][] = [
 ];
 
 export default function PortfolioHealthPage() {
+  const t = useTranslations("portfolioHealth");
   const { results, isCalculating, calculate } = usePortfolioHealthWorker();
 
   // Form state
@@ -52,21 +54,21 @@ export default function PortfolioHealthPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold text-text font-heading">Portfolio Health Dashboard</h1>
+        <h1 className="text-2xl font-bold text-text font-heading">{t("title")}</h1>
         <p className="text-sm text-text-muted">
-          Analyze your portfolio performance, risk, and drawdown scenarios
+          {t("subtitle")}
         </p>
       </div>
 
       {/* Input Form */}
       <Card>
         <CardHeader>
-          <CardTitle>Parameters</CardTitle>
+          <CardTitle>{t("parameters")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <label className="flex flex-col gap-1">
-              <span className="text-xs text-text-muted">Total NAV (THB)</span>
+              <span className="text-xs text-text-muted">{t("totalNAV")}</span>
               <input
                 type="number"
                 value={totalNAV}
@@ -75,7 +77,7 @@ export default function PortfolioHealthPage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-xs text-text-muted">Previous NAV (THB)</span>
+              <span className="text-xs text-text-muted">{t("previousNAV")} (THB)</span>
               <input
                 type="number"
                 value={previousNAV}
@@ -84,7 +86,7 @@ export default function PortfolioHealthPage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-xs text-text-muted">Monthly DCA (THB)</span>
+              <span className="text-xs text-text-muted">{t("monthlyDCA")} (THB)</span>
               <input
                 type="number"
                 value={monthlyDCA}
@@ -93,7 +95,7 @@ export default function PortfolioHealthPage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-xs text-text-muted">Benchmark Return (annual)</span>
+              <span className="text-xs text-text-muted">{t("benchmarkReturn")}</span>
               <input
                 type="number"
                 step="0.01"
@@ -103,7 +105,7 @@ export default function PortfolioHealthPage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-xs text-text-muted">Risk-Free Rate (annual)</span>
+              <span className="text-xs text-text-muted">{t("riskFreeRate")}</span>
               <input
                 type="number"
                 step="0.01"
@@ -113,7 +115,7 @@ export default function PortfolioHealthPage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-xs text-text-muted">Investment Years</span>
+              <span className="text-xs text-text-muted">{t("investmentYears")}</span>
               <input
                 type="number"
                 value={investmentYears}
@@ -122,7 +124,7 @@ export default function PortfolioHealthPage() {
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-xs text-text-muted">Simulations</span>
+              <span className="text-xs text-text-muted">{t("simulations")}</span>
               <input
                 type="number"
                 value={simulations}
@@ -134,7 +136,7 @@ export default function PortfolioHealthPage() {
 
           {/* Holdings display */}
           <div className="mt-4">
-            <p className="text-xs text-text-muted mb-2">Holdings (GPF Default Allocation)</p>
+            <p className="text-xs text-text-muted mb-2">{t("holdings")} ({t("holdingsSubtitle")})</p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
               {DEFAULT_HOLDINGS.map((h) => (
                 <div
@@ -153,7 +155,7 @@ export default function PortfolioHealthPage() {
 
           <div className="mt-4">
             <Button onClick={handleCalculate} loading={isCalculating}>
-              {isCalculating ? "Calculating..." : "Run Analysis"}
+              {isCalculating ? t("calculating") : t("runAnalysis")}
             </Button>
           </div>
         </CardContent>

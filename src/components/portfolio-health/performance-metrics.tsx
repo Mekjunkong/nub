@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { PortfolioHealthResults } from "@/types/calculator";
@@ -21,36 +22,37 @@ const riskBadgeVariant: Record<string, "success" | "warning" | "danger"> = {
 };
 
 export function PerformanceMetrics({ results }: PerformanceMetricsProps) {
+  const t = useTranslations("portfolioHealth");
   const fmt = (v: number) => (v * 100).toFixed(2) + "%";
 
   const metrics = [
     {
-      label: "Target Return",
+      label: t("targetReturn"),
       value: fmt(results.targetReturn),
-      sub: "Annual",
+      sub: t("annual"),
     },
     {
-      label: "Projected Return",
+      label: t("projectedReturn"),
       value: fmt(results.projectedReturn),
-      sub: "Annual",
+      sub: t("annual"),
     },
     {
-      label: "Benchmark Return",
+      label: t("benchmarkReturn"),
       value: fmt(results.benchmarkReturn),
-      sub: "Annual",
+      sub: t("annual"),
     },
     {
-      label: "Alpha",
+      label: t("alpha"),
       value: (
         <span className={results.alpha >= 0 ? "text-success" : "text-danger"}>
           {results.alpha >= 0 ? "+" : ""}
           {fmt(results.alpha)}
         </span>
       ),
-      sub: "vs Benchmark",
+      sub: t("vsBenchmark"),
     },
     {
-      label: "Sharpe Ratio",
+      label: t("sharpe"),
       value: (
         <span>
           {results.sharpeRatio.toFixed(2)}{" "}
@@ -60,7 +62,7 @@ export function PerformanceMetrics({ results }: PerformanceMetricsProps) {
       sub: results.sharpeRating,
     },
     {
-      label: "Portfolio Risk (SD)",
+      label: t("portfolioRiskSD"),
       value: fmt(results.portfolioRisk),
       sub: (
         <Badge variant={riskBadgeVariant[results.riskLevel]}>

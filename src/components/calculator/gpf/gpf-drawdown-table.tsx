@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { GpfDrawdownYear } from "@/types/calculator";
 
@@ -15,21 +16,22 @@ function mddColor(mdd: number): string {
 }
 
 export function GpfDrawdownTable({ data }: GpfDrawdownTableProps) {
+  const t = useTranslations("calculator");
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Max Drawdown Analysis by Year</CardTitle>
+        <CardTitle>{t("gpfOptimizer.drawdownAnalysis")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th className="pb-2 text-left font-medium text-text-muted">Year</th>
-                <th className="pb-2 text-right font-medium text-text-muted">Avg MDD (%)</th>
-                <th className="pb-2 text-right font-medium text-text-muted">Worst MDD (%)</th>
-                <th className="pb-2 text-right font-medium text-text-muted">Recovery (months)</th>
-                <th className="pb-2 text-center font-medium text-text-muted">Alert</th>
+                <th className="pb-2 text-left font-medium text-text-muted">{t("gpfOptimizer.year")}</th>
+                <th className="pb-2 text-right font-medium text-text-muted">{t("gpfOptimizer.avgMDD")} (%)</th>
+                <th className="pb-2 text-right font-medium text-text-muted">{t("gpfOptimizer.worstMDD")} (%)</th>
+                <th className="pb-2 text-right font-medium text-text-muted">{t("gpfOptimizer.recovery")}</th>
+                <th className="pb-2 text-center font-medium text-text-muted">{t("gpfOptimizer.alert")}</th>
               </tr>
             </thead>
             <tbody>

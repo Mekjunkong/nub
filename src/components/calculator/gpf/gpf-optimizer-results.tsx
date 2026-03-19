@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   ResponsiveContainer,
   PieChart,
@@ -16,7 +17,6 @@ interface GpfOptimizerResultsViewProps {
   results: GpfOptimizerResults;
 }
 
-const ASSET_NAMES = ["แผนตราสารหนี้", "แผนหุ้นต่างประเทศ", "แผนทองคำ"];
 const PIE_COLORS = ["#6366f1", "#f59e0b", "#10b981"];
 
 const formatCurrency = (value: number) =>
@@ -27,6 +27,8 @@ const formatCurrency = (value: number) =>
   }).format(value);
 
 export function GpfOptimizerResultsView({ results }: GpfOptimizerResultsViewProps) {
+  const t = useTranslations("calculator");
+  const ASSET_NAMES = [t("gpfOptimizer.bondPlan"), t("gpfOptimizer.equityPlan"), t("gpfOptimizer.goldPlan")];
   const pieData = results.maxSharpe.weights.map((w, i) => ({
     name: ASSET_NAMES[i],
     value: Math.round(w * 1000) / 10,
@@ -37,7 +39,7 @@ export function GpfOptimizerResultsView({ results }: GpfOptimizerResultsViewProp
       {/* Optimal Allocation */}
       <Card>
         <CardHeader>
-          <CardTitle>Optimal Allocation (Max Sharpe)</CardTitle>
+          <CardTitle>{t("gpfOptimizer.optimalAllocation")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-64 w-full">
@@ -75,10 +77,10 @@ export function GpfOptimizerResultsView({ results }: GpfOptimizerResultsViewProp
       {/* Risk Metrics */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: "VaR 95%", value: results.var95 },
-          { label: "VaR 99%", value: results.var99 },
-          { label: "CVaR 95%", value: results.cvar95 },
-          { label: "CVaR 99%", value: results.cvar99 },
+          { label: t("gpfOptimizer.var95"), value: results.var95 },
+          { label: t("gpfOptimizer.var99"), value: results.var99 },
+          { label: t("gpfOptimizer.cvar95"), value: results.cvar95 },
+          { label: t("gpfOptimizer.cvar99"), value: results.cvar99 },
         ].map((metric) => (
           <Card key={metric.label}>
             <CardContent className="py-4 text-center">
@@ -94,16 +96,16 @@ export function GpfOptimizerResultsView({ results }: GpfOptimizerResultsViewProp
       {/* Rebalancing Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Rebalancing Actions</CardTitle>
+          <CardTitle>{t("gpfOptimizer.rebalance")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="pb-2 text-left font-medium text-text-muted">Asset</th>
-                  <th className="pb-2 text-left font-medium text-text-muted">Action</th>
-                  <th className="pb-2 text-right font-medium text-text-muted">Amount</th>
+                  <th className="pb-2 text-left font-medium text-text-muted">{t("gpfOptimizer.asset")}</th>
+                  <th className="pb-2 text-left font-medium text-text-muted">{t("gpfOptimizer.action")}</th>
+                  <th className="pb-2 text-right font-medium text-text-muted">{t("gpfOptimizer.amount")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -138,7 +140,7 @@ export function GpfOptimizerResultsView({ results }: GpfOptimizerResultsViewProp
       <div className="grid gap-4 sm:grid-cols-3">
         <Card>
           <CardContent className="py-4 text-center">
-            <p className="text-xs text-text-muted">Expected Return</p>
+            <p className="text-xs text-text-muted">{t("gpfOptimizer.expectedReturn")}</p>
             <p className="text-2xl font-bold text-success font-heading">
               {(results.maxSharpe.expectedReturn * 100).toFixed(2)}%
             </p>
@@ -146,7 +148,7 @@ export function GpfOptimizerResultsView({ results }: GpfOptimizerResultsViewProp
         </Card>
         <Card>
           <CardContent className="py-4 text-center">
-            <p className="text-xs text-text-muted">Risk (SD)</p>
+            <p className="text-xs text-text-muted">{t("gpfOptimizer.risk")}</p>
             <p className="text-2xl font-bold text-warning font-heading">
               {(results.maxSharpe.risk * 100).toFixed(2)}%
             </p>
@@ -154,7 +156,7 @@ export function GpfOptimizerResultsView({ results }: GpfOptimizerResultsViewProp
         </Card>
         <Card>
           <CardContent className="py-4 text-center">
-            <p className="text-xs text-text-muted">Sharpe Ratio</p>
+            <p className="text-xs text-text-muted">{t("gpfOptimizer.sharpeRatio")}</p>
             <p className="text-2xl font-bold text-primary font-heading">
               {results.maxSharpe.sharpeRatio.toFixed(3)}
             </p>

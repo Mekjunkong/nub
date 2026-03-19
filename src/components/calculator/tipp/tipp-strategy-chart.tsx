@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   ResponsiveContainer,
   LineChart,
@@ -22,6 +23,7 @@ function formatBaht(v: number): string {
 }
 
 export function TippStrategyChart({ wealthPath }: TippStrategyChartProps) {
+  const t = useTranslations("calculator");
   return (
     <div>
       <div className="h-72 w-full">
@@ -36,7 +38,7 @@ export function TippStrategyChart({ wealthPath }: TippStrategyChartProps) {
               dataKey="month"
               tick={{ fontSize: 11, fill: "var(--color-text-muted)" }}
               label={{
-                value: "Month",
+                value: t("tipp.month"),
                 position: "insideBottom",
                 offset: -4,
                 fontSize: 12,
@@ -57,12 +59,12 @@ export function TippStrategyChart({ wealthPath }: TippStrategyChartProps) {
               labelStyle={{ color: "var(--color-text)" }}
               itemStyle={{ color: "var(--color-text-secondary)" }}
               formatter={(value) => `${formatBaht(Number(value))}`}
-              labelFormatter={(label) => `Month ${label}`}
+              labelFormatter={(label) => `${t("tipp.month")} ${label}`}
             />
             <Line
               type="monotone"
               dataKey="wealth"
-              name="Wealth"
+              name={t("tipp.wealth")}
               stroke="var(--color-primary)"
               strokeWidth={2.5}
               dot={false}
@@ -70,7 +72,7 @@ export function TippStrategyChart({ wealthPath }: TippStrategyChartProps) {
             <Line
               type="monotone"
               dataKey="floor"
-              name="Floor"
+              name={t("tipp.floorLabel")}
               stroke="var(--color-danger)"
               strokeWidth={2}
               strokeDasharray="6 3"
@@ -84,11 +86,11 @@ export function TippStrategyChart({ wealthPath }: TippStrategyChartProps) {
         <caption>TIPP wealth path and floor</caption>
         <thead>
           <tr>
-            <th>Month</th>
-            <th>Wealth</th>
-            <th>Floor</th>
-            <th>Multiplier</th>
-            <th>Action</th>
+            <th>{t("tipp.month")}</th>
+            <th>{t("tipp.wealth")}</th>
+            <th>{t("tipp.floorLabel")}</th>
+            <th>{t("tipp.multiplier")}</th>
+            <th>{t("tipp.action")}</th>
           </tr>
         </thead>
         <tbody>

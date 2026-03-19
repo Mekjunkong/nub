@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { TippForm } from "@/components/calculator/tipp/tipp-form";
 import { TippStrategyChart } from "@/components/calculator/tipp/tipp-strategy-chart";
 import { TippRiskDashboard } from "@/components/calculator/tipp/tipp-risk-dashboard";
@@ -9,6 +10,7 @@ import { useTippWorker } from "@/hooks/use-tipp-worker";
 import type { TippInputs } from "@/types/calculator";
 
 export default function TippPage() {
+  const t = useTranslations("calculator");
   const { results, isCalculating, calculate } = useTippWorker();
 
   function handleSimulate(inputs: TippInputs) {
@@ -19,16 +21,16 @@ export default function TippPage() {
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-bold text-text font-heading">
-          TIPP/VPPI Portfolio Protection
+          {t("tipp.title")}
         </h1>
         <p className="text-sm text-text-muted">
-          Simulate time-invariant portfolio protection with a ratcheting floor
+          {t("tipp.subtitle")}
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Simulation Parameters</CardTitle>
+          <CardTitle>{t("tipp.simulationParameters")}</CardTitle>
         </CardHeader>
         <CardContent>
           <TippForm onSimulate={handleSimulate} computing={isCalculating} />
@@ -39,7 +41,7 @@ export default function TippPage() {
         <>
           <Card>
             <CardHeader>
-              <CardTitle>Wealth Path vs Floor</CardTitle>
+              <CardTitle>{t("tipp.wealthPathVsFloor")}</CardTitle>
             </CardHeader>
             <CardContent>
               <TippStrategyChart wealthPath={results.wealthPath} />
