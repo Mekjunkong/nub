@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Calculator,
@@ -281,13 +282,12 @@ export function Sidebar() {
         {/* Header */}
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
           {collapsed ? (
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-primary text-white text-xs font-bold">
-              N
-            </div>
+            <Image src="/logo.png" alt="Nub" width={32} height={32} className="rounded-lg" />
           ) : (
-            <span className="text-xl font-bold gradient-text font-heading">
-              Nub
-            </span>
+            <div className="flex items-center gap-2">
+              <Image src="/logo.png" alt="Nub" width={36} height={36} className="rounded-lg" />
+              <span className="text-lg font-bold text-text font-heading">Nub</span>
+            </div>
           )}
           <button
             type="button"
