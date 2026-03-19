@@ -7,6 +7,7 @@ import Link from "next/link";
 import {
   LayoutDashboard,
   Calculator,
+  Activity,
   BarChart3,
   MessageCircle,
   Users,
@@ -93,7 +94,22 @@ export function Sidebar() {
           label: "ROIC",
           icon: <BarChart3 className="h-4 w-4" />,
         },
+        {
+          href: `/${locale}/calculator/gpf-optimizer`,
+          label: locale === "th" ? "จัดพอร์ต กบข." : "GPF Optimizer",
+          icon: <PieChart className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/tipp`,
+          label: locale === "th" ? "TIPP ปกป้องพอร์ต" : "TIPP/VPPI",
+          icon: <Shield className="h-4 w-4" />,
+        },
       ],
+    },
+    {
+      href: `/${locale}/portfolio-health`,
+      label: locale === "th" ? "สุขภาพพอร์ต" : "Portfolio Health",
+      icon: <Activity className="h-5 w-5" />,
     },
     {
       href: `/${locale}/funds`,
