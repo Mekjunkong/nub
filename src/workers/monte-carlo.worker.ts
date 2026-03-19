@@ -1,5 +1,10 @@
 import { normalRandom, percentile } from "@/lib/finance-math";
-import type { MonteCarloInputs, MonteCarloResults } from "@/types/calculator";
+import type {
+  MonteCarloInputs,
+  MonteCarloResults,
+  WithdrawalComparisonInputs,
+  WithdrawalComparisonResults,
+} from "@/types/calculator";
 
 /**
  * Run Monte Carlo simulation for retirement withdrawal planning.
@@ -132,6 +137,104 @@ export function runMonteCarlo(inputs: MonteCarloInputs): MonteCarloResults {
     avgFinalWealth,
     partial: false,
     rounds,
+  };
+}
+
+/**
+ * Calculate the average age at which wealth hits zero across simulations.
+ * Returns lifeExpectancy if the portfolio never runs out.
+ */
+function calculateAvgRuinAge(
+  inputs: MonteCarloInputs,
+  additionalPension: number
+): number {
+  const {
+    lumpSum,
+    currentMonthlyExpenses,
+    yearsToRetirement,
+    retirementAge,
+    lifeExpectancy,
+    governmentPension,
+    annuity,
+    portfolioExpectedReturn,
+    portfolioSD,
+    inflationExpectedReturn,
+    inflationSD,
+    rounds = 5000,
+  } = inputs;
+
+  const retirementMonths = (lifeExpectancy - retirementAge) * 12;
+  if (retirementMonths <= 0) return lifeExpectancy;
+
+  const inflationMultiplier = Math.pow(1 + inputs.inflationRate, yearsToRetirement);
+  const baseMonthlyExpense = currentMonthlyExpenses * inflationMultiplier;
+  const totalAnnuity = (annuity || 0) + additionalPension;
+
+  let totalRuinAge = 0;
+
+  for (let sim = 0; sim < rounds; sim++) {
+    let balance = lumpSum;
+    let ruinMonth = retirementMonths; // default: never ruined
+
+    for (let month = 1; month <= retirementMonths; month++) {
+      const monthlyReturn = normalRandom(portfolioExpectedReturn, portfolioSD);
+      const monthlyInflation = normalRandom(inflationExpectedReturn, inflationSD);
+      const expense = baseMonthlyExpense * Math.pow(1 + monthlyInflation, month);
+      const netWithdrawal = Math.max(0, expense - governmentPension - totalAnnuity);
+
+      balance = balance * (1 + monthlyReturn) - netWithdrawal;
+
+      if (balance <= 0) {
+        ruinMonth = month;
+        break;
+      }
+    }
+
+    totalRuinAge += retirementAge + ruinMonth / 12;
+  }
+
+  return totalRuinAge / rounds;
+}
+
+/**
+ * Compare retirement withdrawal outcomes with and without an additional pension.
+ * Runs Monte Carlo simulations for both scenarios and calculates improvement metrics.
+ */
+export function runWithdrawalComparison(
+  inputs: WithdrawalComparisonInputs
+): WithdrawalComparisonResults {
+  // Run baseline (no extra pension)
+  const baseline = runMonteCarlo(inputs);
+
+  // Run with added pension
+  const withPensionInputs = {
+    ...inputs,
+    annuity: (inputs.annuity || 0) + inputs.comparisonPension,
+  };
+  const withPension = runMonteCarlo(withPensionInputs);
+
+  // Calculate avg age of ruin from a focused simulation
+  const baselineRuin = calculateAvgRuinAge(inputs, 0);
+  const withPensionRuin = calculateAvgRuinAge(inputs, inputs.comparisonPension);
+
+  const improvement = {
+    successRateDelta: withPension.survivalRate - baseline.survivalRate,
+    finalWealthDelta: withPension.medianFinalWealth - baseline.medianFinalWealth,
+    longevityDelta: withPensionRuin - baselineRuin,
+  };
+
+  const verdict =
+    improvement.successRateDelta > 0.05
+      ? "Significant improvement — pension provides strong longevity protection"
+      : improvement.successRateDelta > 0
+        ? "Modest improvement — pension adds safety margin"
+        : "Minimal impact — current plan is already well-funded";
+
+  return {
+    baseline: { ...baseline, avgAgeOfRuin: baselineRuin },
+    withPension: { ...withPension, avgAgeOfRuin: withPensionRuin },
+    improvement,
+    verdict,
   };
 }
 
