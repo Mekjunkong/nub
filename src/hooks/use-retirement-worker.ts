@@ -6,6 +6,7 @@ import type { RetirementInputs, RetirementResults } from "@/types/calculator";
 export function useRetirementWorker() {
   const [results, setResults] = useState<RetirementResults | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
@@ -16,6 +17,8 @@ export function useRetirementWorker() {
 
   const calculate = useCallback((inputs: RetirementInputs) => {
     setIsCalculating(true);
+    setResults(null);
+    setError(null);
 
     // Terminate existing worker
     workerRef.current?.terminate();
@@ -30,7 +33,9 @@ export function useRetirementWorker() {
       setIsCalculating(false);
     };
 
-    worker.onerror = () => {
+    worker.onerror = (e) => {
+      setError(e.message || "Calculation failed");
+      setResults(null);
       setIsCalculating(false);
     };
 
@@ -38,5 +43,5 @@ export function useRetirementWorker() {
     worker.postMessage(inputs);
   }, []);
 
-  return { results, isCalculating, calculate };
+  return { results, isCalculating, calculate, error };
 }

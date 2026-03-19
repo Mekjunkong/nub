@@ -1,6 +1,7 @@
 "use client";
 
 import { Star, Calculator, TrendingUp, Shield, PieChart, DollarSign, Receipt } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -36,22 +37,8 @@ const planIcons: Record<PlanType, React.ReactNode> = {
   bumnan95: <Calculator className="h-4 w-4" />,
 };
 
-const planLabels: Record<PlanType, string> = {
-  retirement: "Retirement",
-  withdrawal: "Withdrawal",
-  stress_test: "Stress Test",
-  mpt: "MPT",
-  dca: "DCA",
-  tax: "Tax",
-  cashflow: "Cashflow",
-  roic: "ROIC",
-  gpf_optimizer: "GPF Optimizer",
-  tipp: "TIPP/VPPI",
-  portfolio_health: "Portfolio Health",
-  bumnan95: "Bumnan 95",
-};
-
 export function SavedPlansList({ plans, onToggleFavorite, onOpen }: SavedPlansListProps) {
+  const t = useTranslations("common");
   if (plans.length === 0) {
     return (
       <Card>
@@ -74,7 +61,7 @@ export function SavedPlansList({ plans, onToggleFavorite, onOpen }: SavedPlansLi
             <div className="flex-1 min-w-0">
               <p className="font-medium text-sm text-text truncate">{plan.name}</p>
               <div className="flex items-center gap-2">
-                <Badge variant="primary">{planLabels[plan.plan_type]}</Badge>
+                <Badge variant="primary">{t(`planTypes.${plan.plan_type}`)}</Badge>
                 <span className="text-xs text-text-muted">
                   {new Date(plan.updated_at).toLocaleDateString()}
                 </span>

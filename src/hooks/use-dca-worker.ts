@@ -6,6 +6,7 @@ import type { DcaInputs, DcaResults } from "@/types/calculator";
 export function useDcaWorker() {
   const [results, setResults] = useState<DcaResults | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export function useDcaWorker() {
   const calculate = useCallback((inputs: DcaInputs) => {
     setIsCalculating(true);
     setResults(null);
+    setError(null);
 
     workerRef.current?.terminate();
 
@@ -30,7 +32,9 @@ export function useDcaWorker() {
       setIsCalculating(false);
     };
 
-    worker.onerror = () => {
+    worker.onerror = (e) => {
+      setError(e.message || "Calculation failed");
+      setResults(null);
       setIsCalculating(false);
     };
 
@@ -38,5 +42,5 @@ export function useDcaWorker() {
     worker.postMessage(inputs);
   }, []);
 
-  return { results, isCalculating, calculate };
+  return { results, isCalculating, calculate, error };
 }

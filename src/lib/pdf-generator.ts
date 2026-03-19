@@ -5,6 +5,8 @@
  * Called server-side from the /api/pdf route.
  */
 
+import { formatThaiCurrency } from "@/lib/utils";
+
 export interface PdfData {
   planType: string;
   planName: string;
@@ -34,8 +36,7 @@ export function formatPdfData(data: PdfData): {
     tax: isThaiLocale ? "วางแผนภาษี" : "Tax Plan",
   };
 
-  const formatCurrency = (v: number) =>
-    new Intl.NumberFormat("th-TH", { style: "currency", currency: "THB", maximumFractionDigits: 0 }).format(v);
+  const formatCurrency = (v: number) => formatThaiCurrency(v);
 
   const sections: { label: string; value: string }[] = [];
 

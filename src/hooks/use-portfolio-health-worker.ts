@@ -6,6 +6,7 @@ import type { PortfolioHealthInputs, PortfolioHealthResults } from "@/types/calc
 export function usePortfolioHealthWorker() {
   const [results, setResults] = useState<PortfolioHealthResults | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export function usePortfolioHealthWorker() {
   const calculate = useCallback((inputs: PortfolioHealthInputs) => {
     setIsCalculating(true);
     setResults(null);
+    setError(null);
 
     workerRef.current?.terminate();
 
@@ -30,7 +32,9 @@ export function usePortfolioHealthWorker() {
       setIsCalculating(false);
     };
 
-    worker.onerror = () => {
+    worker.onerror = (e) => {
+      setError(e.message || "Calculation failed");
+      setResults(null);
       setIsCalculating(false);
     };
 
@@ -38,5 +42,5 @@ export function usePortfolioHealthWorker() {
     worker.postMessage(inputs);
   }, []);
 
-  return { results, isCalculating, calculate };
+  return { results, isCalculating, calculate, error };
 }

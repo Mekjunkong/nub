@@ -26,6 +26,20 @@
     "upgrade": "อัปเกรด",
     "premium": "พรีเมียม",
     "free": "ฟรี",
+    "planTypes": {
+      "retirement": "เกษียณ",
+      "withdrawal": "ถอนเงิน",
+      "stress_test": "ทดสอบความเครียด",
+      "mpt": "จัดพอร์ต MPT",
+      "dca": "DCA",
+      "tax": "ภาษี",
+      "cashflow": "กระแสเงินสด",
+      "roic": "วิเคราะห์ ROIC",
+      "gpf_optimizer": "จัดพอร์ต กบข.",
+      "tipp": "TIPP ปกป้องพอร์ต",
+      "portfolio_health": "สุขภาพพอร์ต",
+      "bumnan95": "บำนาญ 95"
+    },
     "nav": {
       "dashboard": "แดชบอร์ด",
       "calculators": "เครื่องคำนวณ",

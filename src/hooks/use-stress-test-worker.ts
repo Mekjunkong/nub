@@ -6,6 +6,7 @@ import type { StressTestInputs, StressTestResults } from "@/types/calculator";
 export function useStressTestWorker() {
   const [results, setResults] = useState<StressTestResults | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export function useStressTestWorker() {
   const calculate = useCallback((inputs: StressTestInputs) => {
     setIsCalculating(true);
     setResults(null);
+    setError(null);
 
     workerRef.current?.terminate();
 
@@ -30,7 +32,9 @@ export function useStressTestWorker() {
       setIsCalculating(false);
     };
 
-    worker.onerror = () => {
+    worker.onerror = (e) => {
+      setError(e.message || "Calculation failed");
+      setResults(null);
       setIsCalculating(false);
     };
 
@@ -38,5 +42,5 @@ export function useStressTestWorker() {
     worker.postMessage(inputs);
   }, []);
 
-  return { results, isCalculating, calculate };
+  return { results, isCalculating, calculate, error };
 }

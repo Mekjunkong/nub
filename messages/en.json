@@ -26,6 +26,20 @@
     "upgrade": "Upgrade",
     "premium": "Premium",
     "free": "Free",
+    "planTypes": {
+      "retirement": "Retirement",
+      "withdrawal": "Withdrawal",
+      "stress_test": "Stress Test",
+      "mpt": "MPT",
+      "dca": "DCA",
+      "tax": "Tax",
+      "cashflow": "Cashflow",
+      "roic": "ROIC",
+      "gpf_optimizer": "GPF Optimizer",
+      "tipp": "TIPP/VPPI",
+      "portfolio_health": "Portfolio Health",
+      "bumnan95": "Bumnan 95"
+    },
     "nav": {
       "dashboard": "Dashboard",
       "calculators": "Calculators",

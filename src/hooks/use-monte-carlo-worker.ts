@@ -9,6 +9,7 @@ export function useMonteCarloWorker() {
     useState<MonteCarloResults | null>(null);
   const [isRefining, setIsRefining] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export function useMonteCarloWorker() {
     setProgress(0);
     setResults(null);
     setPartialResults(null);
+    setError(null);
 
     workerRef.current?.terminate();
 
@@ -43,7 +45,10 @@ export function useMonteCarloWorker() {
       }
     };
 
-    worker.onerror = () => {
+    worker.onerror = (e) => {
+      setError(e.message || "Calculation failed");
+      setResults(null);
+      setPartialResults(null);
       setIsRefining(false);
     };
 
@@ -51,5 +56,5 @@ export function useMonteCarloWorker() {
     worker.postMessage(inputs);
   }, []);
 
-  return { results, partialResults, isRefining, progress, calculate };
+  return { results, partialResults, isRefining, progress, calculate, error };
 }
