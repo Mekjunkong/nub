@@ -104,6 +104,11 @@ export function Sidebar() {
           label: locale === "th" ? "TIPP ปกป้องพอร์ต" : "TIPP/VPPI",
           icon: <Shield className="h-4 w-4" />,
         },
+        {
+          href: `/${locale}/calculator/bumnan95`,
+          label: locale === "th" ? "บำนาญ 95" : "Bumnan 95",
+          icon: <Calculator className="h-4 w-4" />,
+        },
       ],
     },
     {
