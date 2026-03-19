@@ -49,7 +49,6 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
       previousScore={previousScore}
       plans={plans}
       scoreHistory={scoreHistory}
-      locale={locale}
     />
   );
 }

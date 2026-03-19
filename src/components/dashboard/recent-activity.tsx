@@ -20,6 +20,25 @@ const icons = {
   chat: <MessageCircle className="h-4 w-4 text-secondary" />,
 };
 
+const planTypeLabels: Record<string, string> = {
+  retirement: "Retirement Plan",
+  withdrawal: "Withdrawal Plan",
+  stress_test: "Stress Test",
+  mpt: "MPT Optimization",
+  dca: "DCA Plan",
+  tax: "Tax Plan",
+  cashflow: "Cashflow Plan",
+  roic: "ROIC Analysis",
+  gpf_optimizer: "GPF Optimizer",
+  tipp: "TIPP/VPPI Plan",
+  portfolio_health: "Portfolio Health",
+  bumnan95: "Bumnan95 Plan",
+};
+
+export function formatPlanTypeLabel(planType: string): string {
+  return planTypeLabels[planType] ?? planType;
+}
+
 export function RecentActivity({ activities }: RecentActivityProps) {
   return (
     <Card>

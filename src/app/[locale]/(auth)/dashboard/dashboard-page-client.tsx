@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { HealthScoreCard } from "@/components/dashboard/health-score-card";
 import { SavedPlansList } from "@/components/dashboard/saved-plans-list";
 import { ProgressTracker } from "@/components/dashboard/progress-tracker";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
+import { RecentActivity, formatPlanTypeLabel } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { createClient } from "@/lib/supabase/client";
 import type { PlanType } from "@/types/database";
+
+const PREV_SCORE_KEY = "nub_previous_health_score";
 
 interface SavedPlanRow {
   id: string;
@@ -25,7 +27,6 @@ interface DashboardPageClientProps {
   previousScore: number | null;
   plans: SavedPlanRow[];
   scoreHistory: Array<{ date: string; score: number }>;
-  locale: string;
 }
 
 const routeMap: Record<string, string> = {
@@ -43,14 +44,50 @@ const routeMap: Record<string, string> = {
   bumnan95: "bumnan95",
 };
 
-export function DashboardPageClient({ healthScore, previousScore, plans: initialPlans, scoreHistory, locale }: DashboardPageClientProps) {
+export function DashboardPageClient({ healthScore, previousScore: serverPreviousScore, plans: initialPlans, scoreHistory }: DashboardPageClientProps) {
   const router = useRouter();
-  const intlLocale = useLocale();
+  const locale = useLocale();
+  const t = useTranslations("dashboard");
   const [plans, setPlans] = useState(initialPlans);
+  const [localPreviousScore, setLocalPreviousScore] = useState<number | null>(serverPreviousScore);
+
+  // On mount: read previous score from localStorage
+  // When healthScore changes: save old score to localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(PREV_SCORE_KEY);
+      if (stored !== null) {
+        const parsed = parseFloat(stored);
+        if (!isNaN(parsed)) {
+          setLocalPreviousScore(parsed);
+        }
+      }
+    } catch {
+      // localStorage may be unavailable
+    }
+  }, []);
+
+  useEffect(() => {
+    if (healthScore == null) return;
+    try {
+      // Save current score so it becomes "previous" on next visit
+      localStorage.setItem(PREV_SCORE_KEY, String(healthScore));
+    } catch {
+      // localStorage may be unavailable
+    }
+  }, [healthScore]);
 
   const typedPlans = plans.map((p) => ({
     ...p,
     plan_type: p.plan_type as PlanType,
+  }));
+
+  // Derive recent activity from saved plans
+  const recentActivities = plans.slice(0, 5).map((plan) => ({
+    id: plan.id,
+    type: "save" as const,
+    description: `${plan.name} (${formatPlanTypeLabel(plan.plan_type)})`,
+    timestamp: plan.updated_at,
   }));
 
   async function handleToggleFavorite(id: string) {
@@ -79,23 +116,23 @@ export function DashboardPageClient({ healthScore, previousScore, plans: initial
     const plan = plans.find((p) => p.id === id);
     if (!plan) return;
     const route = routeMap[plan.plan_type];
-    if (route) router.push(`/${intlLocale}/calculator/${route}`);
+    if (route) router.push(`/${locale}/calculator/${route}`);
   }
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-text font-heading">{locale === "th" ? "\u0E41\u0E14\u0E0A\u0E1A\u0E2D\u0E23\u0E4C\u0E14" : "Dashboard"}</h1>
+      <h1 className="text-2xl font-bold text-text font-heading">{t("title")}</h1>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Left column */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="grid gap-6 sm:grid-cols-2">
-            <HealthScoreCard score={healthScore} previousScore={previousScore} />
+            <HealthScoreCard score={healthScore} previousScore={localPreviousScore} />
             <QuickActions />
           </div>
 
           <div>
-            <h2 className="mb-3 text-sm font-semibold text-text">{locale === "th" ? "\u0E41\u0E1C\u0E19\u0E17\u0E35\u0E48\u0E1A\u0E31\u0E19\u0E17\u0E36\u0E01\u0E44\u0E27\u0E49" : "Saved Plans"}</h2>
+            <h2 className="mb-3 text-sm font-semibold text-text">{t("savedPlans")}</h2>
             <SavedPlansList
               plans={typedPlans}
               onToggleFavorite={handleToggleFavorite}
@@ -107,7 +144,7 @@ export function DashboardPageClient({ healthScore, previousScore, plans: initial
         {/* Right column */}
         <div className="flex flex-col gap-6">
           <ProgressTracker history={scoreHistory} />
-          <RecentActivity activities={[]} />
+          <RecentActivity activities={recentActivities} />
         </div>
       </div>
     </div>
