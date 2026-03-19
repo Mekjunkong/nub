@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calculator, Save, MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ActivityItem {
   id: string;
@@ -40,12 +41,14 @@ export function formatPlanTypeLabel(planType: string): string {
 }
 
 export function RecentActivity({ activities }: RecentActivityProps) {
+  const t = useTranslations("dashboard");
+
   return (
-    <Card>
-      <CardHeader><CardTitle className="text-sm">Recent Activity</CardTitle></CardHeader>
+    <Card variant="elevated">
+      <CardHeader><CardTitle className="text-sm">{t("recentActivity")}</CardTitle></CardHeader>
       <CardContent>
         {activities.length === 0 ? (
-          <p className="text-xs text-text-muted">No recent activity</p>
+          <p className="text-xs text-text-muted">{t("noActivity")}</p>
         ) : (
           <div className="flex flex-col gap-3">
             {activities.slice(0, 5).map((a) => (

@@ -24,12 +24,12 @@ export default function Bumnan95Page() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">
           {t("bumnan95.title")}
         </h1>
-        <p className="text-sm text-text-muted">
+        <p className="text-sm mt-1 text-white/80">
           {t("bumnan95.subtitle")}
         </p>
       </div>
@@ -37,7 +37,7 @@ export default function Bumnan95Page() {
       <Bumnan95Form onCalculate={handleCalculate} computing={computing} />
 
       {results && (
-        <>
+        <div className="stagger-children flex flex-col gap-6">
           <Bumnan95GapAnalysis
             targetCorpus={results.targetCorpus}
             estimatedGPF={results.estimatedGPF}
@@ -58,7 +58,7 @@ export default function Bumnan95Page() {
             recommendedStrategy={results.recommendedStrategy}
           />
           <FinancialDisclaimer />
-        </>
+        </div>
       )}
     </div>
   );

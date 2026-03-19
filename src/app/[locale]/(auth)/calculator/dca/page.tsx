@@ -38,10 +38,10 @@ export default function DcaPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">DCA Strategy Comparison</h1>
-        <p className="text-sm text-text-muted">Compare Static, Glidepath, and Dynamic Asset Allocation strategies</p>
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">DCA Strategy Comparison</h1>
+        <p className="text-sm mt-1 text-white/80">Compare Static, Glidepath, and Dynamic Asset Allocation strategies</p>
       </div>
       <Card>
         <CardHeader><CardTitle>Parameters</CardTitle></CardHeader>

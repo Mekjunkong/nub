@@ -133,10 +133,10 @@ export default function RoicPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">{t("roic.title")}</h1>
-        <p className="text-sm text-text-muted">
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">{t("roic.title")}</h1>
+        <p className="text-sm mt-1 text-white/80">
           {t("roic.subtitle")}
         </p>
       </div>

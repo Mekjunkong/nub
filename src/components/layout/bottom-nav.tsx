@@ -60,12 +60,15 @@ export function BottomNav() {
               key={tab.href}
               href={tab.href}
               className={cn(
-                "flex flex-col items-center gap-1 px-3 py-1 transition-colors",
+                "relative flex flex-col items-center gap-1 px-3 py-1 transition-colors",
                 active ? "text-primary" : "text-text-muted"
               )}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className={cn("h-5 w-5 transition-transform", active && "scale-110")} />
               <span className="text-[10px] font-medium">{tab.label}</span>
+              {active && (
+                <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-0.5 w-5 rounded-full bg-primary" />
+              )}
             </Link>
           );
         })}

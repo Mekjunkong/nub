@@ -119,33 +119,48 @@ export function DashboardPageClient({ healthScore, previousScore: serverPrevious
     if (route) router.push(`/${locale}/calculator/${route}`);
   }
 
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? t("goodMorning") : hour < 18 ? t("goodAfternoon") : t("goodEvening");
+
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-text font-heading">{t("title")}</h1>
+    <div className="flex flex-col gap-6 animate-fade-in">
+      {/* Greeting */}
+      <div>
+        <h1 className="text-2xl font-bold text-text font-heading">{greeting}</h1>
+        <p className="text-sm text-text-muted">{t("subtitle")}</p>
+      </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left column */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <HealthScoreCard score={healthScore} previousScore={localPreviousScore} />
-            <QuickActions />
-          </div>
-
-          <div>
-            <h2 className="mb-3 text-sm font-semibold text-text">{t("savedPlans")}</h2>
-            <SavedPlansList
-              plans={typedPlans}
-              onToggleFavorite={handleToggleFavorite}
-              onOpen={handleOpenPlan}
-            />
-          </div>
+      {/* Bento Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 stagger-children">
+        {/* Health Score - spans 2 cols on large */}
+        <div className="sm:col-span-2">
+          <HealthScoreCard score={healthScore} previousScore={localPreviousScore} />
         </div>
 
-        {/* Right column */}
-        <div className="flex flex-col gap-6">
+        {/* Quick Actions */}
+        <div className="sm:col-span-2 lg:col-span-2">
+          <QuickActions />
+        </div>
+
+        {/* Progress */}
+        <div className="sm:col-span-1 lg:col-span-2">
           <ProgressTracker history={scoreHistory} />
+        </div>
+
+        {/* Recent Activity */}
+        <div className="sm:col-span-1 lg:col-span-2">
           <RecentActivity activities={recentActivities} />
         </div>
+      </div>
+
+      {/* Saved Plans - full width below */}
+      <div className="animate-slide-up" style={{ animationDelay: "200ms" }}>
+        <h2 className="mb-3 text-sm font-semibold text-text">{t("savedPlans")}</h2>
+        <SavedPlansList
+          plans={typedPlans}
+          onToggleFavorite={handleToggleFavorite}
+          onOpen={handleOpenPlan}
+        />
       </div>
     </div>
   );

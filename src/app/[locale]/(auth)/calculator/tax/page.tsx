@@ -18,10 +18,10 @@ export default function TaxOptimizerPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">Tax Optimizer</h1>
-        <p className="text-sm text-text-muted">Calculate tax deductions from SSF, RMF, insurance, and more</p>
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">Tax Optimizer</h1>
+        <p className="text-sm mt-1 text-white/80">Calculate tax deductions from SSF, RMF, insurance, and more</p>
       </div>
       <Card>
         <CardHeader><CardTitle>Your Income & Deductions</CardTitle></CardHeader>

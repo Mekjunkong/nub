@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Calculator, TrendingUp, PieChart, Receipt, MessageCircle, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -15,22 +15,25 @@ const actions = [
 
 export function QuickActions() {
   const locale = useLocale();
+  const t = useTranslations("dashboard");
 
   return (
-    <Card>
-      <CardHeader><CardTitle className="text-sm">Quick Actions</CardTitle></CardHeader>
+    <Card variant="elevated">
+      <CardHeader><CardTitle className="text-sm">{t("quickActions")}</CardTitle></CardHeader>
       <CardContent>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {actions.map((a) => {
             const Icon = a.icon;
             return (
               <a
                 key={a.href}
                 href={`/${locale}/${a.href}`}
-                className="flex flex-col items-center gap-1.5 rounded-xl p-3 transition-colors hover:bg-surface-hover"
+                className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 transition-all hover:bg-surface-hover hover:shadow-sm group"
               >
-                <Icon className={`h-5 w-5 ${a.color}`} />
-                <span className="text-[10px] text-text-muted text-center leading-tight">{a.label}</span>
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 ${a.color} transition-transform group-hover:scale-110`}>
+                  <Icon className="h-4 w-4" />
+                </div>
+                <span className="text-xs font-medium text-text-secondary group-hover:text-text">{a.label}</span>
               </a>
             );
           })}

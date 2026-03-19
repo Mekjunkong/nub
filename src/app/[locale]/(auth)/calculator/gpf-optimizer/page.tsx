@@ -20,12 +20,12 @@ export default function GpfOptimizerPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">
           {t("gpfOptimizer.title")}
         </h1>
-        <p className="text-sm text-text-muted">
+        <p className="text-sm mt-1 text-white/80">
           {t("gpfOptimizer.subtitle")}
         </p>
       </div>
@@ -33,7 +33,7 @@ export default function GpfOptimizerPage() {
       <GpfHoldingsForm onOptimize={handleOptimize} computing={computing} />
 
       {results && (
-        <>
+        <div className="stagger-children flex flex-col gap-6">
           <GpfOptimizerResultsView results={results} />
           <GpfWealthProjection
             projections={results.wealthProjections}
@@ -41,7 +41,7 @@ export default function GpfOptimizerPage() {
           />
           <GpfDrawdownTable data={results.maxDrawdownByYear} />
           <FinancialDisclaimer />
-        </>
+        </div>
       )}
     </div>
   );

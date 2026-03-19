@@ -20,12 +20,12 @@ export default function TippPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">
           {t("tipp.title")}
         </h1>
-        <p className="text-sm text-text-muted">
+        <p className="text-sm mt-1 text-white/80">
           {t("tipp.subtitle")}
         </p>
       </div>

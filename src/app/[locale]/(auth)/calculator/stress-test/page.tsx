@@ -50,10 +50,10 @@ export default function StressTestPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">{t("title")}</h1>
-        <p className="text-sm text-text-muted">{t("description")}</p>
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">{t("title")}</h1>
+        <p className="text-sm mt-1 text-white/80">{t("description")}</p>
       </div>
       <Card>
         <CardHeader><CardTitle>{t("parameters")}</CardTitle></CardHeader>
@@ -74,13 +74,17 @@ export default function StressTestPage() {
           </div>
         </CardContent>
       </Card>
-      {results && <StressResults results={results} />}
-      {enhancedResults && (
-        <>
-          <StressBearImpact impact={enhancedResults.bearMarketImpact} />
-          <StressTimelineRisk data={enhancedResults.timelineRisk} />
-          <StressRebalanceLog data={enhancedResults.rebalancedPath} />
-        </>
+      {results && (
+        <div className="stagger-children flex flex-col gap-6">
+          <StressResults results={results} />
+          {enhancedResults && (
+            <>
+              <StressBearImpact impact={enhancedResults.bearMarketImpact} />
+              <StressTimelineRisk data={enhancedResults.timelineRisk} />
+              <StressRebalanceLog data={enhancedResults.rebalancedPath} />
+            </>
+          )}
+        </div>
       )}
     </div>
   );

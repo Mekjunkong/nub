@@ -92,12 +92,12 @@ export default function RetirementPlannerPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">
+    <div className="flex flex-col gap-6 animate-fade-in">
+      <div className="page-header-gradient">
+        <h1 className="text-2xl font-bold font-heading">
           Retirement Planner
         </h1>
-        <p className="text-sm text-text-muted">
+        <p className="text-sm mt-1 text-white/80">
           Analyze your retirement gap and plan for a secure future
         </p>
       </div>
@@ -139,7 +139,7 @@ export default function RetirementPlannerPage() {
 
       {/* Step 3: Results */}
       {results && (
-        <>
+        <div className="stagger-children flex flex-col gap-6">
           <RetirementResults results={results} />
           <WhatIfSliders
             retirementAge={formValues.retirementAge}
@@ -147,7 +147,7 @@ export default function RetirementPlannerPage() {
             expectedReturn={formValues.expectedReturn}
             onChange={handleWhatIf}
           />
-        </>
+        </div>
       )}
     </div>
   );

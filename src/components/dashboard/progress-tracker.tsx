@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface ScoreHistory {
   date: string;
@@ -13,12 +14,14 @@ interface ProgressTrackerProps {
 }
 
 export function ProgressTracker({ history }: ProgressTrackerProps) {
+  const t = useTranslations("dashboard");
+
   if (history.length < 2) {
     return (
-      <Card>
-        <CardHeader><CardTitle className="text-sm">Progress</CardTitle></CardHeader>
+      <Card variant="elevated">
+        <CardHeader><CardTitle className="text-sm">{t("progress")}</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-xs text-text-muted">Run calculators multiple times to track your progress</p>
+          <p className="text-xs text-text-muted">{t("progressHint")}</p>
         </CardContent>
       </Card>
     );
@@ -32,8 +35,8 @@ export function ProgressTracker({ history }: ProgressTrackerProps) {
   const range = maxScore - minScore || 1;
 
   return (
-    <Card>
-      <CardHeader><CardTitle className="text-sm">Progress</CardTitle></CardHeader>
+    <Card variant="elevated">
+      <CardHeader><CardTitle className="text-sm">{t("progress")}</CardTitle></CardHeader>
       <CardContent>
         <div className={`flex items-center gap-1 text-sm font-semibold ${delta >= 0 ? "text-success" : "text-danger"}`}>
           <TrendingUp className={`h-4 w-4 ${delta < 0 ? "rotate-180" : ""}`} />
