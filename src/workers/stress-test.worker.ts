@@ -3,6 +3,11 @@ import type {
   StressTestInputs,
   StressTestResults,
   ScenarioResult,
+  EnhancedStressTestInputs,
+  EnhancedStressTestResults,
+  TimelineRiskEntry,
+  BearMarketImpact,
+  RebalancedPathEntry,
 } from "@/types/calculator";
 
 export interface InjectedEvent {
@@ -239,6 +244,197 @@ export function runStressTest(inputs: StressTestInputs): StressTestResults {
     doublingProbability,
     medianDrawdown: percentile(allDrawdowns, 50),
     worstDrawdown: Math.min(...allDrawdowns),
+  };
+}
+
+/**
+ * Run enhanced stress test with bear market injection, timeline risk, and rebalanced path.
+ */
+export function runEnhancedStressTest(
+  inputs: EnhancedStressTestInputs
+): EnhancedStressTestResults {
+  // 1. Get base stress test results
+  const baseResults = runStressTest(inputs);
+
+  const {
+    expectedReturn,
+    sd,
+    periods,
+    dcaAmount,
+    bonusAmount,
+    bonusFrequency,
+    simulations,
+    bearMarketEnabled,
+    bearMarketReturn,
+    bearMarketYears,
+    rebalanceFrequencyMonths,
+  } = inputs;
+
+  const bearMonths = bearMarketYears * 12;
+  const monthlyBearReturn = bearMarketReturn / 12;
+  const maxYears = Math.ceil(periods / 12);
+
+  // 2. Timeline risk: for each year, simulate paths and track loss/doubling probabilities
+  const timelineRisk: TimelineRiskEntry[] = [];
+  for (let year = 1; year <= maxYears; year++) {
+    const monthsForYear = year * 12;
+    let lossCount = 0;
+    let doublingCount = 0;
+
+    for (let sim = 0; sim < simulations; sim++) {
+      let balance = 0;
+      let principal = 0;
+
+      for (let t = 1; t <= monthsForYear; t++) {
+        balance += dcaAmount;
+        principal += dcaAmount;
+        if (bonusFrequency > 0 && t % bonusFrequency === 0) {
+          balance += bonusAmount;
+          principal += bonusAmount;
+        }
+
+        let monthReturn: number;
+        if (bearMarketEnabled && t <= bearMonths) {
+          monthReturn = monthlyBearReturn;
+        } else {
+          monthReturn = normalRandom(expectedReturn, sd);
+        }
+
+        balance *= 1 + monthReturn;
+        if (balance < 0) balance = 0;
+      }
+
+      if (balance < principal) lossCount++;
+      if (balance >= principal * 2) doublingCount++;
+    }
+
+    timelineRisk.push({
+      year,
+      principal: dcaAmount * monthsForYear,
+      probOfLoss: lossCount / simulations,
+      probOfDoubling: doublingCount / simulations,
+    });
+  }
+
+  // 3. Bear market impact: single representative path
+  let bearMarketImpact: BearMarketImpact;
+  if (bearMarketEnabled) {
+    let balance = 0;
+    let peakBeforeBear = 0;
+    let minDuringBear = Infinity;
+    let wealthAtBearEnd = 0;
+    const curve: number[] = [0];
+
+    // Run full simulation
+    for (let t = 1; t <= periods; t++) {
+      balance += dcaAmount;
+      if (bonusFrequency > 0 && t % bonusFrequency === 0) {
+        balance += bonusAmount;
+      }
+
+      let monthReturn: number;
+      if (t <= bearMonths) {
+        monthReturn = monthlyBearReturn;
+      } else {
+        monthReturn = normalRandom(expectedReturn, sd);
+      }
+
+      balance *= 1 + monthReturn;
+      if (balance < 0) balance = 0;
+      curve.push(balance);
+
+      // Track peak right before bear starts (at t=0 there's nothing, so track during bear)
+      if (t <= bearMonths) {
+        if (t === 1) peakBeforeBear = balance; // first month as reference
+        if (balance > peakBeforeBear) peakBeforeBear = balance;
+        if (balance < minDuringBear) minDuringBear = balance;
+      }
+      if (t === bearMonths) {
+        wealthAtBearEnd = balance;
+      }
+    }
+
+    // If bear period exceeds simulation, use last value
+    if (bearMonths >= periods) {
+      wealthAtBearEnd = balance;
+    }
+
+    const drawdownDuringBear =
+      peakBeforeBear > 0
+        ? (minDuringBear - peakBeforeBear) / peakBeforeBear
+        : 0;
+
+    // Recovery: months after bear end to reach peakBeforeBear again
+    let recoveryMonths = 0;
+    if (bearMonths < periods) {
+      let recovered = false;
+      for (let t = bearMonths + 1; t < curve.length; t++) {
+        if (curve[t] >= peakBeforeBear) {
+          recoveryMonths = t - bearMonths;
+          recovered = true;
+          break;
+        }
+      }
+      if (!recovered) {
+        recoveryMonths = periods - bearMonths; // never recovered
+      }
+    }
+
+    bearMarketImpact = {
+      drawdownDuringBear,
+      recoveryMonths,
+      wealthAtBearEnd,
+    };
+  } else {
+    bearMarketImpact = {
+      drawdownDuringBear: 0,
+      recoveryMonths: 0,
+      wealthAtBearEnd: 0,
+    };
+  }
+
+  // 4. Rebalanced path: single simulation with DCA and rebalance labels
+  const rebalancedPath: RebalancedPathEntry[] = [];
+  {
+    let balance = 0;
+    let peak = 0;
+
+    for (let t = 1; t <= periods; t++) {
+      balance += dcaAmount;
+      if (bonusFrequency > 0 && t % bonusFrequency === 0) {
+        balance += bonusAmount;
+      }
+
+      let monthReturn: number;
+      if (bearMarketEnabled && t <= bearMonths) {
+        monthReturn = monthlyBearReturn;
+      } else {
+        monthReturn = normalRandom(expectedReturn, sd);
+      }
+
+      balance *= 1 + monthReturn;
+      if (balance < 0) balance = 0;
+
+      if (balance > peak) peak = balance;
+      const drawdown = peak > 0 ? (balance - peak) / peak : 0;
+
+      const isRebalMonth =
+        rebalanceFrequencyMonths > 0 && t % rebalanceFrequencyMonths === 0;
+
+      rebalancedPath.push({
+        month: t,
+        action: isRebalMonth ? "DCA+Rebal" : "DCA",
+        totalWealth: balance,
+        drawdown,
+      });
+    }
+  }
+
+  return {
+    ...baseResults,
+    timelineRisk,
+    bearMarketImpact,
+    rebalancedPath,
   };
 }
 
