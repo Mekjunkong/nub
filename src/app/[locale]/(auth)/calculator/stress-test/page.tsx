@@ -22,22 +22,29 @@ export default function StressTestPage() {
   const [bearYears, setBearYears] = useState(2);
   const [rebalanceFreq, setRebalanceFreq] = useState(12);
 
+  const [isCalculating, setIsCalculating] = useState(false);
+
   function handleCalculate(inputs: StressTestInputs) {
     setEnhancedResults(null);
+    setIsCalculating(true);
 
-    if (bearEnabled) {
-      const enhanced = runEnhancedStressTest({
-        ...inputs,
-        bearMarketEnabled: true,
-        bearMarketReturn: bearReturn / 100,
-        bearMarketYears: bearYears,
-        rebalanceFrequencyMonths: rebalanceFreq,
-      });
-      setResults(enhanced);
-      setEnhancedResults(enhanced);
-    } else {
-      setResults(runStressTest(inputs));
-    }
+    // Yield to the event loop so the loading state paints before heavy work
+    requestAnimationFrame(() => {
+      if (bearEnabled) {
+        const enhanced = runEnhancedStressTest({
+          ...inputs,
+          bearMarketEnabled: true,
+          bearMarketReturn: bearReturn / 100,
+          bearMarketYears: bearYears,
+          rebalanceFrequencyMonths: rebalanceFreq,
+        });
+        setResults(enhanced);
+        setEnhancedResults(enhanced);
+      } else {
+        setResults(runStressTest(inputs));
+      }
+      setIsCalculating(false);
+    });
   }
 
   return (

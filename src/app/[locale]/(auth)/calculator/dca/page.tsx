@@ -5,16 +5,18 @@ import { DcaForm } from "@/components/calculator/dca/dca-form";
 import { DcaResultsView } from "@/components/calculator/dca/dca-results";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { runDca } from "@/workers/dca-tracker.worker";
+import { seededRandom } from "@/lib/finance-math";
 import type { DcaResults } from "@/types/calculator";
 
 export default function DcaPage() {
   const [results, setResults] = useState<DcaResults | null>(null);
 
   function handleCalculate(values: { monthlyAmount: number; investmentMonths: number; rebalanceFrequency: number }) {
-    // Generate sample monthly returns
+    // Generate reproducible sample monthly returns using seeded PRNG
     const months = values.investmentMonths;
-    const equityReturns = Array.from({ length: months }, () => 0.005 + (Math.random() - 0.5) * 0.08);
-    const bondReturns = Array.from({ length: months }, () => 0.002 + (Math.random() - 0.5) * 0.01);
+    const rng = seededRandom(42);
+    const equityReturns = Array.from({ length: months }, () => 0.005 + (rng() - 0.5) * 0.08);
+    const bondReturns = Array.from({ length: months }, () => 0.002 + (rng() - 0.5) * 0.01);
 
     const result = runDca({
       monthlyAmount: values.monthlyAmount,

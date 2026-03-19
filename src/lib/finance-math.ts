@@ -231,6 +231,19 @@ export function presentValueAnnuity(
   return pmt * ((1 - Math.pow(1 + rate, -periods)) / rate);
 }
 
+/**
+ * Create a seeded pseudo-random number generator (LCG algorithm).
+ * Returns a function that produces deterministic values in [0, 1).
+ * Use a fixed seed for reproducible simulations.
+ */
+export function seededRandom(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Internal helpers for normal distribution
 // ---------------------------------------------------------------------------
