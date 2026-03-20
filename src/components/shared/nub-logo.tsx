@@ -9,9 +9,9 @@ interface NubLogoProps {
 }
 
 const sizes = {
-  sm: { icon: 36 },
-  md: { icon: 44 },
-  lg: { icon: 56 },
+  sm: { icon: 40 },
+  md: { icon: 56 },
+  lg: { icon: 64 },
 };
 
 export function NubLogo({ size = "md", className }: NubLogoProps) {
