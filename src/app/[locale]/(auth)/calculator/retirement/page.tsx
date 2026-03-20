@@ -13,6 +13,7 @@ import { calculateRetirement } from "@/workers/retirement-planner.worker";
 import { track, Events } from "@/lib/analytics";
 import type { RetirementInputs, RetirementResults as Results } from "@/types/calculator";
 import type { EmploymentType } from "@/types/database";
+import { useProfileDefaults } from "@/hooks/use-profile-defaults";
 
 interface RetirementFormValues {
   currentAge: number;
@@ -63,6 +64,8 @@ export default function RetirementPlannerPage() {
   const [results, setResults] = useState<Results | null>(null);
   const [calculating, setCalculating] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useProfileDefaults(employmentType, setEmploymentType);
 
   function handleFieldChange(field: string, value: number | string | boolean) {
     setFormValues((prev) => ({ ...prev, [field]: value }));
