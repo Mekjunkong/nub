@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { Inter, IBM_Plex_Sans_Thai, IBM_Plex_Mono } from "next/font/google";
@@ -25,21 +25,39 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Nub - วางแผนเกษียณอย่างมั่นใจ",
-  description:
-    "เครื่องมือวางแผนการเงินเพื่อการเกษียณที่ครบครัน ด้วยเทคโนโลยี Monte Carlo Simulation",
-  manifest: "/manifest.json",
+export const viewport: Viewport = {
   themeColor: "#4F7CF7",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Nub",
+};
+
+const metadataByLocale: Record<string, { title: string; description: string }> = {
+  th: {
+    title: "Nub - วางแผนเกษียณอย่างมั่นใจ",
+    description: "เครื่องมือวางแผนการเงินเพื่อการเกษียณที่ครบครัน ด้วยเทคโนโลยี Monte Carlo Simulation",
   },
-  other: {
-    "mobile-web-app-capable": "yes",
+  en: {
+    title: "Nub - Plan Your Retirement with Confidence",
+    description: "Comprehensive retirement planning tools powered by Monte Carlo Simulation technology",
   },
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const localized = metadataByLocale[locale] || metadataByLocale.th;
+
+  return {
+    title: localized.title,
+    description: localized.description,
+    manifest: "/manifest.json",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: "Nub",
+    },
+    other: {
+      "mobile-web-app-capable": "yes",
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -58,10 +76,14 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="dark" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var d=document.documentElement,s=localStorage.getItem("nub-dark-mode");if(s==="true"||(s===null&&window.matchMedia("(prefers-color-scheme:dark)").matches)){d.classList.add("dark")}else{d.classList.remove("dark")}}catch(e){document.documentElement.classList.add("dark")}`,
+          }}
+        />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-        <meta name="theme-color" content="#4F7CF7" />
       </head>
       <body
         className={`${inter.variable} ${ibmPlexSansThai.variable} ${ibmPlexMono.variable} antialiased`}
