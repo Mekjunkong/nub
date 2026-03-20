@@ -9,6 +9,7 @@ import { GoalTracker } from "@/components/dashboard/goal-tracker";
 import { RecentActivity, formatPlanTypeLabel } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { ShareScoreButton } from "@/components/shared/share-score-button";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import type { PlanType } from "@/types/database";
 
@@ -21,6 +22,7 @@ interface SavedPlanRow {
   is_favorite: boolean;
   updated_at: string;
   results: Record<string, unknown>;
+  scenario_label?: string | null;
 }
 
 interface DashboardPageClientProps {
@@ -50,6 +52,7 @@ export function DashboardPageClient({ healthScore, previousScore: serverPrevious
   const locale = useLocale();
   const t = useTranslations("dashboard");
   const [plans, setPlans] = useState(initialPlans);
+  const [scenarioFilter, setScenarioFilter] = useState<string>("all");
   const [localPreviousScore] = useState<number | null>(() => {
     if (serverPreviousScore != null) return serverPreviousScore;
     if (typeof window === "undefined") return null;
@@ -75,13 +78,17 @@ export function DashboardPageClient({ healthScore, previousScore: serverPrevious
     }
   }, [healthScore]);
 
-  const typedPlans = plans.map((p) => ({
+  const filteredPlans = scenarioFilter === "all"
+    ? plans
+    : plans.filter((p) => p.scenario_label === scenarioFilter);
+
+  const typedPlans = filteredPlans.map((p) => ({
     ...p,
     plan_type: p.plan_type as PlanType,
   }));
 
-  // Derive recent activity from saved plans
-  const recentActivities = plans.slice(0, 5).map((plan) => ({
+  // Derive recent activity from filtered plans
+  const recentActivities = filteredPlans.slice(0, 5).map((plan) => ({
     id: plan.id,
     type: "save" as const,
     description: `${plan.name} (${formatPlanTypeLabel(plan.plan_type)})`,
@@ -129,6 +136,21 @@ export function DashboardPageClient({ healthScore, previousScore: serverPrevious
           <p className="text-sm text-text-muted">{t("subtitle")}</p>
         </div>
         <ShareScoreButton score={healthScore} title="Nub - My Financial Health" />
+      </div>
+
+      {/* Scenario Filter */}
+      <div className="flex gap-2">
+        {["all", "optimistic", "base", "conservative"].map((scenario) => (
+          <Button
+            key={scenario}
+            variant={scenarioFilter === scenario ? "primary" : "outline"}
+            size="sm"
+            onClick={() => setScenarioFilter(scenario)}
+            className="capitalize"
+          >
+            {scenario === "all" ? "All Plans" : scenario}
+          </Button>
+        ))}
       </div>
 
       {/* Bento Grid */}

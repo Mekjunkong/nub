@@ -48,6 +48,7 @@ export type GlossaryCategory =
   | "insurance"
   | "general";
 export type Language = "th" | "en";
+export type ScenarioLabel = "optimistic" | "base" | "conservative";
 
 // ===== Table Row Types =====
 
@@ -77,6 +78,7 @@ export interface SavedPlan {
   is_favorite: boolean;
   version: number;
   parent_version_id: string | null;
+  scenario_label: ScenarioLabel | null;
   created_at: string;
   updated_at: string;
 }
