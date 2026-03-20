@@ -36,13 +36,12 @@ export function Header() {
 
   return (
     <>
-      {/* Scroll sentinel — when this leaves the viewport, header shrinks */}
       <div ref={sentinelRef} className="h-0" />
 
       <header className="sticky top-0 z-40 border-b border-border/50 bg-bg/80 backdrop-blur-xl transition-all duration-300">
-        {/* Big centered logo area */}
-        <div className={`flex justify-center transition-all duration-300 ${scrolled ? "py-2" : "py-6"}`}>
-          <Link href={`/${locale}`}>
+        <div className={`mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-300 ${scrolled ? "py-2" : "py-4"}`}>
+          {/* Logo — left side, big then shrinks */}
+          <Link href={`/${locale}`} className="shrink-0">
             <Image
               src="/logo.png"
               alt="Nub Retirement Planner"
@@ -50,18 +49,15 @@ export function Header() {
               height={200}
               className="transition-all duration-300 rounded-2xl"
               style={{
-                width: scrolled ? 48 : 140,
-                height: scrolled ? 48 : 140,
+                width: scrolled ? 44 : 120,
+                height: scrolled ? 44 : 120,
               }}
               priority
             />
           </Link>
-        </div>
 
-        {/* Navigation bar */}
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Desktop nav — centered */}
-          <nav className="hidden flex-1 items-center justify-center gap-8 py-3 md:flex">
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -73,7 +69,7 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right actions — absolute positioned on desktop */}
+          {/* Right actions */}
           <div className="hidden items-center gap-3 md:flex">
             <LanguageToggle />
             <DarkModeToggle />
@@ -87,21 +83,15 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Mobile: actions + menu button */}
-          <div className="flex w-full items-center justify-between py-2 md:hidden">
-            <div className="flex items-center gap-2">
-              <LanguageToggle />
-              <DarkModeToggle />
-            </div>
-            <button
-              type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-lg text-text"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-          </div>
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-text md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
 
         {/* Mobile menu */}
@@ -119,6 +109,10 @@ export function Header() {
                 </Link>
               ))}
               <hr className="border-border" />
+              <div className="flex items-center gap-3">
+                <LanguageToggle />
+                <DarkModeToggle />
+              </div>
               <div className="flex gap-2">
                 <Link href={`/${locale}/login`} className="flex-1">
                   <Button variant="outline" size="sm" className="w-full">
