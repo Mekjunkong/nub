@@ -280,12 +280,26 @@ export function Sidebar() {
         )}
       >
         {/* Header */}
-        <div className="flex h-16 items-center justify-between border-b border-border px-4">
-          <Image src="/logo.png" alt="Nub" width={collapsed ? 36 : 44} height={collapsed ? 36 : 44} className="rounded-lg" />
+        <div className={cn(
+          "flex flex-col items-center border-b border-border transition-all duration-300",
+          collapsed ? "py-3 px-2" : "py-5 px-4"
+        )}>
+          <Image
+            src="/logo.png"
+            alt="Nub"
+            width={collapsed ? 36 : 80}
+            height={collapsed ? 36 : 80}
+            className="rounded-xl transition-all duration-300"
+            style={{ width: collapsed ? 36 : 80, height: collapsed ? 36 : 80 }}
+            priority
+          />
+          {!collapsed && (
+            <p className="mt-1.5 text-[10px] text-text-muted font-medium tracking-wider uppercase">Retirement Planner</p>
+          )}
           <button
             type="button"
             onClick={() => setCollapsed(!collapsed)}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted hover:bg-surface-hover hover:text-text"
+            className="mt-2 flex h-7 w-7 items-center justify-center rounded-lg text-text-muted hover:bg-surface-hover hover:text-text"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? (
