@@ -46,6 +46,27 @@ export const planResultFields: Partial<Record<PlanType, ResultField[]>> = {
     { key: "successRate", label: "Success Rate", format: "percent" },
     { key: "medianEndWealth", label: "Median End Wealth", format: "currency" },
   ],
+  inflation: [
+    { key: "totalLifetimeCost", label: "Total Lifetime Cost", format: "currency" },
+    { key: "purchasingPowerLoss", label: "Purchasing Power Loss", format: "percent" },
+  ],
+  social_security: [
+    { key: "recommended", label: "Recommended Section", format: "number" },
+  ],
+  insurance: [
+    { key: "totalNeeds", label: "Total Needs", format: "currency" },
+    { key: "gap", label: "Coverage Gap", format: "currency" },
+  ],
+  debt_payoff: [
+    { key: "avalanche.totalInterest", label: "Total Interest (Avalanche)", format: "currency" },
+    { key: "avalanche.payoffMonths", label: "Payoff Months", format: "number" },
+    { key: "interestSaved", label: "Interest Saved", format: "currency" },
+  ],
+  education: [
+    { key: "totalFutureCost", label: "Total Future Cost", format: "currency" },
+    { key: "totalMonthlySavings", label: "Monthly Savings Needed", format: "currency" },
+    { key: "gap", label: "Funding Gap", format: "currency" },
+  ],
 };
 
 /** Extract a nested value from an object using dot-notation key */

@@ -516,3 +516,147 @@ export interface EnhancedStressTestResults extends StressTestResults {
   bearMarketImpact: BearMarketImpact;
   rebalancedPath: RebalancedPathEntry[];
 }
+
+// ===== Inflation Impact =====
+
+export interface InflationInputs {
+  currentMonthlyExpenses: number;
+  inflationRate: number;
+  yearsToProject: number;
+  oneTimeExpenses: Array<{ year: number; amount: number }>;
+}
+
+export interface InflationYearProjection {
+  year: number;
+  nominalExpenses: number;
+  realPurchasingPower: number;
+  cumulativeCost: number;
+}
+
+export interface InflationResults {
+  yearlyProjections: InflationYearProjection[];
+  totalLifetimeCost: number;
+  purchasingPowerLoss: number;
+}
+
+// ===== Social Security =====
+
+export type SocialSecuritySection = "33" | "39" | "40";
+
+export interface SocialSecurityInputs {
+  section: SocialSecuritySection;
+  monthlyIncome: number;
+  currentAge: number;
+  retirementAge: number;
+  yearsContributed: number;
+}
+
+export interface SectionResult {
+  section: string;
+  monthlyContribution: number;
+  monthlyPension: number;
+  totalContributed: number;
+  breakEvenYears: number;
+}
+
+export interface SocialSecurityResults {
+  sections: SectionResult[];
+  recommended: string;
+}
+
+// ===== Insurance Needs =====
+
+export interface Dependent {
+  name: string;
+  age: number;
+  relationship: string;
+  annualCost: number;
+}
+
+export interface InsuranceNeedsInputs {
+  annualIncome: number;
+  yearsOfIncomeReplacement: number;
+  totalDebts: number;
+  existingCoverage: number;
+  finalExpenses: number;
+  dependents: Dependent[];
+  educationFundNeeded: number;
+}
+
+export interface InsuranceNeedsResults {
+  incomeReplacement: number;
+  debtCoverage: number;
+  educationFund: number;
+  finalExpenses: number;
+  totalNeeds: number;
+  existingCoverage: number;
+  gap: number;
+  breakdown: Array<{ category: string; amount: number }>;
+}
+
+// ===== Debt Payoff =====
+
+export interface DebtItem {
+  name: string;
+  balance: number;
+  interestRate: number;
+  minPayment: number;
+}
+
+export interface DebtScheduleEntry {
+  month: number;
+  debts: Array<{ name: string; balance: number }>;
+  totalBalance: number;
+}
+
+export interface StrategyResult {
+  totalInterest: number;
+  payoffMonths: number;
+  schedule: DebtScheduleEntry[];
+}
+
+export interface DebtPayoffInputs {
+  debts: DebtItem[];
+  extraMonthlyPayment: number;
+}
+
+export interface DebtPayoffResults {
+  snowball: StrategyResult;
+  avalanche: StrategyResult;
+  interestSaved: number;
+  recommendedStrategy: "snowball" | "avalanche";
+}
+
+// ===== Education Fund =====
+
+export interface ChildProfile {
+  name: string;
+  currentAge: number;
+  enrollmentAge: number;
+}
+
+export type UniversityTier = "public" | "private" | "international";
+
+export interface EducationFundInputs {
+  children: ChildProfile[];
+  universityTier: UniversityTier;
+  yearsOfStudy: number;
+  educationInflation: number;
+  currentSavings: number;
+  expectedReturn: number;
+}
+
+export interface ChildResult {
+  name: string;
+  futureTotalCost: number;
+  requiredMonthlySavings: number;
+  yearsUntilEnrollment: number;
+}
+
+export interface EducationFundResults {
+  children: ChildResult[];
+  totalFutureCost: number;
+  totalMonthlySavings: number;
+  currentSavingsFV: number;
+  gap: number;
+}

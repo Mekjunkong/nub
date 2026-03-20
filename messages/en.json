@@ -38,7 +38,12 @@
       "gpf_optimizer": "GPF Optimizer",
       "tipp": "TIPP/VPPI",
       "portfolio_health": "Portfolio Health",
-      "bumnan95": "Bumnan 95"
+      "bumnan95": "Bumnan 95",
+      "inflation": "Inflation Impact",
+      "social_security": "Social Security",
+      "insurance": "Insurance Needs",
+      "debt_payoff": "Debt Payoff",
+      "education": "Education Fund"
     },
     "nav": {
       "dashboard": "Dashboard",
@@ -66,7 +71,12 @@
         "gpfOptimizer": "GPF Optimizer",
         "tipp": "TIPP/VPPI",
         "bumnan95": "Bumnan 95",
-        "compare": "Compare Plans"
+        "compare": "Compare Plans",
+        "inflation": "Inflation",
+        "socialSecurity": "Social Security",
+        "insurance": "Insurance",
+        "debtPayoff": "Debt Payoff",
+        "education": "Education"
       }
     }
   },

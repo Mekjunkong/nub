@@ -14,7 +14,12 @@ export type PlanType =
   | "gpf_optimizer"
   | "tipp"
   | "portfolio_health"
-  | "bumnan95";
+  | "bumnan95"
+  | "inflation"
+  | "social_security"
+  | "insurance"
+  | "debt_payoff"
+  | "education";
 export type FundCategory =
   | "equity"
   | "bond"

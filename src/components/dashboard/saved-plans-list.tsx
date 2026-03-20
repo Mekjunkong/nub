@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, Calculator, TrendingUp, Shield, PieChart, DollarSign, Receipt } from "lucide-react";
+import { Star, Calculator, TrendingUp, Shield, PieChart, DollarSign, Receipt, TrendingDown, Umbrella, HeartPulse, CreditCard, GraduationCap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +35,11 @@ const planIcons: Record<PlanType, React.ReactNode> = {
   tipp: <Shield className="h-4 w-4" />,
   portfolio_health: <TrendingUp className="h-4 w-4" />,
   bumnan95: <Calculator className="h-4 w-4" />,
+  inflation: <TrendingDown className="h-4 w-4" />,
+  social_security: <Umbrella className="h-4 w-4" />,
+  insurance: <HeartPulse className="h-4 w-4" />,
+  debt_payoff: <CreditCard className="h-4 w-4" />,
+  education: <GraduationCap className="h-4 w-4" />,
 };
 
 export function SavedPlansList({ plans, onToggleFavorite, onOpen }: SavedPlansListProps) {

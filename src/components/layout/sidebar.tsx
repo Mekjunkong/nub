@@ -24,6 +24,11 @@ import {
   Landmark,
   Wallet,
   ClipboardList,
+  GraduationCap,
+  HeartPulse,
+  CreditCard,
+  Umbrella,
+  TrendingDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageToggle } from "./language-toggle";
@@ -119,6 +124,31 @@ export function Sidebar() {
           href: `/${locale}/calculator/bumnan95`,
           label: t("nav.calc.bumnan95"),
           icon: <Calculator className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/inflation`,
+          label: t("nav.calc.inflation"),
+          icon: <TrendingDown className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/social-security`,
+          label: t("nav.calc.socialSecurity"),
+          icon: <Umbrella className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/insurance`,
+          label: t("nav.calc.insurance"),
+          icon: <HeartPulse className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/debt-payoff`,
+          label: t("nav.calc.debtPayoff"),
+          icon: <CreditCard className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/education`,
+          label: t("nav.calc.education"),
+          icon: <GraduationCap className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/compare`,
