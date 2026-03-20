@@ -2,64 +2,38 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useLocale } from "next-intl";
+import { useChat } from "@ai-sdk/react";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ChatMessage } from "./chat-message";
-
-interface Message {
-  role: "user" | "assistant";
-  content: string;
-}
 
 export function ChatInterface() {
   const locale = useLocale();
-  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [usage, setUsage] = useState<{ used: number; limit: number | null }>({ used: 0, limit: 5 });
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const { messages, sendMessage, status, error } = useChat();
+
+  const isLoading = status === "streaming" || status === "submitted";
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
   async function handleSend() {
-    if (!input.trim() || loading) return;
-
-    const userMessage = input.trim();
+    if (!input.trim() || isLoading) return;
+    const text = input.trim();
     setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-    setLoading(true);
+    sendMessage({ text });
+  }
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
-      });
-
-      const data = await res.json();
-
-      if (res.status === 429) {
-        setMessages((prev) => [...prev, {
-          role: "assistant",
-          content: locale === "th"
-            ? "คุณใช้ข้อความครบจำนวนแล้ววันนี้ อัปเกรดเป็นพรีเมียมเพื่อแชทไม่จำกัด"
-            : "You've reached your daily limit. Upgrade to Premium for unlimited chat.",
-        }]);
-      } else if (data.message) {
-        setMessages((prev) => [...prev, { role: "assistant", content: data.message }]);
-        setUsage({ used: data.used, limit: data.limit });
-      }
-    } catch {
-      setMessages((prev) => [...prev, {
-        role: "assistant",
-        content: locale === "th" ? "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" : "An error occurred. Please try again.",
-      }]);
-    }
-
-    setLoading(false);
+  // Extract text from message parts
+  function getMessageText(message: (typeof messages)[0]): string {
+    if (!message.parts) return "";
+    return message.parts
+      .filter((p): p is { type: "text"; text: string } => p.type === "text")
+      .map((p) => p.text)
+      .join("");
   }
 
   return (
@@ -69,11 +43,6 @@ export function ChatInterface() {
         <h1 className="text-lg font-semibold text-text font-heading">
           {locale === "th" ? "ที่ปรึกษา AI" : "AI Advisor"}
         </h1>
-        {usage.limit && (
-          <Badge variant={usage.used >= usage.limit ? "danger" : "default"}>
-            {usage.used}/{usage.limit} {locale === "th" ? "ข้อความวันนี้" : "messages today"}
-          </Badge>
-        )}
       </div>
 
       {/* Messages */}
@@ -91,11 +60,23 @@ export function ChatInterface() {
               </p>
             </div>
           )}
-          {messages.map((msg, i) => (
-            <ChatMessage key={i} role={msg.role} content={msg.content} />
+          {messages.map((msg) => (
+            <ChatMessage key={msg.id} role={msg.role as "user" | "assistant"} content={getMessageText(msg)} />
           ))}
-          {loading && (
+          {isLoading && messages[messages.length - 1]?.role === "user" && (
             <ChatMessage role="assistant" content={locale === "th" ? "กำลังคิด..." : "Thinking..."} />
+          )}
+          {error && (
+            <ChatMessage
+              role="assistant"
+              content={
+                error.message.includes("429")
+                  ? (locale === "th"
+                    ? "คุณใช้ข้อความครบจำนวนแล้ววันนี้ อัปเกรดเป็นพรีเมียมเพื่อแชทไม่จำกัด"
+                    : "You've reached your daily limit. Upgrade to Premium for unlimited chat.")
+                  : (locale === "th" ? "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" : "An error occurred. Please try again.")
+              }
+            />
           )}
         </div>
       </div>
@@ -115,9 +96,9 @@ export function ChatInterface() {
             onChange={(e) => setInput(e.target.value)}
             placeholder={locale === "th" ? "พิมพ์คำถามของคุณ..." : "Type your question..."}
             className="flex-1 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary"
-            disabled={loading}
+            disabled={isLoading}
           />
-          <Button type="submit" disabled={!input.trim() || loading} size="md">
+          <Button type="submit" disabled={!input.trim() || isLoading} size="md">
             <Send className="h-4 w-4" />
           </Button>
         </form>
