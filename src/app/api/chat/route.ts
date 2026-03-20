@@ -1,5 +1,9 @@
-import { NextResponse } from "next/server";
+import { streamText, convertToModelMessages } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { after } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { buildUserContext } from "@/lib/chat-context";
+import type { UIMessage } from "ai";
 
 const SYSTEM_PROMPT = `You are Nub AI, a friendly and knowledgeable financial advisor assistant for Thai retirement planning.
 
@@ -21,15 +25,16 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    const { message } = await request.json();
-    if (!message || typeof message !== "string") {
-      return NextResponse.json({ error: "Invalid message" }, { status: 400 });
+    const { messages: uiMessages }: { messages: UIMessage[] } = await request.json();
+
+    if (!uiMessages || !Array.isArray(uiMessages) || uiMessages.length === 0) {
+      return new Response(JSON.stringify({ error: "Invalid messages" }), { status: 400 });
     }
 
-    // Check subscription
+    // Rate limiting (keep existing logic)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sb = supabase as any;
 
@@ -41,26 +46,16 @@ export async function POST(request: Request) {
 
     const isFree = profile?.subscription_tier !== "premium";
 
-    // Atomic rate limit check using upsert with conflict handling.
-    // This prevents race conditions where concurrent requests could
-    // both read the same count and both increment past the limit.
     if (isFree) {
       const { data: usageResult, error: usageError } = await sb.rpc(
         "increment_chat_usage",
         { p_user_id: user.id, p_limit: FREE_DAILY_LIMIT }
       );
 
-      // If the RPC doesn't exist yet, fall back to a manual atomic upsert.
-      // The RPC should execute:
-      //   INSERT INTO chat_daily_usage (user_id, usage_date, message_count)
-      //   VALUES (p_user_id, CURRENT_DATE, 1)
-      //   ON CONFLICT (user_id, usage_date)
-      //   DO UPDATE SET message_count = chat_daily_usage.message_count + 1
-      //   WHERE chat_daily_usage.message_count < p_limit
-      //   RETURNING message_count;
       if (usageError) {
-        // Fallback: read-then-check with a conditional update
+        // Fallback: upsert to increment count, then check
         const today = new Date().toISOString().split("T")[0];
+
         const { data: usage } = await sb
           .from("chat_daily_usage")
           .select("message_count")
@@ -70,92 +65,75 @@ export async function POST(request: Request) {
 
         const currentCount = usage?.message_count ?? 0;
         if (currentCount >= FREE_DAILY_LIMIT) {
-          return NextResponse.json({
+          return new Response(JSON.stringify({
             error: "Daily limit reached",
             limit: FREE_DAILY_LIMIT,
             used: currentCount,
-          }, { status: 429 });
+          }), { status: 429 });
+        }
+
+        if (usage) {
+          await sb
+            .from("chat_daily_usage")
+            .update({ message_count: currentCount + 1 })
+            .eq("user_id", user.id)
+            .eq("usage_date", today);
+        } else {
+          await sb
+            .from("chat_daily_usage")
+            .insert({ user_id: user.id, usage_date: today, message_count: 1 });
         }
       } else if (usageResult === null || (Array.isArray(usageResult) && usageResult.length === 0)) {
-        // Atomic check returned no rows — limit was exceeded
-        return NextResponse.json({
+        return new Response(JSON.stringify({
           error: "Daily limit reached",
           limit: FREE_DAILY_LIMIT,
           used: FREE_DAILY_LIMIT,
-        }, { status: 429 });
+        }), { status: 429 });
       }
     }
 
-    // Get chat history for context
-    const { data: history } = await sb
-      .from("chat_history")
-      .select("role, content")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .limit(10);
+    // Build personalized context from saved plans
+    const userContext = await buildUserContext(user.id);
+    const systemPrompt = userContext
+      ? SYSTEM_PROMPT + "\n\n" + userContext
+      : SYSTEM_PROMPT;
 
-    const messages = [
-      { role: "system" as const, content: SYSTEM_PROMPT },
-      ...(history || []).reverse().map((h: any) => ({
-        role: h.role as "user" | "assistant",
-        content: h.content,
-      })),
-      { role: "user" as const, content: message },
-    ];
+    // Convert UI messages to model messages
+    const modelMessages = await convertToModelMessages(uiMessages);
 
-    // Call Claude API
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ error: "AI service not configured" }, { status: 503 });
-    }
-
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages: messages
-          .filter((m) => m.role !== "system")
-          .map((m) => ({ role: m.role, content: m.content })),
-      }),
+    // Stream response with AI SDK
+    const result = streamText({
+      model: anthropic("claude-sonnet-4-20250514"),
+      system: systemPrompt,
+      messages: modelMessages,
+      maxOutputTokens: 1024,
     });
 
-    if (!response.ok) {
-      return NextResponse.json({ error: "AI service error" }, { status: 502 });
+    // Save to chat history in background after response completes
+    const lastUserMessage = uiMessages.filter(m => m.role === "user").pop();
+    if (lastUserMessage) {
+      const userText = lastUserMessage.parts
+        ?.filter((p): p is { type: "text"; text: string } => p.type === "text")
+        .map(p => p.text)
+        .join("") || "";
+
+      if (userText) {
+        after(async () => {
+          try {
+            const fullText = await result.text;
+            await sb.from("chat_history").insert([
+              { user_id: user.id, role: "user", content: userText },
+              { user_id: user.id, role: "assistant", content: fullText },
+            ]);
+          } catch {
+            // Silently fail - chat still works without history save
+          }
+        });
+      }
     }
 
-    const aiResponse = await response.json();
-    const assistantMessage = aiResponse.content?.[0]?.text || "I apologize, I could not generate a response.";
-
-    // Save messages to chat history
-    await sb.from("chat_history").insert([
-      { user_id: user.id, role: "user", content: message },
-      { user_id: user.id, role: "assistant", content: assistantMessage },
-    ]);
-
-    // Update daily usage atomically via upsert
-    const today = new Date().toISOString().split("T")[0];
-    await sb
-      .from("chat_daily_usage")
-      .upsert(
-        { user_id: user.id, usage_date: today, message_count: 1 },
-        { onConflict: "user_id,usage_date" }
-      );
-    // Note: The upsert above sets message_count to 1 for new rows.
-    // For existing rows, the atomic RPC in the rate limit check already incremented the count.
-    // If the RPC fallback was used, this upsert is a no-op on conflict (row already exists).
-
-    return NextResponse.json({
-      message: assistantMessage,
-      limit: isFree ? FREE_DAILY_LIMIT : null,
-    });
+    return result.toUIMessageStreamResponse();
   } catch {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
   }
 }
