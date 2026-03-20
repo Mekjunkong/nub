@@ -52,7 +52,21 @@
       "profile": "Profile",
       "settings": "Settings",
       "contact": "Contact",
-      "portfolioHealth": "Portfolio Health"
+      "portfolioHealth": "Portfolio Health",
+      "calc": {
+        "retirement": "Retirement",
+        "withdrawal": "Withdrawal",
+        "stressTest": "Stress Test",
+        "mpt": "MPT",
+        "dca": "DCA",
+        "tax": "Tax",
+        "cashflow": "Cashflow",
+        "roic": "ROIC",
+        "gpfOptimizer": "GPF Optimizer",
+        "tipp": "TIPP/VPPI",
+        "bumnan95": "Bumnan 95",
+        "compare": "Compare Plans"
+      }
     }
   },
   "landing": {

@@ -52,7 +52,21 @@
       "profile": "โปรไฟล์",
       "settings": "ตั้งค่า",
       "contact": "ติดต่อ",
-      "portfolioHealth": "สุขภาพพอร์ต"
+      "portfolioHealth": "สุขภาพพอร์ต",
+      "calc": {
+        "retirement": "เกษียณ",
+        "withdrawal": "ถอนเงิน",
+        "stressTest": "ทดสอบความเสี่ยง",
+        "mpt": "MPT",
+        "dca": "DCA",
+        "tax": "ภาษี",
+        "cashflow": "กระแสเงินสด",
+        "roic": "ROIC",
+        "gpfOptimizer": "จัดพอร์ต กบข.",
+        "tipp": "TIPP ปกป้องพอร์ต",
+        "bumnan95": "บำนาญ 95",
+        "compare": "เปรียบเทียบแผน"
+      }
     }
   },
   "landing": {

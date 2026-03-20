@@ -66,64 +66,69 @@ export function Sidebar() {
       children: [
         {
           href: `/${locale}/calculator/retirement`,
-          label: locale === "th" ? "เกษียณ" : "Retirement",
+          label: t("nav.calc.retirement"),
           icon: <Landmark className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/withdrawal`,
-          label: locale === "th" ? "ถอนเงิน" : "Withdrawal",
+          label: t("nav.calc.withdrawal"),
           icon: <TrendingUp className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/stress-test`,
-          label: locale === "th" ? "ทดสอบความเสี่ยง" : "Stress Test",
+          label: t("nav.calc.stressTest"),
           icon: <Shield className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/mpt`,
-          label: "MPT",
+          label: t("nav.calc.mpt"),
           icon: <PieChart className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/dca`,
-          label: "DCA",
+          label: t("nav.calc.dca"),
           icon: <DollarSign className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/tax`,
-          label: locale === "th" ? "ภาษี" : "Tax",
+          label: t("nav.calc.tax"),
           icon: <Receipt className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/cashflow`,
-          label: locale === "th" ? "กระแสเงินสด" : "Cashflow",
+          label: t("nav.calc.cashflow"),
           icon: <Wallet className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/roic`,
-          label: "ROIC",
+          label: t("nav.calc.roic"),
           icon: <BarChart3 className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/gpf-optimizer`,
-          label: locale === "th" ? "จัดพอร์ต กบข." : "GPF Optimizer",
+          label: t("nav.calc.gpfOptimizer"),
           icon: <PieChart className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/tipp`,
-          label: locale === "th" ? "TIPP ปกป้องพอร์ต" : "TIPP/VPPI",
+          label: t("nav.calc.tipp"),
           icon: <Shield className="h-4 w-4" />,
         },
         {
           href: `/${locale}/calculator/bumnan95`,
-          label: locale === "th" ? "บำนาญ 95" : "Bumnan 95",
+          label: t("nav.calc.bumnan95"),
           icon: <Calculator className="h-4 w-4" />,
+        },
+        {
+          href: `/${locale}/calculator/compare`,
+          label: t("nav.calc.compare"),
+          icon: <BarChart3 className="h-4 w-4" />,
         },
       ],
     },
     {
       href: `/${locale}/portfolio-health`,
-      label: locale === "th" ? "สุขภาพพอร์ต" : "Portfolio Health",
+      label: t("nav.portfolioHealth"),
       icon: <Activity className="h-5 w-5" />,
     },
     {
