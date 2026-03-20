@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { HealthScoreCard } from "@/components/dashboard/health-score-card";
 import { SavedPlansList } from "@/components/dashboard/saved-plans-list";
-import { ProgressTracker } from "@/components/dashboard/progress-tracker";
+import { GoalTracker } from "@/components/dashboard/goal-tracker";
 import { RecentActivity, formatPlanTypeLabel } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { ShareScoreButton } from "@/components/shared/share-score-button";
@@ -143,9 +143,9 @@ export function DashboardPageClient({ healthScore, previousScore: serverPrevious
           <QuickActions />
         </div>
 
-        {/* Progress */}
+        {/* Goal Tracker */}
         <div className="sm:col-span-1 lg:col-span-2">
-          <ProgressTracker history={scoreHistory} />
+          <GoalTracker scoreHistory={scoreHistory} currentScore={healthScore} />
         </div>
 
         {/* Recent Activity */}
