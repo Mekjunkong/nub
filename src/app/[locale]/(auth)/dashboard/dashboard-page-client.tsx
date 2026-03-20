@@ -8,6 +8,7 @@ import { SavedPlansList } from "@/components/dashboard/saved-plans-list";
 import { ProgressTracker } from "@/components/dashboard/progress-tracker";
 import { RecentActivity, formatPlanTypeLabel } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
+import { ShareScoreButton } from "@/components/shared/share-score-button";
 import { createClient } from "@/lib/supabase/client";
 import type { PlanType } from "@/types/database";
 
@@ -49,23 +50,20 @@ export function DashboardPageClient({ healthScore, previousScore: serverPrevious
   const locale = useLocale();
   const t = useTranslations("dashboard");
   const [plans, setPlans] = useState(initialPlans);
-  const [localPreviousScore, setLocalPreviousScore] = useState<number | null>(serverPreviousScore);
-
-  // On mount: read previous score from localStorage
-  // When healthScore changes: save old score to localStorage
-  useEffect(() => {
+  const [localPreviousScore] = useState<number | null>(() => {
+    if (serverPreviousScore != null) return serverPreviousScore;
+    if (typeof window === "undefined") return null;
     try {
       const stored = localStorage.getItem(PREV_SCORE_KEY);
       if (stored !== null) {
         const parsed = parseFloat(stored);
-        if (!isNaN(parsed)) {
-          setLocalPreviousScore(parsed);
-        }
+        if (!isNaN(parsed)) return parsed;
       }
     } catch {
       // localStorage may be unavailable
     }
-  }, []);
+    return null;
+  });
 
   useEffect(() => {
     if (healthScore == null) return;
@@ -125,9 +123,12 @@ export function DashboardPageClient({ healthScore, previousScore: serverPrevious
   return (
     <div className="flex flex-col gap-6 animate-fade-in">
       {/* Greeting */}
-      <div>
-        <h1 className="text-2xl font-bold text-text font-heading">{greeting}</h1>
-        <p className="text-sm text-text-muted">{t("subtitle")}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-text font-heading">{greeting}</h1>
+          <p className="text-sm text-text-muted">{t("subtitle")}</p>
+        </div>
+        <ShareScoreButton score={healthScore} title="Nub - My Financial Health" />
       </div>
 
       {/* Bento Grid */}
