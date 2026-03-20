@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { User, Settings, LogOut } from "lucide-react";
@@ -9,6 +10,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/components/ui/popover";
+import { createClient } from "@/lib/supabase/client";
 
 interface UserMenuProps {
   displayName?: string;
@@ -18,6 +20,13 @@ interface UserMenuProps {
 export function UserMenu({ displayName, avatarUrl }: UserMenuProps) {
   const t = useTranslations("common");
   const locale = useLocale();
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push(`/${locale}/login`);
+  }
 
   return (
     <Popover>
@@ -57,7 +66,8 @@ export function UserMenu({ displayName, avatarUrl }: UserMenuProps) {
           </Link>
           <button
             type="button"
-            className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-danger hover:bg-surface-hover"
+            onClick={handleLogout}
+            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-danger hover:bg-surface-hover"
           >
             <LogOut className="h-4 w-4" />
             {t("logout")}
