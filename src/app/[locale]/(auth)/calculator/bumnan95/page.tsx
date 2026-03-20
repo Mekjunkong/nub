@@ -9,6 +9,7 @@ import { Bumnan95TierTable } from "@/components/calculator/bumnan95/bumnan95-tie
 import { Bumnan95PremiumCalc } from "@/components/calculator/bumnan95/bumnan95-premium-calc";
 import { Bumnan95Strategies } from "@/components/calculator/bumnan95/bumnan95-strategies";
 import { FinancialDisclaimer } from "@/components/calculator/shared/financial-disclaimer";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { Bumnan95Inputs } from "@/types/calculator";
 
@@ -38,6 +39,14 @@ export default function Bumnan95Page() {
 
       {results && (
         <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="bumnan95"
+              planName="Bumnan 95"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
           <Bumnan95GapAnalysis
             targetCorpus={results.targetCorpus}
             estimatedGPF={results.estimatedGPF}

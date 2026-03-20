@@ -7,6 +7,7 @@ import { GpfOptimizerResultsView } from "@/components/calculator/gpf/gpf-optimiz
 import { GpfWealthProjection } from "@/components/calculator/gpf/gpf-wealth-projection";
 import { GpfDrawdownTable } from "@/components/calculator/gpf/gpf-drawdown-table";
 import { FinancialDisclaimer } from "@/components/calculator/shared/financial-disclaimer";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { GpfOptimizerInputs } from "@/types/calculator";
 
@@ -34,6 +35,14 @@ export default function GpfOptimizerPage() {
 
       {results && (
         <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="gpf_optimizer"
+              planName="GPF Optimization"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
           <GpfOptimizerResultsView results={results} />
           <GpfWealthProjection
             projections={results.wealthProjections}

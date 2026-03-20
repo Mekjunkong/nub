@@ -7,6 +7,7 @@ import { TippRiskDashboard } from "@/components/calculator/tipp/tipp-risk-dashbo
 import { TippAllocationView } from "@/components/calculator/tipp/tipp-allocation-view";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTippWorker } from "@/hooks/use-tipp-worker";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { TippInputs } from "@/types/calculator";
 
@@ -40,7 +41,15 @@ export default function TippPage() {
       </Card>
 
       {results && (
-        <>
+        <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="tipp"
+              planName="TIPP/VPPI"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
           <Card>
             <CardHeader>
               <CardTitle>{t("tipp.wealthPathVsFloor")}</CardTitle>
@@ -59,7 +68,7 @@ export default function TippPage() {
             finalWealth={results.finalWealth}
             initialCapital={results.wealthPath[0]?.wealth ?? 0}
           />
-        </>
+        </div>
       )}
     </div>
   );

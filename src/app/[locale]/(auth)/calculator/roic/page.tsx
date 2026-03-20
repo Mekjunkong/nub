@@ -8,6 +8,7 @@ import { RoicResultsView } from "@/components/calculator/roic/roic-results";
 import { RoicRankingTable } from "@/components/calculator/roic/roic-ranking-table";
 import { calculateRoic } from "@/lib/roic-math";
 import { createClient } from "@/lib/supabase/client";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { RoicResults } from "@/lib/roic-math";
 
@@ -149,7 +150,19 @@ export default function RoicPage() {
         <TabsContent value="analyze" className="flex flex-col gap-6 mt-4">
           <RoicForm onCalculate={handleCalculate} />
           {error && <p className="text-danger text-sm">{error}</p>}
-          {results && <RoicResultsView results={results} />}
+          {results && (
+            <>
+              <div className="flex justify-end">
+                <ExportPdfButton
+                  planType="roic"
+                  planName="ROIC Analysis"
+                  inputs={{}}
+                  results={results as unknown as Record<string, unknown>}
+                />
+              </div>
+              <RoicResultsView results={results} />
+            </>
+          )}
         </TabsContent>
         <TabsContent value="ranking" className="mt-4">
           {rankingLoading ? (

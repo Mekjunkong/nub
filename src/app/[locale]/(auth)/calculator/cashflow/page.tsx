@@ -7,6 +7,7 @@ import { CashflowMonthView } from "@/components/calculator/cashflow/cashflow-mon
 import { CashflowResultsView } from "@/components/calculator/cashflow/cashflow-results";
 import { calculateCashflowResults } from "@/lib/cashflow-math";
 import { createClient } from "@/lib/supabase/client";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { CashflowDirection, CashflowCategory } from "@/types/database";
 
@@ -465,7 +466,17 @@ export default function CashflowPage() {
       />
 
       {currentTransactions.length > 0 && (
-        <CashflowResultsView results={results} />
+        <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="cashflow"
+              planName="Cashflow Analysis"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
+          <CashflowResultsView results={results} />
+        </div>
       )}
     </div>
   );

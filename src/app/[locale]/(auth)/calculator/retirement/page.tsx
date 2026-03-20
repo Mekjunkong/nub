@@ -10,6 +10,7 @@ import { WhatIfSliders } from "@/components/calculator/retirement/what-if-slider
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { calculateRetirement } from "@/workers/retirement-planner.worker";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { RetirementInputs, RetirementResults as Results } from "@/types/calculator";
 import type { EmploymentType } from "@/types/database";
@@ -143,6 +144,14 @@ export default function RetirementPlannerPage() {
       {/* Step 3: Results */}
       {results && (
         <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="retirement"
+              planName="Retirement Plan"
+              inputs={formValues as unknown as Record<string, unknown>}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
           <RetirementResults results={results} />
           <WhatIfSliders
             retirementAge={formValues.retirementAge}

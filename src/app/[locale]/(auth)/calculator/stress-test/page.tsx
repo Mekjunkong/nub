@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { runStressTest, runEnhancedStressTest } from "@/workers/stress-test.worker";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { StressTestInputs, StressTestResults, EnhancedStressTestResults } from "@/types/calculator";
 
@@ -23,11 +24,8 @@ export default function StressTestPage() {
   const [bearYears, setBearYears] = useState(2);
   const [rebalanceFreq, setRebalanceFreq] = useState(12);
 
-  const [isCalculating, setIsCalculating] = useState(false);
-
   function handleCalculate(inputs: StressTestInputs) {
     setEnhancedResults(null);
-    setIsCalculating(true);
 
     // Yield to the event loop so the loading state paints before heavy work
     requestAnimationFrame(() => {
@@ -45,7 +43,6 @@ export default function StressTestPage() {
         setResults(runStressTest(inputs));
       }
       track(Events.CALCULATOR_COMPLETED, { type: "stress_test" });
-      setIsCalculating(false);
     });
   }
 
@@ -76,6 +73,14 @@ export default function StressTestPage() {
       </Card>
       {results && (
         <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="stress_test"
+              planName="Stress Test"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
           <StressResults results={results} />
           {enhancedResults && (
             <>

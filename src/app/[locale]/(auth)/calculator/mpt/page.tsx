@@ -13,6 +13,7 @@ import {
   buildCorrelationFromPairs,
   buildCorrelationFromHistory,
 } from "@/lib/correlation-utils";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { Fund } from "@/types/database";
 import type { MptResults } from "@/types/calculator";
@@ -242,7 +243,19 @@ export default function MptPage() {
         </CardContent>
       </Card>
 
-      {results && <MptResultsView results={results} assetNames={assetNames} />}
+      {results && (
+        <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="mpt"
+              planName="MPT Optimization"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
+          <MptResultsView results={results} assetNames={assetNames} />
+        </div>
+      )}
     </div>
   );
 }

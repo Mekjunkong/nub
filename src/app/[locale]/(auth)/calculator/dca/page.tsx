@@ -6,6 +6,7 @@ import { DcaResultsView } from "@/components/calculator/dca/dca-results";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { runDca } from "@/workers/dca-tracker.worker";
 import { seededRandom } from "@/lib/finance-math";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { DcaResults } from "@/types/calculator";
 
@@ -47,7 +48,19 @@ export default function DcaPage() {
         <CardHeader><CardTitle>Parameters</CardTitle></CardHeader>
         <CardContent><DcaForm onCalculate={handleCalculate} /></CardContent>
       </Card>
-      {results && <DcaResultsView results={results} />}
+      {results && (
+        <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="dca"
+              planName="DCA Strategy"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
+          <DcaResultsView results={results} />
+        </div>
+      )}
     </div>
   );
 }

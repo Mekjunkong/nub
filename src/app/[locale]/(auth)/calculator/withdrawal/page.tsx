@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { runMonteCarlo, runWithdrawalComparison } from "@/workers/monte-carlo.worker";
+import { ExportPdfButton } from "@/components/shared/export-pdf-button";
 import { track, Events } from "@/lib/analytics";
 import type { MonteCarloInputs, MonteCarloResults, WithdrawalComparisonResults } from "@/types/calculator";
 
@@ -76,8 +77,20 @@ export default function WithdrawalSimulatorPage() {
           </div>
         </CardContent>
       </Card>
-      {results && <WithdrawalResults results={results} isRefining={isRefining} />}
-      {comparisonResults && <WithdrawalComparisonResultsView results={comparisonResults} />}
+      {results && (
+        <div className="stagger-children flex flex-col gap-6">
+          <div className="flex justify-end">
+            <ExportPdfButton
+              planType="withdrawal"
+              planName="Withdrawal Plan"
+              inputs={{}}
+              results={results as unknown as Record<string, unknown>}
+            />
+          </div>
+          <WithdrawalResults results={results} isRefining={isRefining} />
+          {comparisonResults && <WithdrawalComparisonResultsView results={comparisonResults} />}
+        </div>
+      )}
     </div>
   );
 }
