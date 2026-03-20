@@ -23,6 +23,7 @@ import {
   Receipt,
   Landmark,
   Wallet,
+  ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageToggle } from "./language-toggle";
@@ -42,7 +43,7 @@ interface NavItem {
 }
 
 // Index after which a divider is inserted (after Portfolio Health, before Funds)
-const DIVIDER_AFTER_INDEX = 2;
+const DIVIDER_AFTER_INDEX = 3;
 
 export function Sidebar() {
   const t = useTranslations("common");
@@ -125,6 +126,11 @@ export function Sidebar() {
           icon: <BarChart3 className="h-4 w-4" />,
         },
       ],
+    },
+    {
+      href: `/${locale}/action-plan`,
+      label: t("nav.actionPlan"),
+      icon: <ClipboardList className="h-5 w-5" />,
     },
     {
       href: `/${locale}/portfolio-health`,
