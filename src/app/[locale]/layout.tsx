@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { Inter, IBM_Plex_Sans_Thai, IBM_Plex_Mono } from "next/font/google";
 import { routing } from "@/i18n/routing";
+import { InstallPrompt } from "@/components/shared/install-prompt";
 import "../globals.css";
 
 const inter = Inter({
@@ -84,6 +85,11 @@ export default async function LocaleLayout({
           }}
         />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if("serviceWorker"in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js")})}`,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${ibmPlexSansThai.variable} ${ibmPlexMono.variable} antialiased`}
@@ -91,6 +97,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
+        <InstallPrompt />
       </body>
     </html>
   );
