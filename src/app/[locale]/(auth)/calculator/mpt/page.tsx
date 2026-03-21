@@ -131,8 +131,9 @@ export default function MptPage() {
 
       if (usingSampleData) {
         // Use hardcoded correlations for sample data
-        const indices = selectedIds.map((id) =>
-          SAMPLE_FUNDS.findIndex((f) => f.id === id)
+        // Must match selectedFunds order (funds.filter order, not selectedIds click order)
+        const indices = selectedFunds.map((f) =>
+          SAMPLE_FUNDS.findIndex((sf) => sf.id === f.id)
         );
         corrMatrix = indices.map((i) =>
           indices.map((j) => SAMPLE_CORRELATIONS[i][j])
@@ -164,9 +165,11 @@ export default function MptPage() {
     }
   }, [selectedIds, funds, usingSampleData, riskFreeRate, locale]);
 
-  const assetNames = selectedIds.map(
-    (id) => funds.find((f) => f.id === id)?.ticker || ""
-  );
+  // Must match the order of funds.filter() used in handleOptimize,
+  // which follows the funds array order (not selectedIds click order)
+  const assetNames = funds
+    .filter((f) => selectedIds.includes(f.id))
+    .map((f) => f.ticker);
 
   return (
     <div className="flex flex-col gap-6 animate-fade-in">
