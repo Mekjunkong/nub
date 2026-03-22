@@ -49,6 +49,7 @@ export function Header() {
     <>
       <div ref={sentinelRef} className="h-0" />
       <header
+        role="banner"
         className={cn(
           "sticky top-0 z-40 transition-all duration-300",
           scrolled
@@ -63,9 +64,9 @@ export function Header() {
           )}
         >
           {/* Logo */}
-          <Link href={`/${locale}`} className="shrink-0 group">
+          <Link href={`/${locale}`} className="shrink-0 group" aria-label="Nub - Home">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Nub Retirement Planner"
               width={48}
               height={48}
@@ -76,7 +77,7 @@ export function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-1 md:flex">
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -115,8 +116,9 @@ export function Header() {
             type="button"
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-text shadow-sm transition-all hover:bg-surface-hover md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
@@ -124,13 +126,15 @@ export function Header() {
 
         {/* Mobile menu — slide down */}
         <div
+          id="mobile-menu"
           className={cn(
             "overflow-hidden transition-all duration-300 md:hidden",
             mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           )}
+          aria-hidden={!mobileMenuOpen}
         >
           <div className="border-t border-border bg-surface/95 backdrop-blur-xl px-4 pb-5 pt-3">
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}

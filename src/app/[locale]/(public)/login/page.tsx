@@ -32,10 +32,22 @@ function LoginPageClient() {
           }}
         />
         <div className="relative z-10 flex flex-col items-center gap-6 px-12 text-center">
-          <Image src="/logo.png" alt="Nub" width={80} height={80} className="rounded-2xl shadow-2xl" priority />
-          <div>
-            <h2 className="text-3xl font-bold text-white font-heading">Nub</h2>
-            <p className="mt-2 text-base text-white/75">{t("tagline")}</p>
+          {/* Login illustration */}
+          <div className="relative h-[200px] w-[280px] mb-2">
+            <Image
+              src="/images/login-illustration.webp"
+              alt="Retirement planning illustration"
+              fill
+              className="object-contain drop-shadow-2xl"
+              priority
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <Image src="/logo.webp" alt="Nub" width={48} height={48} className="rounded-xl shadow-xl" priority />
+            <div className="text-left">
+              <h2 className="text-2xl font-bold text-white font-heading">Nub</h2>
+              <p className="text-sm text-white/75">{t("tagline")}</p>
+            </div>
           </div>
           <div className="mt-4 flex flex-col gap-3">
             {[
@@ -58,7 +70,7 @@ function LoginPageClient() {
         <div className="flex w-full max-w-md flex-col items-center gap-8">
           {/* Mobile logo */}
           <div className="flex flex-col items-center gap-3 lg:hidden">
-            <Image src="/logo.png" alt="Nub Retirement Planner" width={72} height={72} className="rounded-2xl" priority />
+            <Image src="/logo.webp" alt="Nub Retirement Planner" width={72} height={72} className="rounded-2xl" priority />
             <p className="text-sm text-text-muted">{t("tagline")}</p>
           </div>
           {/* Desktop heading */}

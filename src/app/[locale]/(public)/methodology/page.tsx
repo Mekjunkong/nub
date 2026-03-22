@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+const BASE_URL = "https://nub-six.vercel.app";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const title = locale === "th" ? "วิธีการคำนวณ | Nub" : "Methodology | Nub";
+  const description = locale === "th"
+    ? "รายละเอียดสูตรและวิธีการคำนวณทั้งหมดที่ใช้ใน Nub: Monte Carlo Simulation, MPT, Financial Health Score, ภาษีไทย"
+    : "Detailed formulas and calculation methods used in Nub: Monte Carlo Simulation, MPT, Financial Health Score, Thai tax brackets.";
+  return { title, description, alternates: { canonical: `${BASE_URL}/${locale}/methodology` }, openGraph: { title, description } };
+}
+
 import { setRequestLocale } from "next-intl/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 

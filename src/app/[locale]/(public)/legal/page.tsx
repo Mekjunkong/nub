@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+const BASE_URL = "https://nub-six.vercel.app";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const title = locale === "th" ? "ข้อกำหนดทางกฎหมาย | Nub" : "Legal | Nub";
+  const description = locale === "th"
+    ? "ข้อจำกัดความรับผิดชอบทางการเงิน นโยบายความเป็นส่วนตัว PDPA และข้อตกลงการใช้งาน Nub"
+    : "Financial disclaimer, PDPA privacy policy, and terms of service for Nub.";
+  return { title, description, alternates: { canonical: `${BASE_URL}/${locale}/legal` }, openGraph: { title, description }, robots: { index: false } };
+}
+
 import { setRequestLocale } from "next-intl/server";
 
 export default async function LegalPage({ params }: { params: Promise<{ locale: string }> }) {

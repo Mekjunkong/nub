@@ -202,7 +202,7 @@ export function Sidebar() {
         )}>
           <div className="relative">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Nub"
               width={collapsed ? 36 : 44}
               height={collapsed ? 36 : 44}

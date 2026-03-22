@@ -1,9 +1,12 @@
 "use client";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const features = [
   {
     key: "retirement",
+    image: "/images/feature-calculator.webp",
+    imageAlt: "Retirement Calculator",
     emoji: "🧮",
     gradient: "from-blue-500/10 to-cyan-500/10",
     iconBg: "bg-primary-light",
@@ -12,6 +15,8 @@ const features = [
   },
   {
     key: "monteCarlo",
+    image: "/images/feature-montecarlo.webp",
+    imageAlt: "Monte Carlo Simulation",
     emoji: "📊",
     gradient: "from-emerald-500/10 to-teal-500/10",
     iconBg: "bg-success-light",
@@ -20,6 +25,8 @@ const features = [
   },
   {
     key: "portfolio",
+    image: "/images/feature-portfolio.webp",
+    imageAlt: "Portfolio Optimization",
     emoji: "🎯",
     gradient: "from-violet-500/10 to-purple-500/10",
     iconBg: "bg-secondary-light",
@@ -28,6 +35,8 @@ const features = [
   },
   {
     key: "tax",
+    image: "/images/feature-tax.webp",
+    imageAlt: "Tax Planning",
     emoji: "💰",
     gradient: "from-amber-500/10 to-yellow-500/10",
     iconBg: "bg-warning-light",
@@ -36,6 +45,8 @@ const features = [
   },
   {
     key: "ai",
+    image: "/images/feature-ai.webp",
+    imageAlt: "AI Financial Advisor",
     emoji: "🤖",
     gradient: "from-sky-500/10 to-blue-500/10",
     iconBg: "bg-accent-light",
@@ -44,6 +55,8 @@ const features = [
   },
   {
     key: "community",
+    image: "/images/feature-community.webp",
+    imageAlt: "Community",
     emoji: "👥",
     gradient: "from-rose-500/10 to-pink-500/10",
     iconBg: "bg-danger-light",
@@ -105,9 +118,16 @@ export function Features() {
               <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${f.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
 
               <div className="relative">
-                {/* Icon */}
-                <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${f.iconBg} transition-transform duration-300 group-hover:scale-110`}>
-                  <span className="text-xl">{f.emoji}</span>
+                {/* Icon Image */}
+                <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${f.iconBg} overflow-hidden transition-transform duration-300 group-hover:scale-110`}>
+                  <Image
+                    src={f.image}
+                    alt={f.imageAlt}
+                    width={48}
+                    height={48}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
 
                 {/* Content */}

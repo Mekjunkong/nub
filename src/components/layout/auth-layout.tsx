@@ -35,7 +35,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           }`}
         >
           <Image
-            src="/logo.png"
+            src="/logo.webp"
             alt="Nub Retirement Planner"
             width={scrolled ? 40 : 100}
             height={scrolled ? 40 : 100}

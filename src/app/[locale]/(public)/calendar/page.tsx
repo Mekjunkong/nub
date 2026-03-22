@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+const BASE_URL = "https://nub-six.vercel.app";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const title = locale === "th" ? "ปฏิทินการเงิน | Nub" : "Financial Calendar | Nub";
+  const description = locale === "th"
+    ? "วันสำคัญทางการเงินและภาษีในประเทศไทย กำหนดส่งภาษี SSF RMF ประกันสังคม และอื่นๆ"
+    : "Important Thai financial and tax deadlines: SSF, RMF, social security, and more.";
+  return { title, description, alternates: { canonical: `${BASE_URL}/${locale}/calendar` }, openGraph: { title, description } };
+}
+
 import { createClient } from "@/lib/supabase/server";
 import { setRequestLocale } from "next-intl/server";
 import { CalendarPageClient } from "./calendar-page-client";

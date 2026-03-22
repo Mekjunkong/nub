@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronRight, Shield, Zap, Award } from "lucide-react";
+import Image from "next/image";
 
 export function Hero() {
   const t = useTranslations("landing");
@@ -98,11 +99,23 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right: Glass Dashboard Card */}
+          {/* Right: Illustration + Glass Dashboard Card */}
           <div
-            className="w-full max-w-sm flex-shrink-0 lg:max-w-[420px] animate-slide-in-right"
+            className="w-full max-w-sm flex-shrink-0 lg:max-w-[420px] animate-slide-in-right relative"
             style={{ transform: `translateY(${-parallaxOffset * 0.12}px)` }}
           >
+            {/* Hero illustration floating above the card */}
+            <div className="relative mb-[-40px] flex justify-center z-10">
+              <div className="relative h-[180px] w-[280px] sm:h-[200px] sm:w-[320px]">
+                <Image
+                  src="/images/hero-couple.webp"
+                  alt="Happy couple planning retirement"
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
+              </div>
+            </div>
             <GlassDashboardCard />
           </div>
         </div>

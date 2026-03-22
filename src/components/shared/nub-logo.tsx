@@ -19,7 +19,7 @@ export function NubLogo({ size = "md", className }: NubLogoProps) {
 
   return (
     <Image
-      src="/logo.png"
+      src="/logo.webp"
       alt="Nub Retirement Planner"
       width={s.icon}
       height={s.icon}
