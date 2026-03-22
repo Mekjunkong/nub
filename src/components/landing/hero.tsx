@@ -1,68 +1,108 @@
 "use client";
-
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, ChevronRight, Shield, Zap, Award } from "lucide-react";
 
 export function Hero() {
   const t = useTranslations("landing");
   const locale = useLocale();
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const parallaxOffset = scrollY * 0.25;
 
   return (
-    <section className="relative overflow-hidden px-4 py-16 sm:py-24 lg:py-32">
-      {/* Background gradient orbs */}
-      <div className="absolute -top-40 right-20 h-[400px] w-[400px] rounded-full bg-primary/[0.08] blur-[100px]" />
-      <div className="absolute -bottom-60 -left-20 h-[350px] w-[350px] rounded-full bg-secondary/[0.06] blur-[100px]" />
+    <section className="relative min-h-[88vh] overflow-hidden flex items-center px-4 py-16 sm:py-20 lg:py-0">
+      {/* Animated background blobs with parallax */}
+      <div
+        className="hero-blob w-[600px] h-[600px] bg-primary/20 -top-32 -right-32"
+        style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
+      />
+      <div
+        className="hero-blob w-[500px] h-[500px] bg-secondary/15 -bottom-40 -left-20 animate-blob"
+        style={{ transform: `translateY(${-parallaxOffset * 0.3}px)` }}
+      />
+      <div
+        className="hero-blob w-[300px] h-[300px] bg-accent/10 top-1/2 left-1/3 animate-blob-delay-2"
+        style={{ transform: `translateY(${parallaxOffset * 0.2}px)` }}
+      />
 
-      <div className="relative mx-auto max-w-7xl">
-        <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:gap-16">
+      {/* Subtle grid overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.025]"
+        style={{
+          backgroundImage: "linear-gradient(var(--color-text) 1px, transparent 1px), linear-gradient(90deg, var(--color-text) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl w-full">
+        <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:gap-20">
           {/* Left: Text Content */}
-          <div className="flex-1 text-center lg:text-left">
-            {/* Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/[0.08] px-4 py-1.5">
-              <span className="text-xs font-medium text-primary">
-                🎯 {locale === "th" ? "แพลตฟอร์มวางแผนเกษียณฟรี" : "Free Retirement Planning Platform"}
+          <div
+            className="flex-1 text-center lg:text-left animate-slide-up"
+            style={{ transform: `translateY(${-parallaxOffset * 0.08}px)` }}
+          >
+            {/* Eyebrow badge */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary-light px-4 py-2 text-xs font-semibold text-primary shadow-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
+              {locale === "th" ? "แพลตฟอร์มวางแผนเกษียณฟรี" : "Free Retirement Planning Platform"}
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl font-bold leading-tight font-heading sm:text-5xl lg:text-6xl">
-              <span className="text-text">{locale === "th" ? "วางแผนเกษียณ" : "Plan Your Retirement"}</span>
-              <br />
-              <span className="bg-gradient-to-r from-primary to-success bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight font-heading sm:text-5xl lg:text-6xl xl:text-7xl">
+              <span className="block text-text">
+                {locale === "th" ? "วางแผนเกษียณ" : "Plan Your Retirement"}
+              </span>
+              <span className="block mt-1 gradient-text-brand">
                 {locale === "th" ? "อย่างมั่นใจ" : "With Confidence"}
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-text-muted lg:mx-0 lg:text-lg">
+            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-text-secondary lg:mx-0 lg:text-lg">
               {t("heroSubtitle")}
             </p>
 
             {/* CTAs */}
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
               <Link href={`/${locale}/login`}>
-                <Button size="lg" className="px-8 shadow-lg shadow-primary/25">
-                  {t("cta")} →
+                <Button size="lg" className="group px-8 gap-2 text-base" style={{ boxShadow: "var(--shadow-primary)" }}>
+                  {t("cta")}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
               <Link href={`/${locale}/methodology`}>
-                <Button variant="outline" size="lg">
+                <Button variant="outline" size="lg" className="group gap-1 text-base">
                   {locale === "th" ? "ดูวิธีการคำนวณ" : "See Methodology"}
+                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Button>
               </Link>
             </div>
 
             {/* Trust Badges */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-5 border-t border-border pt-6 lg:justify-start">
-              <TrustBadge color="bg-success" label={locale === "th" ? "ฟรี 100%" : "100% Free"} />
-              <TrustBadge color="bg-primary" label="AFPT™ Certified" />
-              <TrustBadge color="bg-warning" label={locale === "th" ? "ข้อมูลปลอดภัย PDPA" : "PDPA Compliant"} />
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-6 border-t border-border pt-8 lg:justify-start">
+              <TrustBadge icon={<Zap className="h-3.5 w-3.5" />} color="text-success bg-success-light" label={locale === "th" ? "ฟรี 100%" : "100% Free"} />
+              <TrustBadge icon={<Award className="h-3.5 w-3.5" />} color="text-primary bg-primary-light" label="AFPT™ Certified" />
+              <TrustBadge icon={<Shield className="h-3.5 w-3.5" />} color="text-warning bg-warning-light" label={locale === "th" ? "ข้อมูลปลอดภัย PDPA" : "PDPA Compliant"} />
             </div>
           </div>
 
           {/* Right: Glass Dashboard Card */}
-          <div className="w-full max-w-sm flex-shrink-0 lg:max-w-[400px]">
+          <div
+            className="w-full max-w-sm flex-shrink-0 lg:max-w-[420px] animate-slide-in-right"
+            style={{ transform: `translateY(${-parallaxOffset * 0.12}px)` }}
+          >
             <GlassDashboardCard />
           </div>
         </div>
@@ -71,76 +111,89 @@ export function Hero() {
   );
 }
 
-function TrustBadge({ color, label }: { color: string; label: string }) {
+function TrustBadge({ icon, color, label }: { icon: React.ReactNode; color: string; label: string }) {
   return (
     <div className="flex items-center gap-2">
-      <div className={`h-1.5 w-1.5 rounded-full ${color}`} />
-      <span className="text-xs text-text-muted">{label}</span>
+      <span className={`flex items-center justify-center rounded-full p-1.5 ${color}`}>{icon}</span>
+      <span className="text-sm font-medium text-text-secondary">{label}</span>
     </div>
   );
 }
 
 function GlassDashboardCard() {
   return (
-    <div className="rounded-3xl border border-border bg-surface/90 p-7 shadow-2xl backdrop-blur-xl">
-      {/* Health Score Gauge */}
-      <div className="mb-5 text-center">
-        <p className="mb-3 text-xs text-text-muted">Financial Health Score</p>
-        <div className="relative mx-auto h-[120px] w-[120px]">
-          <svg width="120" height="120" viewBox="0 0 120 120" className="-rotate-90">
-            <circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" strokeWidth="8" className="text-surface-hover" />
-            <circle
-              cx="60" cy="60" r="52" fill="none"
-              stroke="url(#nubScoreGrad)" strokeWidth="8"
-              strokeDasharray="235" strokeDashoffset="66"
-              strokeLinecap="round"
-            />
+    <div className="relative">
+      <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/20 to-secondary/20 blur-2xl scale-95 opacity-60" />
+      <div className="relative rounded-3xl border border-border/60 bg-surface/90 p-7 shadow-2xl backdrop-blur-xl">
+        {/* Card header */}
+        <div className="mb-5 flex items-center justify-between">
+          <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">Financial Health Score</p>
+          <span className="rounded-full bg-success-light px-2.5 py-1 text-[10px] font-semibold text-success">↑ +3 pts</span>
+        </div>
+
+        {/* Score + Stats row */}
+        <div className="mb-5 flex items-center gap-5">
+          <div className="relative h-[96px] w-[96px] flex-shrink-0">
+            <svg width="96" height="96" viewBox="0 0 96 96" className="-rotate-90">
+              <circle cx="48" cy="48" r="40" fill="none" stroke="currentColor" strokeWidth="6" className="text-surface-hover" />
+              <circle cx="48" cy="48" r="40" fill="none" stroke="url(#nubScoreGrad)" strokeWidth="6" strokeDasharray="251" strokeDashoffset="70" strokeLinecap="round" />
+              <defs>
+                <linearGradient id="nubScoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#4F7CF7" />
+                  <stop offset="100%" stopColor="#10B981" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-2xl font-bold text-text number-highlight">72</span>
+              <span className="text-[9px] font-semibold text-success uppercase tracking-wide">Good</span>
+            </div>
+          </div>
+          <div className="flex-1 space-y-2.5">
+            <StatRow label="Survival Rate" value="87%" color="text-success" />
+            <StatRow label="Retirement Gap" value="-5.2M" color="text-danger" />
+            <StatRow label="Simulations" value="60,000" color="text-primary" />
+          </div>
+        </div>
+
+        {/* Mini Wealth Chart */}
+        <div className="rounded-2xl bg-bg-subtle p-4">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-[10px] font-medium text-text-muted">Wealth Projection</span>
+            <span className="text-[10px] font-semibold text-primary">Monte Carlo</span>
+          </div>
+          <svg width="100%" height="52" viewBox="0 0 320 52" preserveAspectRatio="none" className="overflow-visible">
+            <path d="M0,38 Q80,26 160,16 Q240,10 320,2 L320,14 Q240,22 160,28 Q80,36 0,46 Z" fill="rgba(79,124,247,0.08)" />
+            <path d="M0,40 Q80,30 160,20 Q240,12 320,6" fill="none" stroke="url(#chartGrad)" strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M0,44 Q80,40 160,36 Q240,32 320,26" fill="none" stroke="rgba(239,68,68,0.3)" strokeWidth="1.5" strokeDasharray="5,4" />
             <defs>
-              <linearGradient id="nubScoreGrad">
+              <linearGradient id="chartGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#4F7CF7" />
-                <stop offset="100%" stopColor="#34D399" />
+                <stop offset="100%" stopColor="#10B981" />
               </linearGradient>
             </defs>
           </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-3xl font-bold text-text">72</span>
-            <span className="text-[10px] font-medium text-success">Good</span>
+          <div className="mt-1.5 flex justify-between">
+            <span className="text-[9px] text-text-muted">Today</span>
+            <span className="text-[9px] text-text-muted">Retirement</span>
+            <span className="text-[9px] text-text-muted">Life Exp.</span>
           </div>
         </div>
-      </div>
 
-      {/* Stats Row */}
-      <div className="mb-4 flex gap-2">
-        <StatBox label="Survival Rate" value="87%" valueColor="text-success" />
-        <StatBox label="Retirement Gap" value="-5.2M" valueColor="text-danger" />
-      </div>
-
-      {/* Mini Wealth Chart */}
-      <div className="rounded-xl bg-surface-hover/50 p-4">
-        <div className="mb-2 flex items-center justify-between">
-          <span className="text-[10px] text-text-muted">Wealth Projection</span>
-          <span className="text-[10px] text-primary">60,000 simulations</span>
-        </div>
-        <svg width="100%" height="50" viewBox="0 0 320 50" preserveAspectRatio="none" className="overflow-visible">
-          <path d="M0,40 Q80,28 160,18 Q240,12 320,4" fill="none" stroke="rgba(52,211,153,0.15)" strokeWidth="18" />
-          <path d="M0,40 Q80,32 160,24 Q240,18 320,10" fill="none" stroke="#4F7CF7" strokeWidth="2" />
-          <path d="M0,40 Q80,38 160,36 Q240,34 320,28" fill="none" stroke="rgba(248,113,113,0.3)" strokeWidth="1" strokeDasharray="4,4" />
-        </svg>
-        <div className="mt-1 flex justify-between">
-          <span className="text-[9px] text-text-muted">Today</span>
-          <span className="text-[9px] text-text-muted">Retirement</span>
-          <span className="text-[9px] text-text-muted">Life Exp</span>
+        <div className="mt-4 flex items-center justify-center gap-1.5 text-[10px] text-text-muted">
+          <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+          Live simulation preview
         </div>
       </div>
     </div>
   );
 }
 
-function StatBox({ label, value, valueColor }: { label: string; value: string; valueColor: string }) {
+function StatRow({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="flex-1 rounded-xl bg-surface-hover/50 p-3 text-center">
-      <p className="text-[10px] text-text-muted">{label}</p>
-      <p className={`mt-0.5 text-lg font-bold ${valueColor}`}>{value}</p>
+    <div className="flex items-center justify-between">
+      <span className="text-[10px] text-text-muted">{label}</span>
+      <span className={`text-xs font-bold number-highlight ${color}`}>{value}</span>
     </div>
   );
 }
