@@ -29,7 +29,6 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
@@ -53,7 +52,7 @@ export function Header() {
         className={cn(
           "sticky top-0 z-40 transition-all duration-300",
           scrolled
-            ? "border-b border-border/60 bg-surface/90 backdrop-blur-xl shadow-sm"
+            ? "border-b border-border/50 bg-surface/95 backdrop-blur-xl shadow-sm"
             : "bg-transparent"
         )}
       >
@@ -63,49 +62,66 @@ export function Header() {
             scrolled ? "py-3" : "py-4"
           )}
         >
-          {/* Logo */}
-          <Link href={`/${locale}`} className="shrink-0 group" aria-label="Nub - Home">
+          {/* Logo + Wordmark */}
+          <Link
+            href={`/${locale}`}
+            className="group flex items-center gap-2.5 shrink-0"
+            aria-label="Nub — Home"
+          >
             <Image
               src="/logo.webp"
-              alt="Nub Retirement Planner"
-              width={48}
-              height={48}
-              className="rounded-xl transition-all duration-300 group-hover:scale-105"
-              style={{ width: scrolled ? 40 : 48, height: scrolled ? 40 : 48 }}
+              alt="Nub"
+              width={36}
+              height={36}
+              className="rounded-lg transition-transform duration-200 group-hover:scale-105"
               priority
             />
+            <span className="text-lg font-bold tracking-tight text-text font-heading">
+              Nub
+            </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
+          <nav className="hidden items-center gap-0.5 md:flex" aria-label="Main navigation">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
+                  "relative rounded-lg px-3.5 py-2 text-sm font-medium transition-all duration-200",
                   isActive(link.href)
-                    ? "bg-primary-light text-primary"
-                    : "text-text-secondary hover:bg-surface-hover hover:text-text"
+                    ? "text-primary"
+                    : "text-text-secondary hover:text-text"
                 )}
               >
                 {link.label}
+                {isActive(link.href) && (
+                  <span className="absolute bottom-0.5 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary" />
+                )}
               </Link>
             ))}
           </nav>
 
           {/* Right actions */}
-          <div className="hidden items-center gap-2 md:flex">
+          <div className="hidden items-center gap-1.5 md:flex">
             <LanguageToggle />
             <DarkModeToggle />
-            <div className="ml-1 h-5 w-px bg-border" />
+            <div className="mx-2 h-5 w-px bg-border" />
             <Link href={`/${locale}/login`}>
-              <Button variant="outline" size="sm" className="text-sm">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-sm font-medium text-text-secondary hover:text-text"
+              >
                 {t("login")}
               </Button>
             </Link>
             <Link href={`/${locale}/login`}>
-              <Button size="sm" className="text-sm">
+              <Button
+                size="sm"
+                className="text-sm font-semibold px-5"
+                style={{ boxShadow: "var(--shadow-primary)" }}
+              >
                 {t("register")}
               </Button>
             </Link>
@@ -114,7 +130,7 @@ export function Header() {
           {/* Mobile menu button */}
           <button
             type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-text shadow-sm transition-all hover:bg-surface-hover md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface text-text shadow-xs transition-all hover:bg-surface-hover md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
@@ -124,16 +140,16 @@ export function Header() {
           </button>
         </div>
 
-        {/* Mobile menu — slide down */}
+        {/* Mobile menu */}
         <div
           id="mobile-menu"
           className={cn(
             "overflow-hidden transition-all duration-300 md:hidden",
-            mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            mobileMenuOpen ? "max-h-[480px] opacity-100" : "max-h-0 opacity-0"
           )}
           aria-hidden={!mobileMenuOpen}
         >
-          <div className="border-t border-border bg-surface/95 backdrop-blur-xl px-4 pb-5 pt-3">
+          <div className="border-t border-border bg-surface/98 backdrop-blur-xl px-4 pb-6 pt-4">
             <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
               {navLinks.map((link) => (
                 <Link
@@ -155,14 +171,14 @@ export function Header() {
               <LanguageToggle />
               <DarkModeToggle />
             </div>
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 grid grid-cols-2 gap-2">
               <Link href={`/${locale}/login`} className="flex-1">
-                <Button variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full font-medium">
                   {t("login")}
                 </Button>
               </Link>
               <Link href={`/${locale}/login`} className="flex-1">
-                <Button size="sm" className="w-full">
+                <Button size="sm" className="w-full font-semibold">
                   {t("register")}
                 </Button>
               </Link>

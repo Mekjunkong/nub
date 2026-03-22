@@ -9,21 +9,21 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<string, string> = {
   primary:
-    "bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 shadow-md",
+    "bg-primary text-white hover:bg-primary-hover shadow-sm active:scale-[0.98]",
   secondary:
-    "bg-secondary text-white hover:bg-secondary-hover shadow-md",
+    "bg-secondary text-white hover:bg-secondary-hover shadow-sm active:scale-[0.98]",
   outline:
-    "border border-border bg-transparent text-text hover:bg-surface-hover",
+    "border border-border bg-transparent text-text hover:bg-surface-hover hover:border-border-hover",
   ghost:
-    "bg-transparent text-text hover:bg-surface-hover",
+    "bg-transparent text-text-secondary hover:bg-surface-hover hover:text-text",
   danger:
-    "bg-danger text-white hover:opacity-90 shadow-md",
+    "bg-danger text-white hover:opacity-90 shadow-sm active:scale-[0.98]",
 };
 
 const sizeStyles: Record<string, string> = {
-  sm: "h-8 px-3 text-sm gap-1.5",
-  md: "h-10 px-4 text-sm gap-2",
-  lg: "h-12 px-6 text-base gap-2.5",
+  sm: "h-8 px-3.5 text-xs font-semibold gap-1.5",
+  md: "h-9 px-4 text-sm font-medium gap-2",
+  lg: "h-11 px-6 text-sm font-semibold gap-2.5",
 };
 
 function Spinner() {

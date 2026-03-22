@@ -7,146 +7,131 @@ const features = [
     key: "retirement",
     image: "/images/feature-calculator.webp",
     imageAlt: "Retirement Calculator",
-    emoji: "🧮",
-    gradient: "from-blue-500/10 to-cyan-500/10",
     iconBg: "bg-primary-light",
     iconColor: "text-primary",
-    border: "hover:border-primary/40",
+    accentColor: "from-primary/8 to-primary/4",
+    dotColor: "bg-primary",
   },
   {
     key: "monteCarlo",
     image: "/images/feature-montecarlo.webp",
     imageAlt: "Monte Carlo Simulation",
-    emoji: "📊",
-    gradient: "from-emerald-500/10 to-teal-500/10",
     iconBg: "bg-success-light",
     iconColor: "text-success",
-    border: "hover:border-success/40",
+    accentColor: "from-success/8 to-success/4",
+    dotColor: "bg-success",
   },
   {
     key: "portfolio",
     image: "/images/feature-portfolio.webp",
     imageAlt: "Portfolio Optimization",
-    emoji: "🎯",
-    gradient: "from-violet-500/10 to-purple-500/10",
     iconBg: "bg-secondary-light",
     iconColor: "text-secondary",
-    border: "hover:border-secondary/40",
+    accentColor: "from-secondary/8 to-secondary/4",
+    dotColor: "bg-secondary",
   },
   {
     key: "tax",
     image: "/images/feature-tax.webp",
     imageAlt: "Tax Planning",
-    emoji: "💰",
-    gradient: "from-amber-500/10 to-yellow-500/10",
     iconBg: "bg-warning-light",
     iconColor: "text-warning",
-    border: "hover:border-warning/40",
+    accentColor: "from-warning/8 to-warning/4",
+    dotColor: "bg-warning",
   },
   {
     key: "ai",
     image: "/images/feature-ai.webp",
     imageAlt: "AI Financial Advisor",
-    emoji: "🤖",
-    gradient: "from-sky-500/10 to-blue-500/10",
     iconBg: "bg-accent-light",
     iconColor: "text-accent",
-    border: "hover:border-accent/40",
+    accentColor: "from-accent/8 to-accent/4",
+    dotColor: "bg-accent",
   },
   {
     key: "community",
     image: "/images/feature-community.webp",
     imageAlt: "Community",
-    emoji: "👥",
-    gradient: "from-rose-500/10 to-pink-500/10",
     iconBg: "bg-danger-light",
     iconColor: "text-danger",
-    border: "hover:border-danger/40",
+    accentColor: "from-danger/8 to-danger/4",
+    dotColor: "bg-danger",
   },
 ];
 
 const stats = [
-  { value: "60,000+", label: "Simulations per plan" },
-  { value: "100%", label: "Free forever" },
-  { value: "AFPT™", label: "Certified methodology" },
-  { value: "2 min", label: "To first insight" },
+  { value: "60,000+", label: "Simulations per plan", icon: "📊" },
+  { value: "100%", label: "Free forever", icon: "✓" },
+  { value: "AFPT™", label: "Certified methodology", icon: "🏅" },
+  { value: "2 min", label: "To first insight", icon: "⚡" },
 ];
 
 export function Features() {
   const t = useTranslations("landing.features");
 
   return (
-    <section className="px-4 py-20 lg:py-28">
+    <section className="px-4 py-20 lg:py-28 bg-bg-subtle">
       <div className="mx-auto max-w-6xl">
+
         {/* Section header */}
         <div className="mb-16 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-text-muted shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            Everything you need
+          <div className="section-badge mb-5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            Platform Features
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-text font-heading sm:text-4xl lg:text-5xl">
-            {t("sectionTitle") || "Everything You Need"}
-            <br />
-            <span className="gradient-text">for Retirement Planning</span>
+            {t("sectionTitle")}
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-base text-text-secondary">
-            {t("sectionSubtitle") || "Comprehensive tools powered by quantitative finance"}
+            {t("sectionSubtitle")}
           </p>
         </div>
 
-        {/* Stats row */}
+        {/* Premium stats row */}
         <div className="mb-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-2xl border border-border bg-surface p-5 text-center shadow-sm transition-all hover:shadow-md hover:border-primary/20"
-            >
+            <div key={stat.label} className="stat-card text-center">
               <p className="text-2xl font-bold gradient-text-brand number-highlight">{stat.value}</p>
-              <p className="mt-1 text-xs text-text-muted">{stat.label}</p>
+              <p className="mt-1.5 text-xs font-medium text-text-muted tracking-wide uppercase">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* Feature cards grid */}
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
           {features.map((f) => (
-            <div
-              key={f.key}
-              className={`card-feature group cursor-default p-6 ${f.border}`}
-            >
-              {/* Hover gradient background */}
-              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${f.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-100`} />
+            <div key={f.key} className="feature-card-pro group cursor-default p-7">
+              {/* Hover gradient overlay */}
+              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${f.accentColor} opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none`} />
 
               <div className="relative">
-                {/* Icon Image */}
-                <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${f.iconBg} overflow-hidden transition-transform duration-300 group-hover:scale-110`}>
+                {/* Icon container — larger and more prominent */}
+                <div className={`mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${f.iconBg} transition-transform duration-300 group-hover:scale-105 overflow-hidden`}>
                   <Image
                     src={f.image}
                     alt={f.imageAlt}
-                    width={48}
-                    height={48}
+                    width={56}
+                    height={56}
                     className="h-full w-full object-cover"
                     loading="lazy"
                   />
                 </div>
 
                 {/* Content */}
-                <h3 className="mb-2 text-base font-semibold text-text">
+                <h3 className="mb-2.5 text-base font-semibold text-text leading-snug">
                   {t(`${f.key}.title`)}
                 </h3>
                 <p className="text-sm leading-relaxed text-text-secondary">
                   {t(`${f.key}.description`)}
                 </p>
 
-                {/* Arrow hint on hover */}
-                <div className="mt-4 flex items-center gap-1 text-xs font-medium text-text-muted opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1">
-                  <span className={f.iconColor}>Learn more</span>
-                  <span className={f.iconColor}>→</span>
-                </div>
+                {/* Bottom accent line on hover */}
+                <div className={`mt-5 h-0.5 w-0 rounded-full ${f.dotColor} transition-all duration-300 group-hover:w-8 opacity-60`} />
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

@@ -25,8 +25,6 @@ interface NavItem {
   children?: { href: string; label: string; icon: React.ReactNode }[];
 }
 
-const DIVIDER_AFTER_INDEX = 3;
-
 export function Sidebar() {
   const t = useTranslations("common");
   const locale = useLocale();
@@ -34,38 +32,41 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(["calculators"]);
 
-  const navItems: NavItem[] = [
-    { href: `/${locale}/dashboard`, label: t("nav.dashboard"), icon: <LayoutDashboard className="h-5 w-5" /> },
+  const mainNavItems: NavItem[] = [
+    { href: `/${locale}/dashboard`, label: t("nav.dashboard"), icon: <LayoutDashboard className="h-4.5 w-4.5" /> },
     {
       href: "#calculators",
       label: t("nav.calculators"),
-      icon: <Calculator className="h-5 w-5" />,
+      icon: <Calculator className="h-4.5 w-4.5" />,
       children: [
-        { href: `/${locale}/calculator/retirement`, label: t("nav.calc.retirement"), icon: <Landmark className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/withdrawal`, label: t("nav.calc.withdrawal"), icon: <TrendingUp className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/stress-test`, label: t("nav.calc.stressTest"), icon: <Shield className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/mpt`, label: t("nav.calc.mpt"), icon: <PieChart className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/dca`, label: t("nav.calc.dca"), icon: <DollarSign className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/tax`, label: t("nav.calc.tax"), icon: <Receipt className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/cashflow`, label: t("nav.calc.cashflow"), icon: <Wallet className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/roic`, label: t("nav.calc.roic"), icon: <BarChart3 className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/gpf-optimizer`, label: t("nav.calc.gpfOptimizer"), icon: <PieChart className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/tipp`, label: t("nav.calc.tipp"), icon: <Shield className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/bumnan95`, label: t("nav.calc.bumnan95"), icon: <Calculator className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/inflation`, label: t("nav.calc.inflation"), icon: <TrendingDown className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/social-security`, label: t("nav.calc.socialSecurity"), icon: <Umbrella className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/insurance`, label: t("nav.calc.insurance"), icon: <HeartPulse className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/debt-payoff`, label: t("nav.calc.debtPayoff"), icon: <CreditCard className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/education`, label: t("nav.calc.education"), icon: <GraduationCap className="h-4 w-4" /> },
-        { href: `/${locale}/calculator/compare`, label: t("nav.calc.compare"), icon: <BarChart3 className="h-4 w-4" /> },
+        { href: `/${locale}/calculator/retirement`, label: t("nav.calc.retirement"), icon: <Landmark className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/withdrawal`, label: t("nav.calc.withdrawal"), icon: <TrendingUp className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/stress-test`, label: t("nav.calc.stressTest"), icon: <Shield className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/mpt`, label: t("nav.calc.mpt"), icon: <PieChart className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/dca`, label: t("nav.calc.dca"), icon: <DollarSign className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/tax`, label: t("nav.calc.tax"), icon: <Receipt className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/cashflow`, label: t("nav.calc.cashflow"), icon: <Wallet className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/roic`, label: t("nav.calc.roic"), icon: <BarChart3 className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/gpf-optimizer`, label: t("nav.calc.gpfOptimizer"), icon: <PieChart className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/tipp`, label: t("nav.calc.tipp"), icon: <Shield className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/bumnan95`, label: t("nav.calc.bumnan95"), icon: <Calculator className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/inflation`, label: t("nav.calc.inflation"), icon: <TrendingDown className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/social-security`, label: t("nav.calc.socialSecurity"), icon: <Umbrella className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/insurance`, label: t("nav.calc.insurance"), icon: <HeartPulse className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/debt-payoff`, label: t("nav.calc.debtPayoff"), icon: <CreditCard className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/education`, label: t("nav.calc.education"), icon: <GraduationCap className="h-3.5 w-3.5" /> },
+        { href: `/${locale}/calculator/compare`, label: t("nav.calc.compare"), icon: <BarChart3 className="h-3.5 w-3.5" /> },
       ],
     },
-    { href: `/${locale}/action-plan`, label: t("nav.actionPlan"), icon: <ClipboardList className="h-5 w-5" /> },
-    { href: `/${locale}/portfolio-health`, label: t("nav.portfolioHealth"), icon: <Activity className="h-5 w-5" /> },
-    { href: `/${locale}/funds`, label: t("nav.funds"), icon: <BarChart3 className="h-5 w-5" /> },
-    { href: `/${locale}/chat`, label: t("nav.chat"), icon: <MessageCircle className="h-5 w-5" /> },
-    { href: `/${locale}/community`, label: t("nav.community"), icon: <Users className="h-5 w-5" /> },
-    { href: `/${locale}/profile`, label: t("nav.profile"), icon: <User className="h-5 w-5" /> },
+    { href: `/${locale}/action-plan`, label: t("nav.actionPlan"), icon: <ClipboardList className="h-4.5 w-4.5" /> },
+    { href: `/${locale}/portfolio-health`, label: t("nav.portfolioHealth"), icon: <Activity className="h-4.5 w-4.5" /> },
+    { href: `/${locale}/funds`, label: t("nav.funds"), icon: <BarChart3 className="h-4.5 w-4.5" /> },
+  ];
+
+  const secondaryNavItems: NavItem[] = [
+    { href: `/${locale}/chat`, label: t("nav.chat"), icon: <MessageCircle className="h-4.5 w-4.5" /> },
+    { href: `/${locale}/community`, label: t("nav.community"), icon: <Users className="h-4.5 w-4.5" /> },
+    { href: `/${locale}/profile`, label: t("nav.profile"), icon: <User className="h-4.5 w-4.5" /> },
   ];
 
   function toggleGroup(group: string) {
@@ -89,13 +90,13 @@ export function Sidebar() {
       <Link
         href={item.href}
         className={cn(
-          "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+          "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
           active
-            ? "bg-primary-light text-primary nav-pill-active shadow-sm"
+            ? "bg-primary text-white shadow-sm"
             : "text-text-secondary hover:bg-surface-hover hover:text-text"
         )}
       >
-        <span className={cn("flex-shrink-0 transition-colors", active ? "text-primary" : "text-text-muted")}>
+        <span className={cn("flex-shrink-0 transition-colors", active ? "text-white" : "text-text-muted group-hover:text-text")}>
           {item.icon}
         </span>
         {!collapsed && <span className="truncate">{item.label}</span>}
@@ -123,13 +124,13 @@ export function Sidebar() {
             <Link
               href={firstChildHref}
               className={cn(
-                "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                 groupActive
-                  ? "bg-primary-light text-primary nav-pill-active"
+                  ? "bg-primary text-white shadow-sm"
                   : "text-text-secondary hover:bg-surface-hover hover:text-text"
               )}
             >
-              <span className={cn("flex-shrink-0", groupActive ? "text-primary" : "text-text-muted")}>
+              <span className={cn("flex-shrink-0", groupActive ? "text-white" : "text-text-muted")}>
                 {item.icon}
               </span>
             </Link>
@@ -144,13 +145,13 @@ export function Sidebar() {
           type="button"
           onClick={() => toggleGroup("calculators")}
           className={cn(
-            "relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+            "group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
             groupActive
-              ? "bg-primary-light text-primary nav-pill-active"
+              ? "bg-primary text-white shadow-sm"
               : "text-text-secondary hover:bg-surface-hover hover:text-text"
           )}
         >
-          <span className={cn("flex-shrink-0", groupActive ? "text-primary" : "text-text-muted")}>
+          <span className={cn("flex-shrink-0", groupActive ? "text-white" : "text-text-muted group-hover:text-text")}>
             {item.icon}
           </span>
           <span className="flex-1 text-left">{item.label}</span>
@@ -162,7 +163,7 @@ export function Sidebar() {
           />
         </button>
         {expandedGroups.includes("calculators") && (
-          <ul className="ml-4 mt-0.5 flex flex-col gap-0.5 border-l-2 border-border pl-3">
+          <ul className="ml-4 mt-1 flex flex-col gap-0.5 border-l border-border/60 pl-3">
             {item.children!.map((child) => (
               <li key={child.href}>
                 <Link
@@ -170,7 +171,7 @@ export function Sidebar() {
                   className={cn(
                     "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-200",
                     isActive(child.href)
-                      ? "bg-primary-light text-primary"
+                      ? "bg-primary-light text-primary font-semibold"
                       : "text-text-muted hover:bg-surface-hover hover:text-text"
                   )}
                 >
@@ -195,65 +196,83 @@ export function Sidebar() {
           collapsed ? "w-[60px]" : "w-64"
         )}
       >
-        {/* Header */}
+        {/* Header: Logo + Wordmark */}
         <div className={cn(
-          "flex flex-col items-center border-b border-border transition-all duration-300",
-          collapsed ? "py-3 px-2" : "py-4 px-4"
+          "flex items-center border-b border-border/60 transition-all duration-300",
+          collapsed ? "justify-center py-4 px-2" : "justify-between py-4 px-4"
         )}>
-          <div className="relative">
+          <Link href={`/${locale}/dashboard`} className="flex items-center gap-2.5 min-w-0">
             <Image
               src="/logo.webp"
               alt="Nub"
-              width={collapsed ? 36 : 44}
-              height={collapsed ? 36 : 44}
-              className="rounded-xl transition-all duration-300"
-              style={{ width: collapsed ? 36 : 44, height: collapsed ? 36 : 44 }}
+              width={32}
+              height={32}
+              className="rounded-lg flex-shrink-0"
               priority
             />
-          </div>
-          {!collapsed && (
-            <div className="mt-2 text-center">
-              <p className="text-xs font-bold text-text">Nub</p>
-              <p className="text-[9px] text-text-muted font-medium tracking-wider uppercase">Retirement Planner</p>
-            </div>
-          )}
-          <button
-            type="button"
-            onClick={() => setCollapsed(!collapsed)}
-            className={cn(
-              "flex h-6 w-6 items-center justify-center rounded-lg text-text-muted hover:bg-surface-hover hover:text-text transition-all",
-              collapsed ? "mt-2" : "mt-2"
+            {!collapsed && (
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-text leading-none font-heading">Nub</p>
+                <p className="text-[9px] text-text-muted font-medium tracking-widest uppercase mt-0.5">Retirement</p>
+              </div>
             )}
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {collapsed ? <ChevronRight className="h-3.5 w-3.5" /> : <ChevronLeft className="h-3.5 w-3.5" />}
-          </button>
+          </Link>
+          {!collapsed && (
+            <button
+              type="button"
+              onClick={() => setCollapsed(true)}
+              className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg text-text-muted hover:bg-surface-hover hover:text-text transition-all"
+              aria-label="Collapse sidebar"
+            >
+              <ChevronLeft className="h-3.5 w-3.5" />
+            </button>
+          )}
+          {collapsed && (
+            <button
+              type="button"
+              onClick={() => setCollapsed(false)}
+              className="absolute -right-3 top-[72px] flex h-6 w-6 items-center justify-center rounded-full border border-border bg-surface text-text-muted shadow-sm hover:text-text transition-all z-10"
+              aria-label="Expand sidebar"
+            >
+              <ChevronRight className="h-3 w-3" />
+            </button>
+          )}
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto p-2">
+        {/* Main Navigation */}
+        <nav className="flex-1 overflow-y-auto p-2 space-y-0.5">
+          {/* Main nav items */}
           <ul className="flex flex-col gap-0.5">
-            {navItems.map((item, index) => (
+            {mainNavItems.map((item) => (
               <li key={item.href}>
-                {index === DIVIDER_AFTER_INDEX + 1 && (
-                  <div className="my-2 px-2">
-                    <div className="h-px bg-border" />
-                    {!collapsed && (
-                      <p className="mt-2 mb-1 px-2 text-[9px] font-semibold uppercase tracking-widest text-text-muted">
-                        Resources
-                      </p>
-                    )}
-                  </div>
-                )}
                 {item.children ? renderGroupItem(item) : renderNavLink(item)}
+              </li>
+            ))}
+          </ul>
+
+          {/* Divider + Resources label */}
+          <div className="my-3 px-1">
+            <div className="h-px bg-border/60" />
+            {!collapsed && (
+              <p className="mt-3 mb-1 px-2 text-[9px] font-bold uppercase tracking-widest text-text-muted">
+                Community
+              </p>
+            )}
+          </div>
+
+          {/* Secondary nav items */}
+          <ul className="flex flex-col gap-0.5">
+            {secondaryNavItems.map((item) => (
+              <li key={item.href}>
+                {renderNavLink(item)}
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Bottom actions */}
+        {/* Bottom settings */}
         <div className={cn(
-          "border-t border-border transition-all duration-300",
+          "border-t border-border/60 transition-all duration-300",
           collapsed ? "p-2" : "p-3"
         )}>
           {collapsed ? (
@@ -261,8 +280,8 @@ export function Sidebar() {
               <DarkModeToggle />
             </div>
           ) : (
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[10px] text-text-muted">Settings</span>
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-text-muted">Preferences</span>
               <div className="flex items-center gap-1.5">
                 <LanguageToggle />
                 <DarkModeToggle />

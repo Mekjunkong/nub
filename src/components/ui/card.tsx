@@ -1,18 +1,19 @@
 import { forwardRef, type HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-type CardVariant = "default" | "elevated" | "glass" | "gradient" | "inset";
+type CardVariant = "default" | "elevated" | "glass" | "gradient" | "inset" | "pro";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   variant?: CardVariant;
 }
 
 const variantClasses: Record<CardVariant, string> = {
-  default: "border border-border bg-surface shadow-sm",
+  default: "border border-border bg-surface shadow-card",
   elevated: "border border-border bg-surface card-elevated",
   glass: "glass border border-border/50",
   gradient: "card-gradient shadow-lg",
   inset: "card-inset",
+  pro: "feature-card-pro",
 };
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
