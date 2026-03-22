@@ -13,6 +13,10 @@ const authRequiredPaths = [
   "/profile",
   "/chat",
   "/community/new",
+  "/action-plan",
+  "/portfolio-health",
+  "/funds",
+  "/admin",
 ];
 
 function isAuthRequired(pathname: string): boolean {
